@@ -1,6 +1,6 @@
 # Skills
 
-Skills I use with Claude and a few compatible tools. Each one is a folder with a `SKILL.md` and a version. Install whichever you want; more will land here over time.
+Skills I use with Claude and a few compatible tools. Each one is a folder with a `SKILL.md` and a version, plus a packed `<name>.skill` zip in the same folder for tools that prefer a bundle. Install whichever you want; more will land here over time.
 
 ## Skills in this repo
 
@@ -8,56 +8,71 @@ Skills I use with Claude and a few compatible tools. Each one is a folder with a
 
 Stress-tests a real decision by assuming it has already failed and reasoning backward to expose the hidden assumption you didn't think to question.
 
+### intana-viz `v1.0.0`
+
+Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
+
 ## MCP servers
 
 Prebuilt `.mcpb` bundles for Claude Desktop live under [`mcp_servers/`](./mcp_servers), alongside their sources so you can rebuild or fork.
 
 - **`drawio-remote.mcpb`** — bridges Claude Desktop to a remote draw.io MCP server. Defaults to `https://drawmcp.because-security.com/mcp`; override via the **Remote MCP URL** user config to point at your own deployment. See [`mcp_servers/README.md`](./mcp_servers/README.md) for rebuild instructions.
 
-## Installation
+## Build
 
-Every tool below loads the same folder format. Only the install location changes.
+`build.sh` rebuilds every artifact from source:
 
-Clone the repo somewhere stable:
+```bash
+./build.sh            # all skills + all mcpb bundles
+./build.sh skill premortem
+./build.sh mcpb  drawio-remote
+```
+
+It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` prefix preserved) and each `mcp_servers/<name>/` into `mcp_servers/<name>.mcpb` (flat layout — `manifest.json` at the root). Existing `.skill` artifacts are excluded from their own archive.
+
+## Install
 
 ```bash
 git clone https://github.com/norandom/Skills.git ~/Source/Skills
+cd ~/Source/Skills
+./install.sh             # auto-detect: install into every tool whose dir exists
 ```
 
-Then symlink the skills you want into the tool's skills directory. Symlinks mean `git pull` updates them in place; no copy step.
+`install.sh` symlinks each skill folder into the selected tool's `skills/` dir. Symlinks mean `git pull` updates everything in place — no copy step. The script is idempotent; rerunning is safe.
 
-### Claude Code
+Flags:
+
+| Flag | Target |
+| ---- | ------ |
+| `--claude` | `~/.claude/skills/` (Claude Code) |
+| `--claude-desktop` | `~/Library/Application Support/Claude/skills/` (macOS), `~/.config/Claude/skills/` (Linux), `%APPDATA%/Claude/skills/` (Windows) |
+| `--hermes` | `~/.hermes/skills/` |
+| `--opencode` | `~/.config/opencode/skills/` |
+| `--deepseek` | `~/.deepseek/skills/` (DeepSeek TUI) |
+| `--all` | every target above whose parent dir exists (default) |
+| `-n`, `--dry-run` | preview without changing anything |
+| `-f`, `--force` | replace existing entries at the destination |
+| `--uninstall` | remove the symlinks |
+
+Examples:
 
 ```bash
-mkdir -p ~/.claude/skills
-ln -s ~/Source/Skills/premortem ~/.claude/skills/premortem
+./install.sh --claude --opencode    # just these two
+./install.sh --dry-run              # preview
+./install.sh --force                # replace whatever's there
+./install.sh --uninstall --all      # tear down
 ```
 
-To verify, start a session and look for `premortem` in the skills list, or call `/premortem`.
+### Claude Desktop UI install
 
-### Claude Desktop
-
-Open Settings → Capabilities → Skills and add the skill folder (e.g. `~/Source/Skills/premortem`). Repeat per skill, or add the parent `~/Source/Skills` if your build supports a directory of skills.
-
-If your build doesn't expose Skills in the UI, drop the folder into the platform path and restart Claude Desktop:
-
-- macOS: `~/Library/Application Support/Claude/skills/`
-- Windows: `%APPDATA%\Claude\skills\`
-
-### opencode
-
-opencode reads skills from `~/.config/opencode/skills/` (global) or `.opencode/skills/` (per project):
-
-```bash
-mkdir -p ~/.config/opencode/skills
-ln -s ~/Source/Skills/premortem ~/.config/opencode/skills/premortem
-```
+If your Claude Desktop build exposes Skills in **Settings → Capabilities → Skills**, you can also add a folder there directly (e.g. `~/Source/Skills/premortem`) or hand it the packed `premortem/premortem.skill` bundle.
 
 ## Adding more skills
 
 1. Create a folder at the repo root: `<skill-name>/`.
 2. Inside, write a `SKILL.md` with frontmatter: `name`, `version`, and a `description` that explains *when* the skill should fire. The description is what the model matches against, so make the triggers specific.
-3. List the skill above with a one-line synthesis and its current version.
+3. Run `./build.sh skill <skill-name>` to produce `<skill-name>/<skill-name>.skill`.
+4. List the skill above with a one-line synthesis and its current version.
 
 ## Versioning
 
