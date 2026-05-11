@@ -1,0 +1,43 @@
+{
+  "manifest_version": "0.3",
+  "name": "drawio-remote",
+  "display_name": "draw.io (Remote)",
+  "version": "1.0.0",
+  "description": "Bridges Claude Desktop to the hosted draw.io MCP server at drawmcp.because-security.com.",
+  "long_description": "A thin MCP bundle that uses mcp-remote to connect Claude Desktop to a remote draw.io MCP server over Streamable HTTP. The remote server exposes draw.io diagram tools via the MCP `/mcp` endpoint. No local server code runs; the bundle simply spawns `npx mcp-remote <url>` as a stdio-to-HTTP bridge.",
+  "author": {
+    "name": "mc"
+  },
+  "homepage": "https://drawmcp.because-security.com",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "${user_config.server_url}"
+      ]
+    }
+  },
+  "tools_generated": true,
+  "keywords": ["drawio", "diagrams", "remote", "mcp-remote"],
+  "license": "MIT",
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  },
+  "user_config": {
+    "server_url": {
+      "type": "string",
+      "title": "Remote MCP URL",
+      "description": "Full URL of the remote draw.io MCP endpoint (must include /mcp path). Override to point at your own deployment.",
+      "required": true,
+      "default": "https://drawmcp.because-security.com/mcp"
+    }
+  }
+}

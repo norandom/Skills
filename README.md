@@ -8,6 +8,12 @@ Skills I use with Claude and a few compatible tools. Each one is a folder with a
 
 Stress-tests a real decision by assuming it has already failed and reasoning backward to expose the hidden assumption you didn't think to question.
 
+## MCP servers
+
+Prebuilt `.mcpb` bundles for Claude Desktop live under [`mcp_servers/`](./mcp_servers), alongside their sources so you can rebuild or fork.
+
+- **`drawio-remote.mcpb`** — bridges Claude Desktop to a remote draw.io MCP server. Defaults to `https://drawmcp.because-security.com/mcp`; override via the **Remote MCP URL** user config to point at your own deployment. See [`mcp_servers/README.md`](./mcp_servers/README.md) for rebuild instructions.
+
 ## Installation
 
 Every tool below loads the same folder format. Only the install location changes.
