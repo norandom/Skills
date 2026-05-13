@@ -2,6 +2,8 @@
 
 Draws intelligence-analysis diagrams through the draw.io MCP. You name a technique, or describe the analysis you're doing, and the skill picks a diagram pattern and opens it in draw.io. From there it's a regular draw.io file: edit it, rearrange it, export it.
 
+Based on course notes (I-Intelligence, July 2021) Pallaris et. al., and personal research. The individual techniques themselves are older; the catalog lists informal upstream credits where they exist.
+
 There are three MCP tools the skill routes to:
 
 - `mcp__drawio__open_drawio_xml` — precise spatial layouts: matrices, networks, hub-and-spoke, custom shapes.

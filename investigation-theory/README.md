@@ -2,6 +2,8 @@
 
 A shared workflow for SOC triage, log analysis, digital forensics, and incident response. The skill operationalizes the *Investigation Theory* curriculum: every analyst follows the same Diagnostic Inquiry loop, the same question taxonomy, the same disposition codes, and the same draw.io diagrams. The point is comparability: two analysts on different cases produce artifacts a reviewer can read side by side without translation.
 
+Based on *Applied Network Defense* (2024) Sanders et. al. Also based on course notes and personal research. CJCSM 6510 disposition codes are from the US DoD Joint Chiefs of Staff incident-handling manual; the *Once Upon a Time* report pattern, Security M&M peer review, GAPSS, and the question taxonomy itself come from the Sanders curriculum.
+
 Pair it with **intana-viz** when a case needs a structured analytic technique (ACH, Key Assumptions Check, Pre-Mortem, Devil's Advocacy) that goes past the five standard diagrams here.
 
 ## When the skill fires

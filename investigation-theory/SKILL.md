@@ -9,7 +9,7 @@ description: >
 
 This skill operationalizes the Investigation Theory framework so every analyst follows the same methodology, uses the same vocabulary, and produces artifacts (notes, playbooks, timelines, reports, diagrams) that are directly comparable across a team.
 
-The content is derived from the *Investigation Theory: Information Security / Forensics* curriculum and must be followed closely — the goal is *unified methodic rigor*, not creative reinterpretation.
+Based on *Applied Network Defense* (2024) Sanders et. al. — specifically the *Investigation Theory: Information Security / Forensics* curriculum. Also based on course notes and personal research. CJCSM 6510 disposition codes come from US DoD Joint Chiefs of Staff manual CJCSM 6510.01B. Follow the curriculum closely — the goal is *unified methodic rigor*, not creative reinterpretation.
 
 ---
 

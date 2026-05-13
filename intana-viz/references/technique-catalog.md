@@ -2,7 +2,39 @@
 
 This catalog maps every technique from the course material to its visualization type and draw.io implementation approach. When the user requests a visualization, match their request to the closest technique(s) below and follow the diagram guidance.
 
+Based on course notes (I-Intelligence, July 2021) Pallaris et. al., and personal research.
+
 **Output tools:** `open_drawio_xml` (spatial layouts, matrices, networks), `open_drawio_mermaid` (flows, trees, sequences), `open_drawio_csv` (tabular-to-diagram).
+
+## Informal upstream credits
+
+The techniques in this catalog mostly predate the I-Intelligence course; the course is the framing it was learned through. Best-effort attributions (not exhaustive, not formally cited):
+
+- **Analysis of Competing Hypotheses (ACH)** — Richards J. Heuer Jr., *Psychology of Intelligence Analysis* (CIA, 1999).
+- **Pre-Mortem** — Gary Klein, HBR (2007).
+- **Key Assumptions Check / What-If Analysis / Indicators of Change / Devil's Advocacy / Team A vs Team B / Red Team / Alternative Futures / High Impact-Low Probability** — CIA *Tradecraft Primer: Structured Analytic Techniques* (2009) and Heuer & Pherson, *Structured Analytic Techniques for Intelligence Analysis* (2010+).
+- **Six Thinking Hats** — Edward de Bono (1985).
+- **Fishbone (Ishikawa)** — Kaoru Ishikawa (1968).
+- **Five Whys** — Sakichi Toyoda, Toyota Production System.
+- **Futures Wheel** — Jerome C. Glenn (1972).
+- **OODA loop** — John Boyd (US Air Force, 1970s).
+- **Recognition-Primed Decision Model / Situation-Cues-Patterns-Actions** — Gary Klein, *Sources of Power* (1998).
+- **Argument Mapping** — Stephen Toulmin, *The Uses of Argument* (1958).
+- **McKinsey 7S** — Tom Peters & Robert Waterman, *In Search of Excellence* (McKinsey, 1982).
+- **Burke-Litwin Causal Model** — W. Warner Burke & George Litwin (1992).
+- **Leavitt's Diamond** — Harold J. Leavitt (1965).
+- **Weisbord's Six Box** — Marvin Weisbord (1976).
+- **Johnson's Cultural Web** — Gerry Johnson (1992).
+- **Ansoff Matrix (Opportunity Matrix variant)** — Igor Ansoff (1957).
+- **Nominal Group Technique** — Delbecq & Van de Ven (1971).
+- **Design Thinking process** — Stanford d.school / IDEO lineage, Tim Brown.
+- **Piaget's Learning Cycle** — Jean Piaget.
+- **Prospect Theory / Loss Aversion** — Kahneman & Tversky (1979).
+- **System 1 vs System 2 thinking** — Daniel Kahneman, *Thinking, Fast and Slow* (2011).
+- **After-Action Review** — US Army training doctrine.
+- **CoA Analysis / Wargaming / Mission Analysis / Sideswimming Chart / Critical Path / String of Pearls** — military planning doctrine (US Army FM 5-0, NATO/UK MoD planning manuals).
+
+Anything not listed above is based on course notes and personal research.
 
 ## Table of Contents
 1. [Foundational Frameworks](#1-foundational-frameworks)

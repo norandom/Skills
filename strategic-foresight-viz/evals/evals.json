@@ -1,0 +1,23 @@
+{
+  "skill_name": "strategic-foresight-viz",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "We're running the annual foresight cycle for our European cybersecurity practice. The domain is 'AI-enabled threats and defenses in EU financial services, 5-year horizon'. I have these trends already noted: (1) generative AI used in spear-phishing, (2) AI-assisted secure code review, (3) EU AI Act enforcement, (4) shortage of AI-literate SOC analysts, (5) deepfake-driven business email compromise. Run me through a PESTLE/GRNO scan first, then a Trend Stage Analysis on those five trends.",
+      "expected_output": "Two diagrams in sequence. (1) PESTLE/GRNO multi-column matrix: 6 PESTLE dimensions x Trends/Events for the domain, with a secondary geographic-range matrix (Local / National / Regional/Europe / Global) overlaying intensity per dimension. Asks for at least one trend and one event per dimension before drawing. (2) Trend Stage Analysis 2x2 matrix: X-axis Lifecycle (Latent -> Established), Y-axis Impact (Low -> High), with the five named trends positioned and color-coded per quadrant priority (red = high-impact established, orange = high-impact emerging, etc.). Uses mcp__drawio__open_drawio_xml; falls back to Mermaid if MCP missing.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "I'm tracking weak signals around post-quantum cryptography readiness across our partner ecosystem. Here are five signals I've detected: NIST PQC standards finalized late 2024; a major cloud provider quietly piloting hybrid key exchange; an academic paper claiming a 30% reduction in lattice-based key sizes; two of our partners hiring 'crypto-agility leads'; and a regulatory consultation paper in the UK referencing 'quantum-readiness audits'. Help me make sense of these.",
+      "expected_output": "Drives the user toward Weak Signal Analysis II (signal x actors x hypotheses x research questions), not Weak Signal Analysis I (which focuses on detection methods). Asks for actors, hypotheses, and research questions per signal before drawing. Produces a comparison table with the five signals as rows, columns as Signal description / Actors / Hypotheses / Research questions. Optionally chains into What/So What/Now What if the user wants implications-and-action framing. Notes that Futures Wheel (cascading consequences) sits in intana-viz and offers to route there for second-order effects.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Board briefing in two weeks. Topic: how prepared are we for supply-chain disruption in semiconductor sourcing? They want a VUCA snapshot across local / national / EU / global, and they want to see how risky inaction is compared to action on three policy options (regional fab partnership, multi-sourcing redundancy, strategic stockpile). Keep it tight.",
+      "expected_output": "Two diagrams. (1) VUCA Analysis: 4 elements (Volatility, Uncertainty, Complexity, Ambiguity) x 4 geographic scopes (Local / National / Regional-Europe / Global) with severity ratings, plus the VUCA Responses table (each element x Knowledge / Investments / Actions / Perspectives). (2) What If / Then Cross-Impact second table: rows for the three policy options, columns If (Action) / Then (Reaction) / Risks of Action / Risks of Inaction. Asks for severity scores and policy specifics before drawing. Skips Three Futures because the user explicitly asked for VUCA + action-risk comparison; offers to add Three Futures if the board wants narrative scenarios alongside the assessment.",
+      "files": []
+    }
+  ]
+}
