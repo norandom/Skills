@@ -148,3 +148,152 @@ lib_unlink_target() {
     fi
   done < <(lib_list_skills)
 }
+
+# ---------- MCP server management ----------------------------------------
+# Each lib_mcp_<tool>_add / _remove function returns 0 even when it skips, so
+# callers can chain across tools that aren't installed without aborting.
+#
+# Add helpers take: <name> <command> [args...]   (stdio launch line)
+# Remove helpers take: <name>
+
+# Echo a JSON array built from the positional args via jq.
+lib__args_json() {
+  if [ $# -eq 0 ]; then echo '[]'; return; fi
+  printf '%s\n' "$@" | jq -R . | jq -s .
+}
+
+# Ensure a JSON file exists with a given top-level key as an empty object.
+lib__ensure_json() {
+  local path="$1" key="$2"
+  [ -f "$path" ] && return 0
+  lib_run mkdir -p "$(dirname "$path")"
+  if [ "$LIB_DRY_RUN" -eq 1 ]; then
+    printf 'DRY: create %s with {%s: {}}\n' "$path" "$key"
+  else
+    jq -n --arg k "$key" '{($k): {}}' > "$path"
+  fi
+}
+
+# In-place jq edit with safe temp-file write.
+lib__jq_inplace() {
+  local path="$1"; shift
+  if [ "$LIB_DRY_RUN" -eq 1 ]; then
+    printf 'DRY: jq %s on %s\n' "$*" "$path"
+    return 0
+  fi
+  local tmp; tmp="$(mktemp)"
+  jq "$@" "$path" > "$tmp" && mv "$tmp" "$path"
+}
+
+# Claude Code
+lib_mcp_claude_add() {
+  local name="$1"; shift
+  command -v claude >/dev/null || { printf 'skip   %-10s  (claude CLI missing)\n' claude; return 0; }
+  printf 'mcp+   %-10s  %s -- %s\n' claude "$name" "$*"
+  lib_run claude mcp add "$name" -- "$@"
+}
+lib_mcp_claude_remove() {
+  command -v claude >/dev/null || { printf 'skip   %-10s  (claude CLI missing)\n' claude; return 0; }
+  printf 'mcp-   %-10s  %s\n' claude "$1"
+  lib_run claude mcp remove "$1"
+}
+
+# Gemini CLI  (user scope so it persists outside any project)
+lib_mcp_gemini_add() {
+  local name="$1"; shift
+  command -v gemini >/dev/null || { printf 'skip   %-10s  (gemini CLI missing)\n' gemini; return 0; }
+  printf 'mcp+   %-10s  %s %s\n' gemini "$name" "$*"
+  lib_run gemini mcp add -s user "$name" "$@"
+}
+lib_mcp_gemini_remove() {
+  command -v gemini >/dev/null || { printf 'skip   %-10s  (gemini CLI missing)\n' gemini; return 0; }
+  printf 'mcp-   %-10s  %s\n' gemini "$1"
+  lib_run gemini mcp remove "$1"
+}
+
+# Codex CLI
+lib_mcp_codex_add() {
+  local name="$1"; shift
+  command -v codex >/dev/null || { printf 'skip   %-10s  (codex CLI missing)\n' codex; return 0; }
+  printf 'mcp+   %-10s  %s -- %s\n' codex "$name" "$*"
+  lib_run codex mcp add "$name" -- "$@"
+}
+lib_mcp_codex_remove() {
+  command -v codex >/dev/null || { printf 'skip   %-10s  (codex CLI missing)\n' codex; return 0; }
+  printf 'mcp-   %-10s  %s\n' codex "$1"
+  lib_run codex mcp remove "$1"
+}
+
+# DeepSeek TUI — official CLI (writes ~/.deepseek/mcp.json under the hood).
+lib_mcp_deepseek_add() {
+  local name="$1" cmd="$2"; shift 2
+  command -v deepseek >/dev/null || { printf 'skip   %-10s  (deepseek CLI missing)\n' deepseek; return 0; }
+  # Use --arg=value form so values starting with '-' (e.g. "-y") aren't parsed as flags.
+  local args=() a
+  for a in "$@"; do args+=("--arg=$a"); done
+  printf 'mcp+   %-10s  %s -- %s %s\n' deepseek "$name" "$cmd" "$*"
+  lib_run deepseek mcp add "$name" "--command=$cmd" "${args[@]}"
+}
+lib_mcp_deepseek_remove() {
+  command -v deepseek >/dev/null || { printf 'skip   %-10s  (deepseek CLI missing)\n' deepseek; return 0; }
+  printf 'mcp-   %-10s  %s\n' deepseek "$1"
+  lib_run deepseek mcp remove "$1"
+}
+
+# opencode — ~/.config/opencode/opencode.json, top-level "mcp",
+# entries shaped { command:[array], enabled:true, type:"local", environment:{} }.
+lib_mcp_opencode_add() {
+  local name="$1" cmd="$2"; shift 2
+  local path="$HOME/.config/opencode/opencode.json"
+  [ -d "$(dirname "$path")" ] || { printf 'skip   %-10s  (~/.config/opencode missing)\n' opencode; return 0; }
+  lib_require jq
+  lib__ensure_json "$path" mcp
+  local cmd_arr; cmd_arr="$(lib__args_json "$cmd" "$@")"
+  local entry; entry="$(jq -n --argjson c "$cmd_arr" '{command:$c, enabled:true, type:"local"}')"
+  printf 'mcp+   %-10s  %s -> %s\n' opencode "$name" "$path"
+  lib__jq_inplace "$path" --arg n "$name" --argjson e "$entry" '.mcp[$n] = $e'
+}
+lib_mcp_opencode_remove() {
+  local path="$HOME/.config/opencode/opencode.json"
+  [ -f "$path" ] || { printf 'skip   %-10s  (no opencode.json)\n' opencode; return 0; }
+  printf 'mcp-   %-10s  %s\n' opencode "$1"
+  lib__jq_inplace "$path" --arg n "$1" 'del(.mcp[$n])'
+}
+
+# Hermes — ~/.hermes/config.yaml, top-level "mcp_servers". Needs yq (mikefarah).
+lib_mcp_hermes_add() {
+  local name="$1" cmd="$2"; shift 2
+  [ -d "$HOME/.hermes" ] || { printf 'skip   %-10s  (~/.hermes missing)\n' hermes; return 0; }
+  if ! command -v yq >/dev/null; then
+    printf 'skip   %-10s  (needs yq: brew install yq)\n' hermes; return 0
+  fi
+  local path="$HOME/.hermes/config.yaml"
+  if [ ! -f "$path" ]; then
+    if [ "$LIB_DRY_RUN" -eq 1 ]; then
+      printf 'DRY: create %s with mcp_servers: {}\n' "$path"
+    else
+      printf 'mcp_servers: {}\n' > "$path"
+    fi
+  fi
+  local args_json; args_json="$(lib__args_json "$@")"
+  printf 'mcp+   %-10s  %s -> %s\n' hermes "$name" "$path"
+  if [ "$LIB_DRY_RUN" -eq 1 ]; then
+    printf 'DRY: yq -i ".mcp_servers.\"%s\" = {command:\"%s\", args:%s}" %s\n' "$name" "$cmd" "$args_json" "$path"
+  else
+    NAME="$name" CMD="$cmd" ARGS_JSON="$args_json" \
+      yq -i '.mcp_servers[strenv(NAME)] = {"command": strenv(CMD), "args": strenv(ARGS_JSON) | from_yaml}' "$path"
+  fi
+}
+lib_mcp_hermes_remove() {
+  local path="$HOME/.hermes/config.yaml"
+  [ -f "$path" ] || { printf 'skip   %-10s  (no config.yaml)\n' hermes; return 0; }
+  if ! command -v yq >/dev/null; then
+    printf 'skip   %-10s  (needs yq)\n' hermes; return 0
+  fi
+  printf 'mcp-   %-10s  %s\n' hermes "$1"
+  if [ "$LIB_DRY_RUN" -eq 1 ]; then
+    printf 'DRY: yq -i "del(.mcp_servers.\"%s\")" %s\n' "$1" "$path"
+  else
+    NAME="$1" yq -i 'del(.mcp_servers[strenv(NAME)])' "$path"
+  fi
+}

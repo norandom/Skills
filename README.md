@@ -12,6 +12,10 @@ Stress-tests a real decision by assuming it has already failed and reasoning bac
 
 Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
 
+### investigation-theory `v1.0.0`
+
+SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
+
 ## MCP servers
 
 Prebuilt `.mcpb` bundles for Claude Desktop live under [`mcp_servers/`](./mcp_servers), alongside their sources so you can rebuild or fork.

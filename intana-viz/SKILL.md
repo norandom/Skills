@@ -19,7 +19,7 @@ Before generating any visualization:
 
 Three MCP tools are available. Choose the best fit for each technique:
 
-### 1. `mcp__draw-io__open_drawio_xml` (Primary — use for most techniques)
+### 1. `mcp__drawio__open_drawio_xml` (Primary — use for most techniques)
 Generates draw.io XML (mxGraphModel format). This is the most flexible option — supports precise positioning, custom shapes, colors, containers, layers, and complex layouts. Use this for:
 - 2×2 matrices and quadrant diagrams (Prioritisation Map, Four Ways of Seeing, Opportunity Matrix)
 - Hub-and-spoke diagrams (Pre-Mortem, Failure Causation)
@@ -27,7 +27,7 @@ Generates draw.io XML (mxGraphModel format). This is the most flexible option �
 - Radar-like scored displays (Devil's Advocacy, 12R Model)
 - Any diagram requiring precise spatial layout or color-coding
 
-### 2. `mcp__draw-io__open_drawio_mermaid` (Flowcharts and sequences)
+### 2. `mcp__drawio__open_drawio_mermaid` (Flowcharts and sequences)
 Generates Mermaid.js syntax. Best for:
 - Process flows (Red Teaming phases, What/So What/Now What)
 - Decision trees and branching logic (If/Then Analysis)
@@ -35,7 +35,7 @@ Generates Mermaid.js syntax. Best for:
 - Hierarchical trees (Argument Mapping, Five Whys, Negative Brainstorming)
 - State diagrams (Piaget's Learning Cycle, OODA loops)
 
-### 3. `mcp__draw-io__open_drawio_csv` (Structured tabular data)
+### 3. `mcp__drawio__open_drawio_csv` (Structured tabular data)
 Generates diagrams from CSV. Best for:
 - Org-chart style hierarchies
 - Simple relationship diagrams from tabular data

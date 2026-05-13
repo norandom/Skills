@@ -4,9 +4,9 @@ Draws intelligence-analysis diagrams through the draw.io MCP. You name a techniq
 
 There are three MCP tools the skill routes to:
 
-- `mcp__draw-io__open_drawio_xml` — precise spatial layouts: matrices, networks, hub-and-spoke, custom shapes.
-- `mcp__draw-io__open_drawio_mermaid` — flows, trees, sequences, cycles.
-- `mcp__draw-io__open_drawio_csv` — tabular data turned into a diagram.
+- `mcp__drawio__open_drawio_xml` — precise spatial layouts: matrices, networks, hub-and-spoke, custom shapes.
+- `mcp__drawio__open_drawio_mermaid` — flows, trees, sequences, cycles.
+- `mcp__drawio__open_drawio_csv` — tabular data turned into a diagram.
 
 The catalog below is the complete list of techniques the skill recognizes. Each row gives the diagram shape and which tool produces it. Exact layout specs (canvas sizes, node coordinates, style strings) are in `references/diagram-templates.md`. Longer notes per technique are in `references/technique-catalog.md`.
 
