@@ -152,6 +152,16 @@ When the user's request doesn't clearly map to a single technique:
 2. If multiple techniques apply, briefly explain the options and recommend the best fit
 3. If the request is a general concept (e.g., "show me the risks"), ask which analytical structure they want
 
+## Cross-skill handoff
+
+Structured analysis often sits inside another workflow. Preserve the user's context when routing:
+
+- For `game-theory-negotiation`, send hypotheses, assumptions, deception risks, candidate strategies, and confidence levels. Good fits: ACH for why a party is behaving a certain way, Red Teaming for the other side's likely moves, Pre-Mortem for deal failure, and Key Assumptions Check for BATNA or payoff estimates.
+- For `strategic-foresight-viz`, send the external drivers and uncertain futures that need scenario work.
+- For `investigation-theory`, send claims that need evidence, sources to check, contradictions, and open questions.
+
+When drawing cross-functional work in draw.io, keep actor names, claim IDs, scenario names, and option names stable. A user should be able to compare an ACH matrix, a futures cone, an investigation timeline, and a payoff matrix without translating labels.
+
 ## Output
 
 Call the appropriate draw.io MCP tool directly. The diagram opens in the user's draw.io editor where they can view, edit, rearrange, and export to PNG/SVG/PDF.

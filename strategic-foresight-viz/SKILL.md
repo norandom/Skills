@@ -125,3 +125,15 @@ If `mcp__drawio__open_drawio_xml` / `..._mermaid` / `..._csv` are not registered
 This skill owns the foresight catalog (24 techniques across the 7 categories listed in `references/technique-catalog.md`). When the user asks for an analytic technique outside that scope — ACH, Pre-Mortem, Red Teaming, Cultural Web, McKinsey 7S, Six Thinking Hats, Futures Wheel, Fishbone, Five Whys, Argument Mapping, etc. — hand off to the **intana-viz** skill instead of improvising. intana-viz has 80+ techniques catalogued with the same draw.io styling conventions.
 
 Rule of thumb: if the request is about *anticipating the future* (trends, scenarios, weak signals, foresight assessments, environmental scans), stay here. If it is about *analyzing a hypothesis, decision, organization, or argument*, route to intana-viz. Some techniques sit at the boundary (What If / Then, Stakeholder Analysis) — this skill owns the foresight-flavored variants; intana-viz owns the intelligence-analysis variants.
+
+## Cross-skill handoff
+
+When foresight feeds another skill, export a compact context packet instead of a prose recap:
+
+- Scenarios: best, likely, worst, wildcard, or named archetypes.
+- Drivers: trends, weak signals, constraints, and timing.
+- Assumptions: what must be true for each scenario.
+- Early warnings: what evidence would move the user from one scenario to another.
+- Decision impact: which options, payoffs, or risks change under each scenario.
+
+Use this packet with `game-theory-negotiation` when a future condition changes BATNA, ZOPA, reservation price, a concession plan, or a payoff matrix. Use it with `investigation-theory` when a scenario depends on whether another party's claim is true. Use it with `intana-viz` when the scenario rests on contested assumptions that need ACH, Red Teaming, Key Assumptions Check, or Pre-Mortem analysis.

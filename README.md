@@ -10,7 +10,7 @@ Stress-tests a real decision by assuming it has already failed and reasoning bac
 
 ### reflect `v1.1.0`
 
-Hardens a raw request into a well-formed prompt using Gartner's ReFLECT framework (Role, Format, Language, Example, Context, Task). Maps the ask onto the six elements, questions the user for any missing high-priority piece — always a missing Task, plus absent Context or Example — then assembles, confirms, and executes the completed prompt. Includes an optional LLM-as-a-judge evaluation pass with a scored 1–5 rubric and a pass/regenerate/block threshold for high-stakes output.
+Turns a rough request into a clear prompt using Gartner's ReFLECT framework: Role, Format, Language, Example, Context, and Task. It asks only for missing pieces that matter, confirms the resolved prompt, and then does the work. Includes an optional scored review pass for high-stakes output.
 
 ### intana-viz `v1.0.0`
 
@@ -23,6 +23,10 @@ Strategic-foresight and futures-analysis visualizations rendered through the dra
 ### investigation-theory `v1.0.0`
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
+
+### game-theory-negotiation `v1.0.0`
+
+Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
 ## MCP servers
 

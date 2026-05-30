@@ -133,6 +133,21 @@ This skill owns the *Investigation Theory* workflow and its five standard diagra
 
 Rule of thumb: if the diagram is *about the investigation itself* (loop, timeline, triage, playbook, tiers), stay here. If it is *about the analytic technique being applied inside the investigation*, route to intana-viz.
 
+## Cross-skill handoff
+
+Use this skill when another workflow depends on truthfulness, evidence, or missing facts. Not every negotiation party is truthful, not every scenario input is reliable, and not every stakeholder claim deserves to be priced at face value.
+
+Export findings as a compact packet:
+
+- Claim: the statement being tested.
+- Source: who said it or where it came from.
+- Evidence: support, contradiction, and confidence.
+- Gap: what would verify or falsify the claim.
+- Incentive: who benefits if the claim is true or false.
+- Impact: which decision, payoff, scenario, or diagram changes.
+
+Hand this packet to `game-theory-negotiation` when trust changes payoffs, BATNA, authority, or concession strategy. Hand it to `strategic-foresight-viz` when a claim affects future scenarios or early warning signs. Hand it to `intana-viz` when competing explanations need ACH, Red Teaming, or Key Assumptions Check.
+
 ---
 
 ## Worked example — phishing alert through three loop cycles

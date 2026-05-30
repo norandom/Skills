@@ -1,0 +1,29 @@
+{
+  "skill_name": "game-theory-negotiation",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I'm buying a used machine listed at 18,000. I'd genuinely walk at 16,000, and I think the seller paid about 13,500 and is keen to sell. How should I open and how do I work the price down?",
+      "expected_output": "Sets the numbers: reservation price 16,000 is a FLOOR, never the target; estimates seller RP ~13,500, ZOPA ~13.5k-16k, surplus ~2,500. Tells the user to improve BATNA first (line up an alternative). Builds an aspiration ladder and anchors on an Ambitious Target around 14,500, explicitly NOT the 16,000 floor. Plans DEGRESSIVE bidding: target price in the MIDDLE of the range, opens with a plausible maximum position well below list, halves the remaining gap each step, uses odd/precise shrinking numbers, and closes with a small in-kind sweetener instead of more price. Says to answer every seller demand with a counter-offer, never a flat no, and to use a tactical (reversible) No if pushed toward the floor. Warns to watch for a nibble between handshake and paperwork. Does NOT recommend revealing the true reservation price; does NOT recommend Boulwarism.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "We're sourcing a custom component from four suppliers we trust. Should I just negotiate hard with each one separately? Also I'm worried that once we pick one and they build tooling for us, they'll jack up the price later.",
+      "expected_output": "Recommends a NEGOTIAUCTION rather than four separate bilateral talks: publish a strict, transparent, pre-announced rule set (auction contract) that binds the buyer, refuse to leak one bidder's price to another, and rely on reputation to make the commitment credible so suppliers submit their best price. Suggests scoring non-price terms on a virtual price list for comparability, and considers a Vickrey/second-price (incentive-compatible) rule to elicit truthful bids. Directly addresses the holdup worry: protect against it BEFORE the specific tooling investment via milestone/split payments, automated triggers (penalty/escrow clauses), and possibly a mutual-hostage arrangement; notes self-binding contracts. Verifies procedural fairness (identical rules) and win-win (winner beats BATNA).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We agreed everything on the partnership. Now, right before signing, they're asking us to also throw in three months of free support 'since we're partners now'. It's small relative to the deal. Do we just give it to them?",
+      "expected_output": "Identifies this as a NIBBLE in the vulnerable window between psychological close and signing, and that its smallness is the point. Recommends, in order: (1) price-tag and isolate it - state what three months of support is worth and negotiate it as a separate item, leaving the agreed deal untouched; (2) counter-nibble - ask for a small concession back; (3) if they persist, threaten to reopen the ENTIRE negotiation, which nibblers fear. Advises against silently conceding. Mentions keeping the rest of the deal frozen and re-anchoring with a counter-offer rather than a flat yes/no. May note the virtual price list as the source of the price tag.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I'm setting the bonus for a new business-development hire. My gut says give them 50% of the profit they bring in so they're really motivated. Sound right?",
+      "expected_output": "Confirms a variable component is sound (profit share lifts effort well above fixed salary) but challenges the SIZE rather than accepting 50% by default. Benchmarks against the course example (investment banking ~2% of transaction volume, which can be ~15% of value created, not 50%) and says to size the share to the hire's actual marginal contribution and market rate. Recommends tying it to a productivity/value-created fairness criterion with explicit measurable metrics, guarding against gaming/holdup with milestones and clawbacks, and modeling the uncertain payout (three-point estimate, discounted by risk aversion). Frames it as incentivization / incentive alignment (optionally noting the principal-agent link).",
+      "files": []
+    }
+  ]
+}
