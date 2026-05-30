@@ -69,7 +69,11 @@ ui_choose_one() {
       for o in "$@"; do list+="\"$o\","; done
       list="${list%,}"
       osascript -e "set r to choose from list {$list} with prompt \"$prompt\" with title \"$TITLE\"" \
-                 -e 'if r is false then return "" else return item 1 of r' 2>/dev/null
+                 -e 'if r is false then' \
+                 -e 'return ""' \
+                 -e 'else' \
+                 -e 'return item 1 of r' \
+                 -e 'end if' 2>/dev/null
       ;;
     *)
       local i=1 o
@@ -108,8 +112,10 @@ ui_choose_many() {
       local def=""; [ -n "$sel" ] && def="default items {$sel}"
       osascript \
         -e "set r to choose from list {$items} with prompt \"$prompt\" with title \"$TITLE\" with multiple selections allowed $def" \
-        -e 'if r is false then return ""' \
-        -e 'set AppleScript''s text item delimiters to linefeed' \
+        -e 'if r is false then' \
+        -e 'return ""' \
+        -e 'end if' \
+        -e "set AppleScript's text item delimiters to linefeed" \
         -e 'return r as text' 2>/dev/null \
         | sed 's/ — .*$//'
       ;;
