@@ -1,1 +1,4 @@
 .claude/settings.local.json
+
+# local antigravity cli project symlink
+.antigravitycli/

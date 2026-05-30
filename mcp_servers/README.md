@@ -49,6 +49,7 @@ Targets and how they're modified:
 | `--hermes` | Hermes | `~/.hermes/config.yaml` (`mcp_servers` key) edited via `yq` |
 | `--opencode` | opencode | `~/.config/opencode/opencode.json` (`mcp` key) edited via `jq` |
 | `--deepseek` | DeepSeek TUI | `deepseek mcp add ...` (CLI); script also patches `connect_timeout` to 60s |
+| `--agy` | Antigravity CLI | `~/.gemini/antigravity-cli/mcp_config.json` (`mcpServers` key) edited via `jq` |
 | `--all` | every target above | only tools whose CLI or home dir exists are touched |
 
 Requirements: `jq` (always), `yq` v4+ from mikefarah (only when `--hermes` is in play; install with `brew install yq`). The script never overwrites unrelated entries — CLI tools manage their own state, `jq`/`yq` do an in-place merge keyed by server name.

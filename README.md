@@ -57,6 +57,7 @@ Flags:
 | `--hermes` | `~/.hermes/skills/` |
 | `--opencode` | `~/.config/opencode/skills/` |
 | `--deepseek` | `~/.deepseek/skills/` (DeepSeek TUI) |
+| `--agy` | `~/.gemini/antigravity-cli/skills/` (Antigravity CLI) |
 | `--all` | every target above whose parent dir exists (default) |
 | `-n`, `--dry-run` | preview without changing anything |
 | `-f`, `--force` | replace existing entries at the destination |

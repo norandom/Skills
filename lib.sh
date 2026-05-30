@@ -297,3 +297,23 @@ lib_mcp_hermes_remove() {
     NAME="$1" yq -i 'del(.mcp_servers[strenv(NAME)])' "$path"
   fi
 }
+
+# Antigravity CLI — ~/.gemini/antigravity-cli/mcp_config.json, top-level "mcpServers",
+# entries shaped { command: "cmd", args: [array] }.
+lib_mcp_agy_add() {
+  local name="$1" cmd="$2"; shift 2
+  local path="$HOME/.gemini/antigravity-cli/mcp_config.json"
+  [ -d "$(dirname "$path")" ] || { printf 'skip   %-10s  (~/.gemini/antigravity-cli missing)\n' agy; return 0; }
+  lib_require jq
+  lib__ensure_json "$path" mcpServers
+  local args_arr; args_arr="$(lib__args_json "$@")"
+  local entry; entry="$(jq -n --arg c "$cmd" --argjson a "$args_arr" '{command:$c, args:$a}')"
+  printf 'mcp+   %-10s  %s -> %s\n' agy "$name" "$path"
+  lib__jq_inplace "$path" --arg n "$name" --argjson e "$entry" '.mcpServers[$n] = $e'
+}
+lib_mcp_agy_remove() {
+  local path="$HOME/.gemini/antigravity-cli/mcp_config.json"
+  [ -f "$path" ] || { printf 'skip   %-10s  (no mcp_config.json)\n' agy; return 0; }
+  printf 'mcp-   %-10s  %s\n' agy "$1"
+  lib__jq_inplace "$path" --arg n "$1" 'del(.mcpServers[$n])'
+}
