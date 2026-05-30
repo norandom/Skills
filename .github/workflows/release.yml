@@ -1,0 +1,39 @@
+name: release
+
+# Cut a release by pushing a version tag:
+#   git tag v1.2.0 && git push origin v1.2.0
+# Dagger builds the bundles in a container, then the artifacts are attached to
+# a GitHub Release. The .skill / .mcpb bundles are not committed to the repo —
+# this is where they are published.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build release artifacts with Dagger
+        uses: dagger/dagger-for-github@v8.4.1
+        with:
+          version: "0.21.3"
+          verb: call
+          args: dist export --path=./dist
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3.0.0
+        with:
+          files: |
+            dist/*.skill
+            dist/*.mcpb
+            dist/skills-installer.zip
+            dist/SHA256SUMS
+          generate_release_notes: true
+          fail_on_unmatched_files: true

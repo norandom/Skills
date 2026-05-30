@@ -1,6 +1,6 @@
 # Skills
 
-Skills I use with Claude and a few compatible tools. Each one is a folder with a `SKILL.md` and a version, plus a packed `<name>.skill` zip in the same folder for tools that prefer a bundle. Install whichever you want; more will land here over time.
+Skills I use with Claude and a few compatible tools. Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
 ## Skills in this repo
 
@@ -144,3 +144,26 @@ Each skill carries a `version` in its `SKILL.md` frontmatter, following semver:
 - **PATCH** for wording, clarification, and typo fixes.
 
 Bump the version in the same commit as the change. That way `git log -- <skill>/SKILL.md` doubles as a changelog.
+
+## Releases
+
+Bundles are not committed; they are published as release assets. A [Dagger](https://dagger.io) module builds them in a container so the result is reproducible on any machine.
+
+Cut a release by pushing a version tag:
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` of the install scripts, and a `SHA256SUMS` file.
+
+To build the same artifacts locally (requires Docker and the [Dagger CLI](https://docs.dagger.io/install)):
+
+```bash
+dagger call dist export --path=./dist
+```
+
+The module lives in `.dagger/` (Python SDK, pinned in `dagger.json`). Generated SDK bindings under `.dagger/sdk/` are not committed; Dagger regenerates them on load.
+
+> Note: Dagger 0.21+ auto-loads `.env` files from the working directory upward. If an ancestor directory holds a `.env` with `export`-style lines, Dagger aborts with a parse error. Drop a local `.env` containing `DUMMY=dummy` in the repo root to shield it — Dagger loads the nearest file and stops walking up. This file is git-ignored.
