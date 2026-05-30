@@ -8,6 +8,10 @@ Skills I use with Claude and a few compatible tools. Each one is a folder with a
 
 Stress-tests a real decision by assuming it has already failed and reasoning backward to expose the hidden assumption you didn't think to question.
 
+### reflect `v1.1.0`
+
+Hardens a raw request into a well-formed prompt using Gartner's ReFLECT framework (Role, Format, Language, Example, Context, Task). Maps the ask onto the six elements, questions the user for any missing high-priority piece — always a missing Task, plus absent Context or Example — then assembles, confirms, and executes the completed prompt. Includes an optional LLM-as-a-judge evaluation pass with a scored 1–5 rubric and a pass/regenerate/block threshold for high-stakes output.
+
 ### intana-viz `v1.0.0`
 
 Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
