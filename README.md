@@ -182,7 +182,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` of the install scripts, and a `SHA256SUMS` file.
+That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, bootstrap, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file.
 
 To build the same artifacts locally (requires Docker and the [Dagger CLI](https://docs.dagger.io/install)):
 

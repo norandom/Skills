@@ -19,10 +19,12 @@ mkdir -p /dist
 find . -maxdepth 2 -name '*.skill' -exec cp {} /dist/ \;
 # mcp server bundles: mcp_servers/<name>.mcpb
 if ls mcp_servers/*.mcpb >/dev/null 2>&1; then cp mcp_servers/*.mcpb /dist/; fi
-# installer archive: the scripts a user needs, nothing else
+# installer archive: scripts, launchers, and the no-console .vbs (flat layout)
 zip -j /dist/skills-installer.zip \
   install.sh install.ps1 install-gui.command install-gui.ps1 install-gui.cmd \
-  lib.sh lib.ps1 build.sh
+  "Skills Installer.vbs" bootstrap.sh bootstrap.ps1 lib.sh lib.ps1 build.sh
+# macOS no-terminal launcher — a bundle, so keep its tree and the executable bit
+zip -qry /dist/skills-installer-macos-app.zip "Skills Installer.app"
 # checksums — written via a temp file so SHA256SUMS never lists itself
 ( cd /dist && sha256sum * > /tmp/SHA256SUMS && mv /tmp/SHA256SUMS SHA256SUMS )
 """
@@ -38,7 +40,8 @@ class Skills:
         """Build all release artifacts and return them as a /dist directory.
 
         Artifacts: every <name>.skill bundle, every <name>.mcpb bundle, a
-        skills-installer.zip of the install scripts, and a SHA256SUMS file.
+        skills-installer.zip (scripts, launchers, bootstrap, the .vbs), a
+        skills-installer-macos-app.zip (the no-terminal .app), and SHA256SUMS.
 
         Export locally with:  dagger call dist export --path=./dist
         """
