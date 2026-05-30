@@ -1,0 +1,24 @@
+#!/bin/bash
+# Launcher for the Skills GUI installer.
+#
+# macOS runs this directly when "Skills Installer.app" is double-clicked — no
+# Terminal window. It locates the repo (the folder that contains this .app),
+# then runs the wizard with the native-dialog (osascript) backend so the user
+# sees only Aqua dialogs.
+set -u
+
+# GUI-launched processes get a minimal PATH; widen it for common tool locations.
+export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# This executable lives at <repo>/Skills Installer.app/Contents/MacOS/launcher,
+# so three levels up from MacOS/ is the repo root.
+repo="$(cd "$(dirname "$0")/../../.." && pwd)"
+
+wizard="$repo/install-gui.command"
+if [ ! -f "$wizard" ]; then
+  osascript -e "display alert \"Skills Installer\" message \"Could not find install-gui.command next to this app. Keep the app inside the cloned Skills repo.\" as critical" >/dev/null 2>&1
+  exit 1
+fi
+
+export SKILLS_UI=osascript
+exec /bin/bash "$wizard"
