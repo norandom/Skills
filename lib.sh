@@ -23,11 +23,17 @@ lib_run() {
 }
 
 # Skills: top-level dirs containing a SKILL.md.
+# If LIB_SKILLS is set (space/newline-separated names), only those are emitted,
+# letting a caller install/uninstall a chosen subset instead of everything.
 lib_list_skills() {
-  local d
+  local d name
   for d in "$LIB_ROOT"/*/; do
     [ -f "${d}SKILL.md" ] || continue
-    basename "$d"
+    name="$(basename "$d")"
+    if [ -n "${LIB_SKILLS:-}" ]; then
+      case " $LIB_SKILLS " in *" $name "*) ;; *) continue ;; esac
+    fi
+    printf '%s\n' "$name"
   done
 }
 

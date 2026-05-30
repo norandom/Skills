@@ -21,10 +21,13 @@ function Invoke-Lib {
 }
 
 # Skills: top-level dirs containing a SKILL.md.
+# If $script:LibSkills is set (array of names), only those are emitted, letting a
+# caller install/uninstall a chosen subset instead of everything.
 function Get-SkillNames {
     Get-ChildItem -LiteralPath $script:LibRoot -Directory -ErrorAction SilentlyContinue |
         Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') -PathType Leaf } |
-        ForEach-Object { $_.Name }
+        ForEach-Object { $_.Name } |
+        Where-Object { -not $script:LibSkills -or ($script:LibSkills -contains $_) }
 }
 
 # Extract the YAML `description:` value from a SKILL.md and return its length.

@@ -48,7 +48,17 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ## Install
 
-### macOS / Linux
+### GUI installer (double-click)
+
+If you'd rather click than type, after cloning the repo:
+
+- **macOS** — double-click `install-gui.command` (opens in Terminal). First time, you may need to right-click → Open to clear Gatekeeper, or run `chmod +x install-gui.command`.
+- **Linux** — double-click `install-gui.command` (mark it executable / "Run" if your file manager asks). Uses **zenity** if present; otherwise falls back to a terminal wizard.
+- **Windows** — double-click `install-gui.cmd` (it launches the WinForms wizard; double-clicking the `.ps1` directly just opens an editor).
+
+The wizard walks you through: Install or Uninstall, which tools to target (detected ones pre-checked), which skills to link, a dry-run **preview**, then apply. It reuses the same logic as the CLI scripts below, so the result is identical. Force a specific backend with `SKILLS_UI=zenity|osascript|terminal` on Unix.
+
+### macOS / Linux (CLI)
 
 ```bash
 git clone https://github.com/norandom/Skills.git ~/Source/Skills
