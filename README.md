@@ -54,9 +54,29 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ## Install
 
+### Quick install / update (no git required)
+
+One command downloads the latest source, unpacks it to a managed location, and links the skills into your tools. **Re-running it is also how you update** — it re-downloads the latest and relinks, so install and update are the same command.
+
+**macOS / Linux:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.sh | bash
+# target specific tools by passing install.sh flags:
+curl -fsSL https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.sh | bash -s -- --claude --opencode
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.ps1 | iex
+```
+
+The source is unpacked to `~/.local/share/skills` (macOS/Linux) or `%LOCALAPPDATA%\Skills` (Windows); override with `SKILLS_HOME`. Needs only `curl`/`tar` (or `wget`) or, on Windows, built-in PowerShell — no `git`. The skills are symlinked from that copy, so a re-run that refreshes it updates every linked tool at once.
+
 ### GUI installer (double-click)
 
-If you'd rather click than type, after cloning the repo:
+If you'd rather click than type, after cloning or bootstrapping the repo:
 
 - **macOS** — double-click **`Skills Installer.app`** for native dialogs with no Terminal window. (If you downloaded the repo as a zip rather than cloning, macOS may quarantine it; right-click → Open once, or run `xattr -dr com.apple.quarantine "Skills Installer.app"`.) The plain `install-gui.command` still works too, but opens a Terminal.
 - **Linux** — double-click `install-gui.command` (mark it executable / "Run" if your file manager asks). Uses **zenity** if present; otherwise falls back to a terminal wizard.
