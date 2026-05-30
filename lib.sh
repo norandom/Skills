@@ -31,6 +31,50 @@ lib_list_skills() {
   done
 }
 
+# Skill description char-limit (Claude Desktop / Claude Code spec).
+LIB_DESC_MAX="${LIB_DESC_MAX:-1024}"
+
+# Extract the YAML `description:` value from a SKILL.md and print its length.
+# Handles plain, quoted, and `>` / `|` folded-block scalar forms.
+lib_skill_desc_len() {
+  local file="$1"
+  awk '
+    /^description:[[:space:]]*/ {
+      sub(/^description:[[:space:]]*/, "")
+      sub(/^[>|][-+]?[[:space:]]*/, "")
+      gsub(/^"|"$/, "")
+      gsub(/^'\''|'\''$/, "")
+      buf = $0
+      in_block = (buf == "")
+      next
+    }
+    in_block && /^---[[:space:]]*$/ { exit }
+    in_block && /^[^[:space:]]/      { exit }
+    in_block {
+      sub(/^[[:space:]]+/, "")
+      buf = (buf == "" ? $0 : buf " " $0)
+    }
+    END { printf "%d", length(buf) }
+  ' "$file"
+}
+
+# Validate every skill's description against LIB_DESC_MAX.
+# Prints one WARN line per oversize skill and returns 1 if any were found.
+lib_validate_skills() {
+  local name file len bad=0
+  while read -r name; do
+    [ -n "$name" ] || continue
+    file="$LIB_ROOT/$name/SKILL.md"
+    len="$(lib_skill_desc_len "$file")"
+    if [ "$len" -gt "$LIB_DESC_MAX" ]; then
+      printf 'WARN   %-24s  description %s chars > %s — Claude Desktop / Code will silently drop this skill\n' \
+        "$name" "$len" "$LIB_DESC_MAX" >&2
+      bad=1
+    fi
+  done < <(lib_list_skills)
+  return "$bad"
+}
+
 # MCP bundles: subdirs of mcp_servers/ containing a manifest.json.
 lib_list_mcpbs() {
   local d

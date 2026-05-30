@@ -48,6 +48,8 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ## Install
 
+### macOS / Linux
+
 ```bash
 git clone https://github.com/norandom/Skills.git ~/Source/Skills
 cd ~/Source/Skills
@@ -79,6 +81,35 @@ Examples:
 ./install.sh --force                # replace whatever's there
 ./install.sh --uninstall --all      # tear down
 ```
+
+### Windows
+
+```powershell
+git clone https://github.com/norandom/Skills.git $env:USERPROFILE\Source\Skills
+cd $env:USERPROFILE\Source\Skills
+.\install.ps1            # auto-detect: install into every tool whose dir exists
+```
+
+`install.ps1` mirrors the bash script. It tries to create real symbolic links first and falls back to NTFS directory junctions when SymbolicLink is denied — junctions need no elevation and behave identically for skill discovery. For true symlinks, either enable **Settings → Privacy & security → For developers → Developer Mode** or run PowerShell as administrator.
+
+| Flag | Target |
+| ---- | ------ |
+| `-Claude` | `%USERPROFILE%\.claude\skills` (Claude Code) |
+| `-ClaudeDesktop` | `%APPDATA%\Claude\skills` (Claude Desktop) |
+| `-Hermes` | `%USERPROFILE%\.hermes\skills` |
+| `-Opencode` | `%USERPROFILE%\.config\opencode\skills` |
+| `-Deepseek` | `%USERPROFILE%\.deepseek\skills` |
+| `-Agy` | `%USERPROFILE%\.gemini\antigravity-cli\skills` |
+| `-All` | every target above whose parent dir exists (default) |
+| `-DryRun` | preview without changing anything |
+| `-Force` | replace existing entries at the destination |
+| `-Uninstall` | remove the links |
+
+If PowerShell refuses to run unsigned scripts, allow it for this process only: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
+
+### Skill-description validation
+
+Both installers check each skill's `description:` field before linking. Claude Desktop and Claude Code silently drop any skill whose description exceeds **1024 characters**, so the script prints a `WARN` line for each oversize skill and proceeds. Trim the description in `SKILL.md` to fix it. Override the cap with `LIB_DESC_MAX=2048 ./install.sh` (bash) or `$env:LIB_DESC_MAX = 2048; .\install.ps1` (PowerShell) if you need to test against a different limit.
 
 ### Claude Desktop UI install
 

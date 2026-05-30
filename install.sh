@@ -43,6 +43,12 @@ done
 action=lib_link_target
 [ "$uninstall" -eq 1 ] && action=lib_unlink_target
 
+# Validate descriptions before installing; uninstall doesn't care.
+if [ "$uninstall" -eq 0 ]; then
+  lib_validate_skills || \
+    printf '       (linking anyway; trim the description or these skills will not load in Claude Desktop / Code)\n' >&2
+fi
+
 [ "$claude" -eq 1 ] && $action "claude"         "$HOME/.claude"
 [ "$cd_"    -eq 1 ] && $action "claude-desktop" "$(lib_claude_desktop_dir)"
 [ "$hermes" -eq 1 ] && $action "hermes"         "$HOME/.hermes"
