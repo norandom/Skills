@@ -1,13 +1,15 @@
 ---
 name: game-theory-negotiation
-version: 1.0.0
+version: 1.1.0
 description: >
-  Negotiation and auction playbook for bargaining, procurement, and incentive design. Covers reservation price, BATNA, ZOPA, surplus, aspiration ladder, degressive concessions, counter-offers, nibble defense, higher-authority commitments, virtual price lists, holdup protection, fairness checks, Vickrey mechanisms, negotiauctions, profit-share sizing, and draw.io maps of players, incentives, moves, and payoffs. Triggers on requests to prepare for or run a negotiation, choose an opening offer or concession pattern, defend a walk-away price, improve a BATNA, structure a tender, design a bonus, split something fairly, or visualize a negotiation as a game. Also fires on "help me negotiate", "BATNA", "ZOPA", "reservation price", "degressive bidding", "negotiauction", "game tree", "payoff matrix". Skip for general game-theory homework unrelated to bargaining, auctions, or contracting.
+  Negotiation and auction playbook for bargaining, procurement, and incentive design. Covers reservation price, BATNA, ZOPA, surplus, aspiration ladder, degressive concessions, counter-offers, nibble defense, higher-authority commitments, virtual price lists, holdup protection, fairness checks, Vickrey mechanisms, negotiauctions, profit-share sizing, and draw.io maps of players, incentives, moves, and payoffs. Triggers on requests to prepare for or run a negotiation, choose an opening offer or concession pattern, defend a walk-away price, improve a BATNA, structure a tender, design a bonus, split something fairly, or visualize a negotiation as a game. Also fires on "help me negotiate", "BATNA", "ZOPA", "reservation price", "degressive bidding", "negotiauction", "game tree", "payoff matrix", and on salary, vendor/procurement, M&A earnout, and security-compliance negotiations. Skip for general game-theory homework unrelated to bargaining, auctions, or contracting.
 ---
 
 # Game-theoretic negotiation and auctions
 
 This skill turns game theory into a negotiation workflow: set the numbers, choose the tactic, run the concession plan, defend the close, and check the result. Use it when a negotiation needs structure instead of vibes.
+
+Synthesizes standard negotiation-analysis and game-theory literature plus personal research. Best-effort per-term upstream credits (Fisher & Ury, Raiffa, Simon, Vickrey, Subramanian's negotiauction, and others) are in `README.md`.
 
 ---
 
@@ -24,6 +26,10 @@ Everything below keeps you in the useful zone between the Ambitious Target and t
 Read `references/core-concepts.md` before any non-trivial negotiation prep. It defines the numbers (reservation price, BATNA, ZOPA, surplus, aspiration levels) the rest of the skill manipulates.
 
 ---
+
+## Who this is for
+
+The playbook is field-neutral: the same five numbers and the same moves drive a salary talk, a security-control dispute, an auction design, an M&A earnout, or a vendor renewal. `references/domains.md` translates the vocabulary for specific roles — salary and compensation, security compliance / conflict management, quants and mechanism designers, M&A consultants, and business managers and leaders. If the user clearly fits one, read that section first for the vocabulary bridge and a worked example, then come back here.
 
 ## How to use this skill
 
@@ -73,10 +79,13 @@ The course's capabilities sort into four layers. Each row points to where it liv
 - **Incentive design** -- profit-share and bonus sizing, with attention to the right variable component.
 
 ### E. Cross-skill and draw.io work -- `references/drawio-concepts.md`
-- **Game-theory diagram selection** -- choose a player map, information map, move tree, payoff matrix, or deal map based on the decision.
-- **Foresight handoff** -- import scenarios, weak signals, and external uncertainties from `strategic-foresight-viz` before pricing risk or estimating BATNA.
-- **Investigation handoff** -- import claims, evidence, gaps, and deception risks from `investigation-theory` before trusting stated preferences or constraints.
-- **Hypothesis testing handoff** -- route contested assumptions through `intana-viz` techniques such as ACH, Red Teaming, Key Assumptions Check, or Pre-Mortem.
+
+This skill is one node in a four-skill analysis loop that shares a common context packet (actors, claims, evidence, assumptions, scenarios, options, payoffs, constraints, open questions — see `references/drawio-concepts.md`). Keep actor and claim names stable so diagrams from different skills line up. The handoffs run both ways: a negotiation surfaces a claim to test or a future to map; an investigation or foresight exercise surfaces a decision to negotiate.
+
+- **Game-theory diagram selection** -- choose a player map, information map, move tree, payoff matrix, or deal map based on the decision. All render through the draw.io MCP (Mermaid for trees and simple maps, XML for matrices and multi-panel layouts).
+- **Foresight handoff** (`strategic-foresight-viz`) -- import scenarios, weak signals, and external uncertainties before pricing risk or estimating BATNA; build one payoff matrix per future and pick the robust strategy. Send external drivers back the other way for scenario development.
+- **Investigation handoff** (`investigation-theory`) -- import claims, evidence, gaps, and deception risks before trusting stated preferences or constraints; send disputed incentives and unverifiable promises out to be tested.
+- **Hypothesis-testing handoff** (`intana-viz`) -- route contested assumptions through ACH, Red Teaming, Key Assumptions Check, or Pre-Mortem, and stakeholder maps for many-player situations; bring the verified picture back to price the options.
 
 ---
 
@@ -97,6 +106,7 @@ The course's capabilities sort into four layers. Each row points to where it liv
 - `references/tactics.md` -- counter-offer, reversible no, nibble defense, higher authority, and the degressive-bidding algorithm vs Boulwarism.
 - `references/frameworks.md` -- virtual price list, scenario analysis, three-/four-point estimates, holdup protection, fairness criteria, negotiauctions, incentive-compatible mechanisms, incentive design.
 - `references/drawio-concepts.md` -- game-theory diagram types and cross-skill handoff rules for draw.io work.
+- `references/domains.md` -- role-specific entry points (salary, security compliance, quants, M&A, business leaders) with vocabulary bridges and worked examples.
 - `references/prep-walkthrough.md` -- guided ready-room workflow for a new negotiator.
 - `references/playbooks.md` -- worked playbooks for buy/sell, procurement auction, incentive design, and holdup defense.
 - `assets/negotiation-prep-template.md` -- pre-negotiation worksheet: numbers, ladder, concession schedule.

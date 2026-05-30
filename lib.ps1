@@ -72,12 +72,6 @@ function Test-SkillDescriptions {
     return $ok
 }
 
-# Per-OS parent dir for Claude Desktop. Returns $null when unsupported.
-function Get-ClaudeDesktopDir {
-    if ($env:APPDATA) { return (Join-Path $env:APPDATA 'Claude') }
-    return $null
-}
-
 # Null-safe Join-Path off the user profile. Returns $null when no home is set.
 function Join-UserProfile {
     param([Parameter(Mandatory)][string]$Relative)

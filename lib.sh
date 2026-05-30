@@ -119,16 +119,6 @@ lib_build_mcpb() {
   printf '  mcpb   %-24s -> %s\n' "$name" "${out#$LIB_ROOT/}"
 }
 
-# Per-OS parent dir for Claude Desktop. Empty when unsupported.
-lib_claude_desktop_dir() {
-  case "$(uname -s)" in
-    Darwin)               echo "$HOME/Library/Application Support/Claude" ;;
-    Linux)                echo "$HOME/.config/Claude" ;;
-    MINGW*|MSYS*|CYGWIN*) echo "${APPDATA:-$HOME/AppData/Roaming}/Claude" ;;
-    *)                    echo "" ;;
-  esac
-}
-
 # Symlink every skill folder into <parent>/skills/.
 # Honors LIB_DRY_RUN and LIB_FORCE.
 lib_link_target() {

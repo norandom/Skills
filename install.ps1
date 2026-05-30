@@ -6,7 +6,6 @@ Symlink every skill folder into each selected tool's skills\ dir.
 .DESCRIPTION
 Targets (default -All; only dirs whose parent exists get touched):
   -Claude          %USERPROFILE%\.claude\skills                       (Claude Code)
-  -ClaudeDesktop   %APPDATA%\Claude\skills                            (Claude Desktop)
   -Hermes          %USERPROFILE%\.hermes\skills
   -Opencode        %USERPROFILE%\.config\opencode\skills
   -Deepseek        %USERPROFILE%\.deepseek\skills                     (DeepSeek TUI)
@@ -33,7 +32,6 @@ behave the same for skill discovery.
 [CmdletBinding()]
 param(
     [switch]$Claude,
-    [switch]$ClaudeDesktop,
     [switch]$Hermes,
     [switch]$Opencode,
     [switch]$Deepseek,
@@ -50,22 +48,21 @@ $ErrorActionPreference = 'Stop'
 $script:LibDryRun = [bool]$DryRun
 $script:LibForce  = [bool]$Force
 
-$explicit = $Claude -or $ClaudeDesktop -or $Hermes -or $Opencode -or $Deepseek -or $Agy -or $All
+$explicit = $Claude -or $Hermes -or $Opencode -or $Deepseek -or $Agy -or $All
 if (-not $explicit -or $All) {
-    $Claude = $true; $ClaudeDesktop = $true; $Hermes = $true
+    $Claude = $true; $Hermes = $true
     $Opencode = $true; $Deepseek = $true; $Agy = $true
 }
 
 if (-not $Uninstall) {
     if (-not (Test-SkillDescriptions)) {
-        Write-Host '       (linking anyway; trim the description or these skills will not load in Claude Desktop / Code)'
+        Write-Host '       (linking anyway; trim the description or these skills will not load in Claude Code)'
     }
 }
 
 $action = if ($Uninstall) { 'Uninstall-LibTarget' } else { 'Install-LibTarget' }
 
 if ($Claude)        { & $action 'claude'         (Join-UserProfile '.claude') }
-if ($ClaudeDesktop) { & $action 'claude-desktop' (Get-ClaudeDesktopDir) }
 if ($Hermes)        { & $action 'hermes'         (Join-UserProfile '.hermes') }
 if ($Opencode)      { & $action 'opencode'       (Join-UserProfile '.config\opencode') }
 if ($Deepseek)      { & $action 'deepseek'       (Join-UserProfile '.deepseek') }

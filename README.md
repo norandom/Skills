@@ -24,7 +24,7 @@ Strategic-foresight and futures-analysis visualizations rendered through the dra
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
 
-### game-theory-negotiation `v1.0.0`
+### game-theory-negotiation `v1.1.0`
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
@@ -63,7 +63,6 @@ Flags:
 | Flag | Target |
 | ---- | ------ |
 | `--claude` | `~/.claude/skills/` (Claude Code) |
-| `--claude-desktop` | `~/Library/Application Support/Claude/skills/` (macOS), `~/.config/Claude/skills/` (Linux), `%APPDATA%/Claude/skills/` (Windows) |
 | `--hermes` | `~/.hermes/skills/` |
 | `--opencode` | `~/.config/opencode/skills/` |
 | `--deepseek` | `~/.deepseek/skills/` (DeepSeek TUI) |
@@ -95,7 +94,6 @@ cd $env:USERPROFILE\Source\Skills
 | Flag | Target |
 | ---- | ------ |
 | `-Claude` | `%USERPROFILE%\.claude\skills` (Claude Code) |
-| `-ClaudeDesktop` | `%APPDATA%\Claude\skills` (Claude Desktop) |
 | `-Hermes` | `%USERPROFILE%\.hermes\skills` |
 | `-Opencode` | `%USERPROFILE%\.config\opencode\skills` |
 | `-Deepseek` | `%USERPROFILE%\.deepseek\skills` |
@@ -111,9 +109,14 @@ If PowerShell refuses to run unsigned scripts, allow it for this process only: `
 
 Both installers check each skill's `description:` field before linking. Claude Desktop and Claude Code silently drop any skill whose description exceeds **1024 characters**, so the script prints a `WARN` line for each oversize skill and proceeds. Trim the description in `SKILL.md` to fix it. Override the cap with `LIB_DESC_MAX=2048 ./install.sh` (bash) or `$env:LIB_DESC_MAX = 2048; .\install.ps1` (PowerShell) if you need to test against a different limit.
 
-### Claude Desktop UI install
+### Claude Desktop
 
-If your Claude Desktop build exposes Skills in **Settings → Capabilities → Skills**, you can also add a folder there directly (e.g. `~/Source/Skills/premortem`) or hand it the packed `premortem/premortem.skill` bundle.
+The installers do **not** target Claude Desktop — its skill discovery does not reliably pick up symlinked folders. Install skills into Claude Desktop by dropping the packed `.skill` bundles instead:
+
+1. Run `./build.sh` (or `./build.sh skill <name>`) to produce each `<name>/<name>.skill` bundle.
+2. In Claude Desktop, open **Settings → Capabilities → Skills** and add the packed bundle, e.g. `premortem/premortem.skill`.
+
+Each `.skill` is a self-contained zip, so re-drop the rebuilt bundle whenever you pull updates.
 
 ## Adding more skills
 
