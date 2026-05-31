@@ -36,7 +36,7 @@ Negotiation playbook for bargaining, auctions, procurement, and incentive design
 
 COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
 
-Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through `humanizer`. Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
+Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through [`humanizer`](https://github.com/blader/humanizer). Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
 ## MCP servers
 
