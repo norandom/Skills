@@ -32,7 +32,7 @@ SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inq
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
-### cobesy `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+### cobesy `v1.0.2` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
 COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
 

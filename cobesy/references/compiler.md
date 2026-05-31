@@ -84,6 +84,7 @@ the named layer — never ship around it.
 |---|---|---|---|
 | **MECE** | Are supporting points mutually exclusive and collectively exhaustive? | Cognitive | Regroup the pyramid. |
 | **Load** | Does any single step exceed ~7±2 chunks of working memory? | Cognitive | Chunk; move detail to a job aid. |
+| **Proximity** | Is this delivered where the work happens, or does it force a context switch? | Cognitive | Embed it in the workflow; make a point-of-action job aid. |
 | **Safety** | Is it safe to say this in this culture right now? | Systemic | Reframe; raise safety first. |
 | **Disproof** | Does each proposal state what would prove it wrong? | Systemic | Add falsifiability or reject the item. |
 | **Cascade** | Does this spread via clusters/anchors, not a broadcast? | Behavioral | Re-sequence through wide bridges. |

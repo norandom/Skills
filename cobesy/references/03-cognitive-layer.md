@@ -61,6 +61,12 @@ seconds. No long historical preamble.
 Do not treat a motivation or environment gap as a knowledge gap. Adding content
 to a non-knowledge gap increases load and fails.
 
+An **environment gap** is the hinge between this layer and the behavioral one.
+You close it by changing what surrounds the work — defaults, triggers, removed
+obstacles, "if X then Y" implementation intentions — not by adding motivation or
+a pep talk. That same structural change is what lets a cascade run on its own
+(see `02-behavioral-layer.md`): enthusiasm fades, a changed environment does not.
+
 ### Working memory is the gatekeeper
 Capacity ≈ **7±2** chunks; it is short and fragile. Overload blocks transfer to
 long-term memory. Everything in the validation gate's "Load" check comes from here.
@@ -84,6 +90,15 @@ logical argument to the Rider.
 - **Supply caching** — put the resource where the work happens.
 - **Pacing** — alternate uphill effort with coasting to reach the flow channel.
 - **Implementation intentions** — "if X, then I will Y" beats vague resolve.
+
+### Context-of-use proximity
+Transfer depends on distance. If someone has to leave the workflow to look up a
+process, adoption drops and they fall back on half-remembered shortcuts. So
+deliver the compressed logic *at the point of action*: inside the agenda being
+built, next to the code being reviewed, in the checklist they already have open.
+Proximity beats completeness — a short job aid in the workflow lands better than
+a thorough doc one tab away. This is the design rule for `agenda_structure`, and
+it is the **Proximity** check in the validation gate.
 
 ---
 

@@ -48,6 +48,7 @@ validation gate.
 ## 4. Validation Gate
 - [ ] MECE (Cognitive)
 - [ ] Within working memory ~7±2 (Cognitive)
+- [ ] Delivered at the point of action / no context switch (Cognitive)
 - [ ] Safe to say in this culture now (Systemic)
 - [ ] Disproof condition stated (Systemic)
 - [ ] Cascade, not broadcast (Behavioral)

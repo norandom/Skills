@@ -1,6 +1,6 @@
 ---
 name: cobesy
-version: 1.0.1
+version: 1.0.2
 description: >
   COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge
   (docs, repos, architecture, decks) into work people actually adopt. It checks
@@ -146,6 +146,7 @@ Before delivery, run every artifact through the validation gate in
 |---|---|---|
 | MECE? | Cognitive | Regroup the pyramid |
 | Within working memory? | Cognitive | Chunk / add job aid |
+| Delivered at the point of action? | Cognitive | Embed it / make an in-workflow job aid |
 | Safe enough to say? | Systemic | Reframe / raise safety first |
 | Disproof condition stated? | Systemic | Add falsifiability or reject item |
 | Cascade, not broadcast? | Behavioral | Re-sequence through clusters |
