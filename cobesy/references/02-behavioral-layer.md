@@ -61,8 +61,10 @@ group momentum.
 | **Eigenvector** | Connected to *well-connected* people (prestige) | **Driving consensus / cascades** (DeGroot, PageRank) |
 | **Diffusion** | Reach within limited hops | Best real-world adoption predictor |
 
-Evidence: in the India microfinance study, seeding the **top** eigenvector nodes
-vs the bottom **tripled** participation. Position beats enthusiasm.
+Evidence: in the 43-village South India microfinance study (Banerjee,
+Chandrasekhar, Duflo & Jackson, *Science* 2013), participation was significantly
+**higher when the first-informed "injection points" had higher eigenvector
+centrality**. The *position* of the seed beat the seed's own enthusiasm.
 
 ### Targeting rule
 - Simple info → **degree + closeness**.

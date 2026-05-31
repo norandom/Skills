@@ -28,9 +28,13 @@ Strategic-foresight and futures-analysis visualizations rendered through the dra
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
 
-### game-theory-negotiation `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
+### game-theory-negotiation `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
+
+### cobesy `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+
+COBESY (Cognitive Behavioral Systemic) makes the agent a *compiler* that turns static knowledge (docs, repos, architecture, decks) into organizational adoption. It runs a three-layer stack — a systemic base (Schein assumptions, Edmondson safety, Scientist Mode), a behavioral vector (Centola complex contagion, Jackson centrality, Berger REDUCE), and a cognitive interface (Minto, Dirksen, Knowles) — plus Gamestorming exercises for live sessions, and emits three artifacts: a framing protocol, a compressed agenda/brief, and a behavioral adoption plan. Use it to drive a rollout, get buy-in, run change management, design a briefing, or overcome resistance. It is the adoption engine of this set: it pulls verified inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, hands the buy-in bargain to `game-theory-negotiation`, and cleans its deliverable through `humanizer`. Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
 ## MCP servers
 
@@ -145,14 +149,16 @@ If PowerShell refuses to run unsigned scripts, allow it for this process only: `
 
 Both installers check each skill's `description:` field before linking. Claude Desktop and Claude Code silently drop any skill whose description exceeds **1024 characters**, so the script prints a `WARN` line for each oversize skill and proceeds. Trim the description in `SKILL.md` to fix it. Override the cap with `LIB_DESC_MAX=2048 ./install.sh` (bash) or `$env:LIB_DESC_MAX = 2048; .\install.ps1` (PowerShell) if you need to test against a different limit.
 
-### Claude Desktop
+### Upload-based tools (Claude Desktop, ChatGPT app)
 
-The installers do **not** target Claude Desktop — its skill discovery does not reliably pick up symlinked folders. Install skills into Claude Desktop by dropping the packed `.skill` bundles instead:
+The symlink installers do **not** target Claude Desktop or the ChatGPT app — these tools don't discover skills from linked folders. Instead you upload the packed `.skill` bundle (or share it org-wide), and the tool stores its own copy.
 
-1. Run `./build.sh` (or `./build.sh skill <name>`) to produce each `<name>/<name>.skill` bundle.
-2. In Claude Desktop, open **Settings → Capabilities → Skills** and add the packed bundle, e.g. `premortem/premortem.skill`.
+1. Get the bundle: download it from the [latest release](https://github.com/norandom/Skills/releases/latest) (the `⬇ .skill` links above), or build it locally with `./build.sh` (or `./build.sh skill <name>`) to produce `<name>/<name>.skill`.
+2. Upload it:
+   - **Claude Desktop** — **Settings → Capabilities → Skills**, then add the bundle, e.g. `premortem.skill`. For a team, an admin can upload it once in the Anthropic Console / admin settings to **share it org-wide** so members don't each upload their own copy.
+   - **ChatGPT app** — add the `.skill` bundle in the app's skills/upload area, or have a workspace admin share it across the organization.
 
-Each `.skill` is a self-contained zip, so re-drop the rebuilt bundle whenever you pull updates.
+Each `.skill` is a self-contained zip, so re-upload the rebuilt bundle whenever you pull updates (org-wide shares update for everyone at once).
 
 ## Adding more skills
 

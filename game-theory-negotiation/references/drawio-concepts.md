@@ -8,15 +8,15 @@ Carry this packet across skills:
 
 | Field | What to capture | Usually produced by |
 | --- | --- | --- |
-| Actors | Parties, agents, approvers, hidden principals | game-theory-negotiation, investigation-theory |
+| Actors | Parties, agents, approvers, hidden principals (cobesy adds network role: anchor, bridge, seed cluster) | game-theory-negotiation, investigation-theory, cobesy |
 | Claims | What each party says is true | investigation-theory |
 | Evidence | Proof, source, confidence, gaps | investigation-theory, intana-viz |
-| Assumptions | Beliefs that drive the choice | intana-viz, strategic-foresight-viz |
+| Assumptions | Beliefs that drive the choice (cobesy: Schein basic underlying assumptions) | intana-viz, strategic-foresight-viz, cobesy |
 | Scenarios | External futures that change payoffs | strategic-foresight-viz |
 | Options | Offers, concessions, outside options | game-theory-negotiation |
 | Payoffs | Money, risk, time, reputation, control | game-theory-negotiation |
-| Constraints | Deadlines, authority, law, policy, technical limits | all skills |
-| Open questions | Unknowns that change the next move | investigation-theory, intana-viz |
+| Constraints | Deadlines, authority, law, policy, technical limits (cobesy: cultural "safe to say" limits) | all skills |
+| Open questions | Unknowns that change the next move (cobesy: disproof conditions) | investigation-theory, intana-viz, cobesy |
 
 Use stable IDs when possible: `A1 buyer`, `A2 supplier`, `C3 demand forecast`, `S2 recession case`, `O4 staged rollout`. These IDs make separate draw.io diagrams easy to cross-reference.
 

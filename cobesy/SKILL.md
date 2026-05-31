@@ -4,19 +4,18 @@ version: 1.0.0
 description: >
   COBESY (Cognitive Behavioral Systemic) turns an AI agent into a compiler that
   translates static knowledge (docs, repos, architecture, decks) into active
-  organizational skill (adoption, agendas, buy-in). It runs a three-layer
-  execution stack: a SYSTEMIC base (Schein deep assumptions, Edmondson
-  psychological safety + accountability, Scientist-Mode falsifiability), a
-  BEHAVIORAL vector (Centola complex contagion / wide bridges, Jackson network
-  centrality, Berger REDUCE, sequential cascades), and a COGNITIVE interface
-  (Minto Pyramid, Dirksen cognitive load, Knowles andragogy), with Gamestorming
-  exercises to facilitate live. Use when asked to drive adoption, roll out a
-  tool or process, get buy-in, run change management, design a meeting agenda or
-  briefing, overcome resistance, make an idea stick, onboard a team, or convert
-  a knowledge asset into something an organization will actually use. Emits three
-  artifacts: a culturally-safe framing protocol, a cognitively-compressed
-  agenda/brief, and a behavioral adoption plan. Does not fire on pure factual
-  lookup or single-fact Q&A.
+  organizational skill (adoption, agendas, buy-in). It runs a three-layer stack:
+  a SYSTEMIC base (Schein deep assumptions, Edmondson psychological safety,
+  Scientist-Mode falsifiability), a BEHAVIORAL vector (Centola complex contagion,
+  Jackson network centrality, Berger REDUCE, sequential cascades), and a
+  COGNITIVE interface (Minto Pyramid, Dirksen cognitive load, Knowles andragogy),
+  plus Gamestorming exercises for live sessions. Use when asked to drive
+  adoption, roll out a tool or process, get buy-in, run change management, design
+  a meeting agenda or briefing, overcome resistance, make an idea stick, onboard
+  a team, or turn a knowledge asset into something an organization will actually
+  use. Emits a culturally-safe framing protocol, a cognitively-compressed
+  agenda/brief, and a behavioral adoption plan. Not for pure factual lookup or
+  single-fact Q&A.
 ---
 
 # COBESY: Cognitive Behavioral Systemic
@@ -172,6 +171,43 @@ If any check fails, return to that layer. Do not ship around a failed gate.
   (remove the barrier; pushing harder backfires).
 - **Senior or expert audience** → lead with Knowles (their experience is the
   curriculum; never treat them as empty vessels).
+
+---
+
+## Cross-skill interconnection
+
+COBESY is the **adoption engine** of this skill set: it takes a knowledge asset
+or decision and makes an organization act on it. It is not a draw.io renderer, so
+it hands its analysis *out* to the visualization skills and pulls verified inputs
+*in* from the analysis skills. Keep actor, cluster, and assumption names stable
+across skills so the artifacts line up. Map each handoff to a COMPILE phase:
+
+| Sibling skill | Direction | Phase | What flows |
+|---|---|---|---|
+| `reflect` | in | Phase 0 | Turn a vague "drive adoption of X" request into a clear prompt with the three compiler inputs before COMPILE starts. |
+| `strategic-foresight-viz` | in | Phase 0–2 | Import PESTLE drivers / scenarios as the **Complication** in the SCQA opener — the external reason the change is needed now. |
+| `intana-viz` | both | Phase 1–3 | Render the diagnostics: Schein **Cultural Web**, Edmondson 2×2, **stakeholder / network maps**, the Minto agenda pyramid, the adoption map. Route a contested `framing_protocol` assumption through **Key Assumptions Check, Red Teaming, or Pre-Mortem** and bring the verified version back. |
+| `premortem` | both | Phase 3–5 | Stress-test the assembled `target_nodes` rollout: assume the adoption failed, reason backward, then feed the failure modes back into **REDUCE barriers** and the framing protocol. The Phase 5 anti-cringe gate is a lighter inline version of this. |
+| `game-theory-negotiation` | both | Phase 3 | When buy-in needs a bargain (resourcing, mandate, an anchor's commitment), hand the named **eigenvector anchor** and the incentive question to the negotiation skill; bring back a concession plan and incentive-compatible **profit-share / bonus sizing** for the adoption design. |
+| `humanizer` | out | Phase 4 | Clean the emitted brief/agenda so the deliverable reads human, not AI-generated — the writing-level companion to COBESY's structural anti-cringe gate. |
+
+Rule of thumb: **analysis skills verify the inputs, viz skills draw the
+artifacts, COBESY sequences the adoption.** A premortem surfaces a barrier →
+COBESY routes around it; a negotiation secures an anchor → COBESY seeds from it;
+intana-viz renders the cultural map → COBESY frames against it.
+
+**Use the shared context packet.** The sibling skills pass a common packet with
+stable IDs (`A1 buyer`, `S2 recession case`, …) so artifacts cross-reference —
+see `game-theory-negotiation/references/drawio-concepts.md`. COBESY reads and
+writes the same fields rather than inventing parallel names:
+
+| Packet field | COBESY role |
+|---|---|
+| **Assumptions** | COBESY is a primary producer — Schein basic underlying assumptions become packet `Assumptions`; route contested ones through `intana-viz` to verify. |
+| **Actors** | COBESY annotates `Actors` with network role: eigenvector anchor, bridge, seed cluster. Keep actor IDs identical to the negotiation/investigation diagrams. |
+| **Scenarios** | Consumed from `strategic-foresight-viz` as the SCQA **Complication**. |
+| **Constraints** | The framing protocol's "safe to say" limits and disproof conditions are cultural `Constraints`. |
+| **Open questions** | Each disproof condition ("we are wrong if ___") is an `Open question` other skills can pick up. |
 
 ---
 

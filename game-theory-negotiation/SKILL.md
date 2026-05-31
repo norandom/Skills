@@ -1,6 +1,6 @@
 ---
 name: game-theory-negotiation
-version: 1.1.0
+version: 1.1.1
 description: >
   Negotiation and auction playbook for bargaining, procurement, and incentive design. Covers reservation price, BATNA, ZOPA, surplus, aspiration ladder, degressive concessions, counter-offers, nibble defense, higher-authority commitments, virtual price lists, holdup protection, fairness checks, Vickrey mechanisms, negotiauctions, profit-share sizing, and draw.io maps of players, incentives, moves, and payoffs. Triggers on requests to prepare for or run a negotiation, choose an opening offer or concession pattern, defend a walk-away price, improve a BATNA, structure a tender, design a bonus, split something fairly, or visualize a negotiation as a game. Also fires on "help me negotiate", "BATNA", "ZOPA", "reservation price", "degressive bidding", "negotiauction", "game tree", "payoff matrix", and on salary, vendor/procurement, M&A earnout, and security-compliance negotiations. Skip for general game-theory homework unrelated to bargaining, auctions, or contracting.
 ---
