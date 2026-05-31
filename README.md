@@ -32,9 +32,11 @@ SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inq
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
-### cobesy `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+### cobesy `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
-COBESY (Cognitive Behavioral Systemic) makes the agent a *compiler* that turns static knowledge (docs, repos, architecture, decks) into organizational adoption. It runs a three-layer stack — a systemic base (Schein assumptions, Edmondson safety, Scientist Mode), a behavioral vector (Centola complex contagion, Jackson centrality, Berger REDUCE), and a cognitive interface (Minto, Dirksen, Knowles) — plus Gamestorming exercises for live sessions, and emits three artifacts: a framing protocol, a compressed agenda/brief, and a behavioral adoption plan. Use it to drive a rollout, get buy-in, run change management, design a briefing, or overcome resistance. It is the adoption engine of this set: it pulls verified inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, hands the buy-in bargain to `game-theory-negotiation`, and cleans its deliverable through `humanizer`. Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
+COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
+
+Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through `humanizer`. Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
 ## MCP servers
 
