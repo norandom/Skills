@@ -39,7 +39,7 @@ is this skill's adapter, not a named source framework.
 
 ## Notebook sources
 
-Two NotebookLM notebooks back this skill.
+Two sets of personal notes in NotebookLM, based on the sources below.
 
 **COBESY — between skills and knowledge systems** (9 sources): Dirksen ·
 Gray (Gamestorming) · Centola · Schein · Knowles · Berger · Edmondson · Minto ·
