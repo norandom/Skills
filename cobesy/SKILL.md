@@ -1,6 +1,6 @@
 ---
 name: cobesy
-version: 1.1.0
+version: 1.2.0
 description: >
   COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge
   (docs, repos, architecture, decks) into work people actually adopt. It checks
