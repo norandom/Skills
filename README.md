@@ -32,11 +32,13 @@ SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inq
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
-### cobesy `v1.0.2` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+### cobesy `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
 COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
 
-Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through [`humanizer`](https://github.com/blader/humanizer). Source attribution for all nine works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
+The same Cognitive engine also writes. Point it at a blog post, a thesis, slides, or a journal article and it compiles your material into a structured draft instead of a live agenda, using Belcher, Cron, Kolin, Graff and Birkenstein, Klinkenborg, and Williams and Bizup. It works in four grains, from the governing idea and table of contents down to the sentence, and runs a writing linter for the usual failures: first-paragraph drop-off, information overload, a table of contents that no longer matches the text, scope creep, flat exposition, and expert fog. Use this side when the knowledge is already there but the structure gets lost as the material grows.
+
+Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through [`humanizer`](https://github.com/blader/humanizer). Source attribution for all fifteen works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
 ## MCP servers
 

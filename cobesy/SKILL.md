@@ -1,16 +1,20 @@
 ---
 name: cobesy
-version: 1.0.2
+version: 1.1.0
 description: >
   COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge
   (docs, repos, architecture, decks) into work people actually adopt. It checks
   the culture first (Schein assumptions, Edmondson safety, Scientist Mode), then
   compresses the message (Minto, Dirksen, Knowles), then plans how adoption moves
-  through the network (Centola, Jackson, Berger REDUCE, cascades). Use it for
-  rollouts, buy-in, change management, briefings, resistance, onboarding, or any
-  case where a knowledge asset has to become behavior. It returns a framing
-  protocol, an agenda or brief, and an adoption path. Skip it for factual lookup
-  or single-fact Q&A.
+  through the network (Centola, Jackson, Berger REDUCE, cascades). The same
+  cognitive engine also compiles knowledge into written and projected artifacts:
+  blog posts (technical and financial), a thesis, journal article, or slides,
+  with a governing idea, an opening that holds attention, a sentence-level linter,
+  and a humanizer pass (Belcher, Cron, Kolin, Graff & Birkenstein, Klinkenborg,
+  Williams & Bizup). Use it for
+  rollouts, buy-in, change management, briefings, resistance, onboarding, or to
+  structure a piece of writing where the knowledge is there but the structure
+  keeps getting lost. Skip it for factual lookup or single-fact Q&A.
 ---
 
 # COBESY: Cognitive Behavioral Systemic
@@ -27,6 +31,12 @@ This skill is for the messy part after the deck exists. It avoids chronological
 agendas, all-hands blasts, icebreakers, and pressure campaigns. It uses nine
 source works on culture, networks, learning, and influence. See
 `references/source-map.md` for the bibliography and substitutions.
+
+The same Cognitive engine has a second output. Instead of a live agenda it can
+compile the knowledge into a written or projected piece: a blog post, a thesis,
+slides, or a journal article. That path adds six writing works and emits a
+`composition_blueprint`. See `references/composition.md`. Use it when the
+knowledge is there but the structure keeps getting lost as the material grows.
 
 ---
 
@@ -72,9 +82,14 @@ what you are inferring in Phase 0.
 
 | Input | Question it answers | Feeds layer | Output artifact |
 |---|---|---|---|
-| `raw_knowledge` | *What* are we transferring? (docs, repo, decision, tool) | Cognitive | `agenda_structure` |
+| `raw_knowledge` | *What* are we transferring? (docs, repo, decision, tool) | Cognitive | `agenda_structure` or `composition_blueprint` |
 | `cultural_assumptions` | *Where* are we landing it? (hidden rules, safety level) | Systemic | `framing_protocol` |
 | `network_topology` | *Through whom* does it spread? (anchors, clusters) | Behavioral | `target_nodes` |
+
+The Cognitive layer has two back-ends off the same Minto hierarchy. The default
+emits `agenda_structure` for a live session. When the deliverable is a piece of
+writing, the composition back-end emits `composition_blueprint` instead; the
+Behavioral layer is then optional (a thesis has readers, not a rollout).
 
 The `AISkillCompiler` mental model and the legacy-vs-COBESY comparison live in
 `references/compiler.md`.
@@ -121,6 +136,14 @@ Run `raw_knowledge` through `references/03-cognitive-layer.md`.
   problem-centered, self-direction).
 - Produce `agenda_structure`: a top-down hierarchy, not a chronological list.
 
+If the deliverable is a written or projected piece, run the same hierarchy
+through the composition back-end in `references/composition.md` instead. It sorts
+the work by four grains (macro governing idea, opening, paragraph move, sentence),
+adapts to the format (blog, thesis, slides, journal article), and emits
+`composition_blueprint` via `assets/composition-blueprint.md`. The writing linter
+and humanizer output checks in that file are the writing-grain version of the
+Phase 5 gate.
+
 ### Phase 3: Behavioral sequencing (the path)
 Run the rollout through `references/02-behavioral-layer.md`.
 - Classify the change: simple contagion (info) or complex contagion (costly
@@ -154,6 +177,20 @@ Before delivery, run every artifact through the validation gate in
 
 If any check fails, return to that layer. Do not ship around a failed gate.
 
+For a `composition_blueprint`, also run the writing linter in
+`references/composition.md` (first-paragraph drop-off, info overload, mismatched
+TOC, scope creep, flat exposition, expert fog, sentence sprawl, reader mismatch,
+AI slop / generic voice). Same rule: a failed check sends you back to the grain
+that owns it.
+
+Then run the humanizer pass before delivery. The final prose must pass these
+output conditions:
+- no significance inflation, vague authority, forced trios, generic upbeat endings, or chatbot phrasing;
+- no AI-looking output symbols: em dashes, curly quotes, emoji decoration, emoticons, decorative bold, or chatbot-style visual formatting unless the user explicitly asks for them;
+- sentence rhythm varies without turning cute or over-written;
+- the author's voice, reader level, and tolerance for detail are preserved;
+- the agent can answer "what still makes this sound AI-generated?" and repair the answer.
+
 ---
 
 ## Decision points
@@ -184,7 +221,7 @@ line up. Map each handoff to a COMPILE phase:
 | `intana-viz` | both | Phase 1–3 | Render the diagnostics: Schein Cultural Web, Edmondson 2×2, stakeholder / network maps, the Minto agenda pyramid, the adoption map. Route a contested `framing_protocol` assumption through Key Assumptions Check, Red Teaming, or Pre-Mortem and bring the verified version back. |
 | `premortem` | both | Phase 3–5 | Stress-test the assembled `target_nodes` rollout: assume the adoption failed, reason backward, then feed the failure modes back into REDUCE barriers and the framing protocol. The Phase 5 anti-cringe gate is a lighter inline version of this. |
 | `game-theory-negotiation` | both | Phase 3 | When buy-in needs a bargain (resourcing, mandate, an anchor's commitment), hand the named eigenvector anchor and the incentive question to the negotiation skill; bring back a concession plan and incentive-compatible profit-share / bonus sizing for the adoption design. |
-| `humanizer` | out | Phase 4 | Clean the emitted brief/agenda so the deliverable reads human, not AI-generated. This is the writing-level companion to COBESY's structural anti-cringe gate. |
+| `humanizer` | out | Phase 4 / Phase 5 | Clean the emitted brief, agenda, or composition output so the deliverable reads human, not AI-generated. This is the writing-level companion to COBESY's structural anti-cringe gate. |
 
 Rule of thumb: analysis skills verify the inputs, viz skills draw the artifacts,
 COBESY sequences the adoption. A premortem surfaces a barrier →
@@ -213,6 +250,7 @@ References, load as needed:
 - `references/01-systemic-layer.md`: Schein, Edmondson, Scientist Mode -> `framing_protocol`.
 - `references/02-behavioral-layer.md`: Centola, Jackson, Berger, cascades -> `target_nodes`.
 - `references/03-cognitive-layer.md`: Minto, Dirksen, Knowles -> `agenda_structure`.
+- `references/composition.md`: the writing back-end (Belcher, Cron, Kolin, Graff & Birkenstein, Klinkenborg, Williams & Bizup) -> `composition_blueprint`.
 - `references/facilitation-games.md`: Gamestorming exercises per phase.
 - `references/source-map.md`: bibliography, layer mapping, substitutions.
 
@@ -221,4 +259,5 @@ Templates, fill and deliver:
 - `assets/change-brief.md`: the assembled three-artifact deliverable.
 - `assets/agenda-pyramid.md`: Minto agenda skeleton.
 - `assets/adoption-map.md`: Centola/Jackson rollout plan.
+- `assets/composition-blueprint.md`: the writing deliverable (blog, thesis, slides, journal article).
 - `assets/prompt-library.md`: ready prompts to drive the agent per layer.

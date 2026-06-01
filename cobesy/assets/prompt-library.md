@@ -59,3 +59,60 @@ Run the anti-cringe validation gate on this brief: MECE, working-memory load,
 safety, disproof condition, cascade-not-broadcast, reactance/REDUCE. For each
 failed check, tell me which layer to return to and what to fix.
 ```
+
+---
+
+## Composition back-end (composition_blueprint)
+
+Use these when the deliverable is written or projected (blog, thesis, slides,
+journal article), not a live session. See `references/composition.md`.
+
+### Macro — governing idea + structure
+```
+Act as the COBESY composition back-end. Here is {{draft/notes/topic}}.
+State the one governing idea in a single sentence. Then post-outline it: list
+what each paragraph actually says and flag every paragraph that does not connect
+to the governing idea. Check that topic sentences match their headings (Belcher).
+```
+
+### Opening — attention
+```
+Write the opening for {{piece}} for {{audience}}. Use Cron: name the protagonist
+(likely the reader), the situation, and a specific stake. First sentences must
+put a ball in play, not define terms. Confirm Kolin's four keys (audience,
+purpose, message, tone) and the action I want the reader to take.
+```
+
+### Meso — paragraph moves
+```
+Recast this section as argument, not report (Belcher). For the key paragraph,
+frame it as they-say / I-say, plant the strongest naysayer ({{bear case / failure
+mode}}), answer it, and end on the "so what" for the reader.
+```
+
+### Micro — sentence linter
+```
+Tighten these paragraphs. Apply Klinkenborg (short sentences, cut the anxiety of
+sequence) and Williams & Bizup (subjects = characters, verbs = actions, old info
+before new, un-nominalize, kill actor-hiding passive). Show before/after.
+```
+
+### Full linter pass
+```
+Run the writing linter on this draft: first-paragraph drop-off, data dump,
+mismatched TOC, scope creep, flat exposition, expert fog, sentence sprawl, reader
+mismatch, and AI slop / generic voice. For each hit, name the grain and fix it.
+Then run the humanizer pass: ask what still makes the prose sound AI-generated,
+name the remaining tells, and revise until the piece sounds written by a person
+for this reader. Apply the output-symbol filter too: no em dashes, curly quotes,
+emoji decoration, emoticons, decorative bold, or chatbot-style visual formatting
+unless I explicitly asked for them.
+```
+
+### Format adapters
+```
+Compile {{raw_knowledge}} into a composition_blueprint for {{blog (tech/finance)
+| thesis | slides | academic journal article}}. Fill
+assets/composition-blueprint.md and apply the format-specific checks plus the
+humanizer output conditions, including the output-symbol filter.
+```
