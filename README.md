@@ -40,6 +40,12 @@ The same Cognitive engine also writes. Point it at a blog post, a thesis, slides
 
 Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through [`humanizer`](https://github.com/blader/humanizer). Source attribution for all fifteen works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
+### corporate-finance `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
+
+corporate-finance starts with what the user is trying to do: build, analyze, advise, or reflect. From there it pulls the right explanation and the right spreadsheet structure. MODEL/BUILD covers three-statement models, budgets, 13-week cash flows, DCF/WACC, ratio dashboards, and EBITDA bridges as XLSX or Claude for Excel workbooks. ANALYZE/DIAGNOSE covers common-size, ratio, and trend analysis. ADVISE/CONSULT handles valuation-method and budgeting-method choices, EBITDA levers, and cash levers. REFLECT checks terminal value, sensitivity, and Non-GAAP / manipulation risks. The workflow stays on the selected intent until the output and checks are done.
+
+It ships ten references (EBITDA, ratios and analysis, the three-statement model, cash flow and working capital, DCF/WACC valuation, budgeting, modeling best practices, spreadsheet conventions, auditability/math rigor, and the intent map) plus six fill-in asset specs. The workbook rules are blunt: schedules first, blue cells for starting amounts, yellow cells for assumptions, formula cells left alone, dedicated assumptions/instructions and Evidence & Audit Trail sheets, validation checks, and no hardcoded values. Every material number must show source, formula, substitution, result, units, and check before the skill treats it as fact. It hands reflection work to [`premortem`](./premortem) and [`reflect`](./reflect), visual output to [`drawio`](./drawio) and [`intana-viz`](./intana-viz), and rollout of findings to [`cobesy`](./cobesy). Finance content is based on personal notes about Bojan Radojicic / bojanfin.com materials and MBA financial-modeling materials, not excerpts from the originals.
+
 ## MCP servers
 
 Prebuilt `.mcpb` bundles for Claude Desktop live under [`mcp_servers/`](./mcp_servers), alongside their sources so you can rebuild or fork.
