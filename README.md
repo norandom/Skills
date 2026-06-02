@@ -16,6 +16,8 @@ Turns a rough request into a clear prompt using Gartner's ReFLECT framework: Rol
 
 General draw.io diagram creation through the MCP tools. Covers the three tool types (Mermaid, XML, CSV), URL presentation rules for the Hermes WebUI, Mermaid syntax shortcuts, and executive/boardroom palettes. The base for the domain-specific viz skills below; use it for any draw.io task that doesn't fit one of them.
 
+📖 Background: [Rapid dashboarding with self-hosted AI systems](https://osroadwarrior.info/rapid-dashboarding-with-self-hosted-ai-systems/).
+
 ### intana-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/intana-viz.skill)
 
 Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
@@ -24,9 +26,13 @@ Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ 
 
 Strategic-foresight and futures-analysis visualizations rendered through the draw.io MCP. 24 techniques across seven categories: environmental scanning (PESTLE / GRNO, Macro / Meso / Micro), trend analysis, weak signals & perception, basic and advanced scenario planning (Three Futures, Futures Cone, Dator's Archetypes, Intuitive Logics, Lum's Four Steps, Layered Timeline), VUCA / CATUR assessments, What If / Then cross-impact, Consequence Analysis, Analogical Reasoning, and Stakeholder Analysis. Pairs with `intana-viz` for techniques outside the foresight catalog (ACH, Pre-Mortem, Futures Wheel, etc.).
 
+📖 Background: [Hermes: the moment of business AI](https://osroadwarrior.info/hermes-the-moment-of-business-ai/).
+
 ### investigation-theory `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/investigation-theory.skill)
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
+
+📖 Background: [because-security.com](https://www.because-security.com/).
 
 ### game-theory-negotiation `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
 
@@ -40,11 +46,15 @@ The same Cognitive engine also writes. Point it at a blog post, a thesis, slides
 
 Use it for rollouts, buy-in, change management, briefings, resistance, or onboarding. It returns a framing protocol, an agenda or brief, and an adoption path. It can pull inputs from `premortem`, `intana-viz`, and `strategic-foresight-viz`, pass incentive questions to `game-theory-negotiation`, and send final prose through [`humanizer`](https://github.com/blader/humanizer). Source attribution for all fifteen works lives in [`cobesy/references/source-map.md`](./cobesy/references/source-map.md).
 
+📖 Background: [COBESY or SNAFU?](https://hanse-hedge.fund/cobesy-or-snafu/).
+
 ### corporate-finance `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
 
 corporate-finance starts with what the user is trying to do: build, analyze, advise, or reflect. From there it pulls the right explanation and the right spreadsheet structure. MODEL/BUILD covers three-statement models, budgets, 13-week cash flows, DCF/WACC, ratio dashboards, and EBITDA bridges as XLSX or Claude for Excel workbooks. ANALYZE/DIAGNOSE covers common-size, ratio, and trend analysis. ADVISE/CONSULT handles valuation-method and budgeting-method choices, EBITDA levers, and cash levers. REFLECT checks terminal value, sensitivity, and Non-GAAP / manipulation risks. The workflow stays on the selected intent until the output and checks are done.
 
 It ships ten references (EBITDA, ratios and analysis, the three-statement model, cash flow and working capital, DCF/WACC valuation, budgeting, modeling best practices, spreadsheet conventions, auditability/math rigor, and the intent map) plus six fill-in asset specs. The workbook rules are blunt: schedules first, blue cells for starting amounts, yellow cells for assumptions, formula cells left alone, dedicated assumptions/instructions and Evidence & Audit Trail sheets, validation checks, and no hardcoded values. Every material number must show source, formula, substitution, result, units, and check before the skill treats it as fact. It hands reflection work to [`premortem`](./premortem) and [`reflect`](./reflect), visual output to [`drawio`](./drawio) and [`intana-viz`](./intana-viz), and rollout of findings to [`cobesy`](./cobesy). Finance content is based on personal notes about Bojan Radojicic / bojanfin.com materials and MBA financial-modeling materials, not excerpts from the originals.
+
+📖 Background: [Autopilot lies. AI analysis crashed. Fix here.](https://hanse-hedge.fund/autopilot-lies-ai-analysis-crashed-fix-here/).
 
 ## MCP servers
 
