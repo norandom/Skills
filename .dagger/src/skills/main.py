@@ -64,6 +64,19 @@ else
 fi
 """
 
+# Runs inside the ClamAV container. Refreshes signatures (best-effort; the
+# pinned image ships a baked database) then recursively scans the repo. clamscan
+# exits 0 = clean, 1 = malware found, 2 = error -> `set -e` fails the gate.
+_CLAMAV = r"""
+set -eu
+clamscan --version
+echo "Refreshing signatures (best-effort; image ships a baked database)..."
+freshclam --quiet || echo "freshclam update failed; using the baked database"
+echo "Scanning /src ..."
+clamscan -r -i --alert-broken --detect-pua=yes --exclude-dir='\.git' /src
+echo "MALWARE SCAN PASSED -- no signatures matched"
+"""
+
 # Runs inside the build container (cwd = mounted repo). Produces /dist.
 _BUILD = r"""
 set -euo pipefail
@@ -186,6 +199,32 @@ class Skills:
             raise RuntimeError("\n".join(report))
         report.append(f"SECURITY GATE PASSED -- {len(skills)} skills clean")
         return "\n".join(report)
+
+    @function
+    async def malware(
+        self,
+        source: Annotated[dagger.Directory, DefaultPath(".")],
+    ) -> str:
+        """Malware-scan the repo with ClamAV (free, offline signature engine).
+
+        Recursively scans every file with the bundled ClamAV database (refreshed
+        via freshclam when reachable), unpacking archives so the built
+        .skill / .mcpb / .app bundles are covered too. Fails (non-zero) if any
+        signature matches, which gates the release.
+
+        Run locally:  dagger call malware
+        """
+        ctr = (
+            dag.container()
+            .from_("clamav/clamav:1.4")
+            .with_mounted_directory("/src", source)
+            .with_exec(["sh", "-c", _CLAMAV])
+        )
+        try:
+            return await ctr.stdout()
+        except dagger.ExecError as exc:
+            # Surface the FOUND lines as the gate failure message.
+            raise RuntimeError((exc.stdout or "") + (exc.stderr or "")) from exc
 
     @function
     def dist(

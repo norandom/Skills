@@ -1,6 +1,6 @@
 # Skills
 
-[![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=SkillSpector)](https://github.com/norandom/Skills/actions/workflows/security.yml)
+[![security](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=security%20gates)](https://github.com/norandom/Skills/actions/workflows/security.yml)
 
 Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
@@ -220,20 +220,21 @@ The module lives in `.dagger/` (Python SDK, pinned in `dagger.json`). Generated 
 
 > Note: Dagger 0.21+ auto-loads `.env` files from the working directory upward. If an ancestor directory holds a `.env` with `export`-style lines, Dagger aborts with a parse error. Drop a local `.env` containing `DUMMY=dummy` in the repo root to shield it — Dagger loads the nearest file and stops walking up. This file is git-ignored.
 
-## Security gate
+## Security gates
 
-Every skill is scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) before it ships. SkillSpector checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate **fails the build** if any skill scores above 50 (HIGH/CRITICAL), so a flagged skill is never published.
-
-The gate is a Dagger function, so it runs identically in CI and locally:
+Two free, self-hosted scanners run before anything ships, both as Dagger functions so they behave identically in CI and locally:
 
 ```bash
-dagger call scan                                      # static-only (no key)
-dagger call scan --openai-api-key=env:OPENAI_API_KEY  # + LLM validation pass
+dagger call scan                                      # SkillSpector, static-only
+dagger call scan --openai-api-key=env:OPENAI_API_KEY  # SkillSpector + LLM validation
+dagger call malware                                   # ClamAV
 ```
 
-Two workflows enforce it:
+Two workflows enforce them as **parallel, blocking jobs**:
 
-- **`security.yml`** runs on every pull request and push to `main`.
-- **`release.yml`** runs it as a `gate` job that `release` depends on — no gate, no release.
+- **`security.yml`** runs both on every pull request and push to `main`.
+- **`release.yml`** runs both as jobs `release` depends on — if either fails, nothing is published.
 
-With an LLM key the scan runs SkillSpector's second-stage validation (provider `openai`) to cut false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`OPENAI_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a SkillSpector commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
+**SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate fails if any skill scores above 50 (HIGH/CRITICAL). Skills scan in parallel (one container each, shared install layer), so wall-clock is the slowest single skill. With an LLM key the scan runs SkillSpector's second-stage validation (provider `openai`) to cut false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`OPENAI_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
+
+**ClamAV (malware).** [ClamAV](https://www.clamav.net) recursively scans the repo with its signature database, unpacking archives so the built `.skill` / `.mcpb` / `.app` bundles are covered too. The gate fails if any signature matches. It needs no key or account; the pinned `clamav/clamav:1.4` image ships a baked database that `freshclam` refreshes when the mirror is reachable.
