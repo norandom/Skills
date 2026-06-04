@@ -1,6 +1,7 @@
 # Skills
 
-[![security](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=security%20gates)](https://github.com/norandom/Skills/actions/workflows/security.yml)
+[![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/skillspector.yml?branch=main&label=SkillSpector)](https://github.com/norandom/Skills/actions/workflows/skillspector.yml)
+[![ClamAV](https://img.shields.io/github/actions/workflow/status/norandom/Skills/clamav.yml?branch=main&label=ClamAV)](https://github.com/norandom/Skills/actions/workflows/clamav.yml)
 
 Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
@@ -230,9 +231,9 @@ dagger call scan --openai-api-key=env:OPENAI_API_KEY  # SkillSpector + LLM valid
 dagger call malware                                   # ClamAV
 ```
 
-Two workflows enforce them as **parallel, blocking jobs**:
+They run as **parallel, blocking gates**:
 
-- **`security.yml`** runs both on every pull request and push to `main`.
+- **`skillspector.yml`** and **`clamav.yml`** each run on every pull request and push to `main` (one badge above per scanner, linking to its results).
 - **`release.yml`** runs both as jobs `release` depends on — if either fails, nothing is published.
 
 **SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate fails if any skill scores above 50 (HIGH/CRITICAL). Skills scan in parallel (one container each, shared install layer), so wall-clock is the slowest single skill. With an LLM key the scan runs SkillSpector's second-stage validation (provider `openai`) to cut false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`OPENAI_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.

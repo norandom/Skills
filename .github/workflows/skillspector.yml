@@ -1,8 +1,9 @@
-name: security
+name: SkillSpector
 
-# Continuous SkillSpector gate. Runs the same Dagger `scan` function the release
-# workflow gates on, so a vulnerable skill is caught on PR / push instead of at
-# tag time. On fork PRs the secret is absent and the scan runs static-only.
+# Continuous SkillSpector gate (skill vulnerabilities). Runs the Dagger `scan`
+# function the release workflow also gates on, so a vulnerable skill is caught on
+# PR / push instead of at tag time. On fork PRs the secret is absent and the scan
+# runs static-only.
 on:
   pull_request:
   push:
@@ -27,16 +28,3 @@ jobs:
         env:
           # Empty when the secret is unset -> the gate falls back to --no-llm.
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-  clamav:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: ClamAV malware scan
-        uses: dagger/dagger-for-github@v8.4.1
-        with:
-          version: "0.21.3"
-          verb: call
-          args: malware
