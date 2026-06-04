@@ -26,10 +26,10 @@ jobs:
         with:
           version: "0.21.3"
           verb: call
-          args: scan --nvidia-inference-key=env:NVIDIA_INFERENCE_KEY
+          args: scan --openai-api-key=env:OPENAI_API_KEY
         env:
           # Empty when the secret is unset -> the gate falls back to --no-llm.
-          NVIDIA_INFERENCE_KEY: ${{ secrets.NVIDIA_INFERENCE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
   release:
     needs: gate

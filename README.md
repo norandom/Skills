@@ -1,6 +1,6 @@
 # Skills
 
-[![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=SkillSpector&logo=nvidia)](https://github.com/norandom/Skills/actions/workflows/security.yml)
+[![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=SkillSpector)](https://github.com/norandom/Skills/actions/workflows/security.yml)
 
 Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
@@ -227,8 +227,8 @@ Every skill is scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/skil
 The gate is a Dagger function, so it runs identically in CI and locally:
 
 ```bash
-dagger call scan                                                  # static-only (no key)
-dagger call scan --nvidia-inference-key=env:NVIDIA_INFERENCE_KEY  # + LLM validation pass
+dagger call scan                                      # static-only (no key)
+dagger call scan --openai-api-key=env:OPENAI_API_KEY  # + LLM validation pass
 ```
 
 Two workflows enforce it:
@@ -236,4 +236,4 @@ Two workflows enforce it:
 - **`security.yml`** runs on every pull request and push to `main`.
 - **`release.yml`** runs it as a `gate` job that `release` depends on — no gate, no release.
 
-With an LLM key the scan runs SkillSpector's second-stage validation (provider `nv_build`, NVIDIA's [build.nvidia.com](https://build.nvidia.com)) to cut false positives; without one it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`NVIDIA_INFERENCE_KEY`**. The scanner is pinned to a SkillSpector commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
+With an LLM key the scan runs SkillSpector's second-stage validation (provider `openai`) to cut false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`OPENAI_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a SkillSpector commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.

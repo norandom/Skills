@@ -25,9 +25,9 @@ _SCAN = r"""
 set -uo pipefail
 mkdir -p /reports
 
-if [ -n "${NVIDIA_INFERENCE_KEY:-}" ]; then
+if [ -n "${OPENAI_API_KEY:-}" ]; then
   USE_LLM=1; LLM_FLAG=""
-  echo "SkillSpector: LLM validation ENABLED (provider=${SKILLSPECTOR_PROVIDER:-nv_build})"
+  echo "SkillSpector: LLM validation ENABLED (provider=${SKILLSPECTOR_PROVIDER:-openai})"
 else
   USE_LLM=0; LLM_FLAG="--no-llm"
   echo "SkillSpector: no API key -> static-only scan (--no-llm)"
@@ -117,9 +117,9 @@ class Skills:
     async def scan(
         self,
         source: Annotated[dagger.Directory, DefaultPath(".")],
-        nvidia_inference_key: Annotated[
+        openai_api_key: Annotated[
             dagger.Secret | None,
-            "NVIDIA build.nvidia.com key; enables the LLM validation pass",
+            "OpenAI API key; enables the LLM validation pass",
         ] = None,
     ) -> str:
         """Security-gate every skill with NVIDIA SkillSpector.
@@ -130,11 +130,11 @@ class Skills:
         risk > 50 (HIGH/CRITICAL). In CI this gates the release so a flagged
         skill is never published.
 
-        With a key the scan runs the nv_build LLM validation pass; without one
-        it falls back to static-only (--no-llm).
+        With a key the scan runs the OpenAI LLM validation pass; without one it
+        falls back to static-only (--no-llm).
 
         Static only:  dagger call scan
-        With LLM:     dagger call scan --nvidia-inference-key=env:NVIDIA_INFERENCE_KEY
+        With LLM:     dagger call scan --openai-api-key=env:OPENAI_API_KEY
         """
         ctr = (
             dag.container()
@@ -156,14 +156,12 @@ class Skills:
                     f"skillspector @ git+https://github.com/NVIDIA/skillspector.git@{_SKILLSPECTOR_REF}",
                 ]
             )
-            .with_env_variable("SKILLSPECTOR_PROVIDER", "nv_build")
+            .with_env_variable("SKILLSPECTOR_PROVIDER", "openai")
             .with_mounted_directory("/src", source)
             .with_workdir("/src")
         )
-        if nvidia_inference_key is not None:
-            ctr = ctr.with_secret_variable(
-                "NVIDIA_INFERENCE_KEY", nvidia_inference_key
-            )
+        if openai_api_key is not None:
+            ctr = ctr.with_secret_variable("OPENAI_API_KEY", openai_api_key)
         return await ctr.with_exec(["bash", "-c", _SCAN]).stdout()
 
     @function
