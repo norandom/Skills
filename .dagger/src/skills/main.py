@@ -9,6 +9,7 @@ and fails the pipeline if any skill scores HIGH/CRITICAL, which stops a release
 before anything is published.
 """
 
+import asyncio
 from typing import Annotated
 
 import dagger
@@ -18,77 +19,49 @@ from dagger import DefaultPath, dag, function, object_type
 # Bump this to re-pin against a newer scanner.
 _SKILLSPECTOR_REF = "2eb844780ab163f01468ecf142c40a2ec0fcaec0"
 
-# Runs inside the scanner container (cwd = mounted repo). Writes per-skill
-# reports to /reports and exits non-zero if any skill breaches the gate.
-# SkillSpector itself exits 1 when a skill's risk_score > 50 (HIGH/CRITICAL).
-_SCAN = r"""
-set -uo pipefail
-mkdir -p /reports
-
-if [ -n "${OPENAI_API_KEY:-}" ]; then
-  USE_LLM=1; LLM_FLAG=""
-  echo "SkillSpector: LLM validation ENABLED (provider=${SKILLSPECTOR_PROVIDER:-openai})"
-else
-  USE_LLM=0; LLM_FLAG="--no-llm"
-  echo "SkillSpector: no API key -> static-only scan (--no-llm)"
-fi
-
-mapfile -t skills < <(find . -maxdepth 2 -name SKILL.md -printf '%h\n' | sed 's#^\./##' | sort -u)
-if [ "${#skills[@]}" -eq 0 ]; then
-  echo "no skills found"; exit 0
-fi
-
+# Scans ONE skill (env SKILL_DIR), exit 0 = pass, non-zero = gate breach.
+# Run one container per skill so the whole set scans concurrently; the install
+# layer is shared, so wall-clock is the slowest single skill, not the sum.
+#
 # When an LLM call drops, SkillSpector silently falls back to its fragile static
 # heuristics (e.g. flagging XML comments as "hidden instructions"). That verdict
 # is unreliable, so we retry the skill rather than trust it. We never PASS on a
 # degraded scan, and fail closed if the LLM stays unreachable after retries.
-MAX_ATTEMPTS=3
-overall=0
-for s in "${skills[@]}"; do
-  name=$(basename "$s")
-  echo
-  echo "============================================================"
-  echo "SkillSpector gate: $name"
-  echo "============================================================"
-  status="error"
-  attempt=1
-  while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
-    set +e
-    skillspector scan "$s" $LLM_FLAG --format markdown \
-      --output "/reports/${name}.md" >"/tmp/${name}.log" 2>&1
-    rc=$?
-    set -e
-    cat "/tmp/${name}.log"
-    if [ "$rc" -eq 0 ]; then
-      status="pass"; break
-    fi
-    if [ "$USE_LLM" -eq 1 ] && grep -q "LLM call failed" "/tmp/${name}.log"; then
-      echo ">> $name: LLM degraded (attempt ${attempt}/${MAX_ATTEMPTS}); retrying..."
-      attempt=$((attempt + 1))
-      sleep 5
-      continue
-    fi
-    # rc != 0 with a clean LLM verdict -> a genuine HIGH/CRITICAL finding.
-    status="fail"; break
-  done
-  if [ "$status" = "pass" ]; then
-    echo "GATE PASS: $name"
-  elif [ "$status" = "fail" ]; then
-    echo "GATE FAIL: $name -- risk_score > 50 (HIGH/CRITICAL, do not install)"
-    overall=1
-  else
-    echo "GATE ERROR: $name -- LLM unreachable after ${MAX_ATTEMPTS} attempts (failing closed)"
-    overall=1
+_SCAN_ONE = r"""
+set -uo pipefail
+name="$(basename "$SKILL_DIR")"
+status="error"
+attempt=1
+while [ "$attempt" -le "${MAX_ATTEMPTS:-3}" ]; do
+  set +e
+  skillspector scan "$SKILL_DIR" $LLM_FLAG --format markdown \
+    --output "/tmp/${name}.md" >"/tmp/${name}.log" 2>&1
+  rc=$?
+  set -e
+  if [ "$rc" -eq 0 ]; then
+    status="pass"; break
   fi
+  if [ "${USE_LLM:-0}" = "1" ] && grep -q "LLM call failed" "/tmp/${name}.log"; then
+    echo ">> $name: LLM degraded (attempt ${attempt}/${MAX_ATTEMPTS:-3}); retrying..." >&2
+    attempt=$((attempt + 1))
+    sleep 5
+    continue
+  fi
+  # rc != 0 with a clean LLM verdict -> a genuine HIGH/CRITICAL finding.
+  status="fail"; break
 done
-
-echo
-if [ "$overall" -ne 0 ]; then
-  echo "SECURITY GATE FAILED"
+if [ "$status" = "pass" ]; then
+  echo "GATE PASS: $name"
+  exit 0
+elif [ "$status" = "fail" ]; then
+  echo "GATE FAIL: $name -- risk_score > 50 (HIGH/CRITICAL, do not install)"
+  echo "---- report ----"
+  cat "/tmp/${name}.md" 2>/dev/null || cat "/tmp/${name}.log" 2>/dev/null || true
+  exit 1
 else
-  echo "SECURITY GATE PASSED -- ${#skills[@]} skills clean"
+  echo "GATE ERROR: $name -- LLM unreachable after ${MAX_ATTEMPTS:-3} attempts (failing closed)"
+  exit 1
 fi
-exit $overall
 """
 
 # Runs inside the build container (cwd = mounted repo). Produces /dist.
@@ -136,7 +109,24 @@ class Skills:
         Static only:  dagger call scan
         With LLM:     dagger call scan --openai-api-key=env:OPENAI_API_KEY
         """
-        ctr = (
+        # Discover top-level skill dirs (those holding a SKILL.md).
+        skills = []
+        for entry in await source.entries():
+            name = entry.rstrip("/")
+            try:
+                contents = await source.directory(name).entries()
+            except Exception:
+                continue
+            if "SKILL.md" in contents:
+                skills.append(name)
+        skills.sort()
+        if not skills:
+            return "no skills found"
+
+        use_llm = openai_api_key is not None
+        # Shared base: the scanner install is one cached layer reused by every
+        # per-skill container, so it is built once even though scans run parallel.
+        base = (
             dag.container()
             .from_("python:3.12-slim")
             .with_exec(
@@ -157,12 +147,45 @@ class Skills:
                 ]
             )
             .with_env_variable("SKILLSPECTOR_PROVIDER", "openai")
+            .with_env_variable("USE_LLM", "1" if use_llm else "0")
+            .with_env_variable("LLM_FLAG", "" if use_llm else "--no-llm")
+            .with_env_variable("MAX_ATTEMPTS", "3")
             .with_mounted_directory("/src", source)
             .with_workdir("/src")
         )
         if openai_api_key is not None:
-            ctr = ctr.with_secret_variable("OPENAI_API_KEY", openai_api_key)
-        return await ctr.with_exec(["bash", "-c", _SCAN]).stdout()
+            base = base.with_secret_variable("OPENAI_API_KEY", openai_api_key)
+
+        async def run_one(name: str):
+            ctr = base.with_env_variable(
+                "SKILL_DIR", f"/src/{name}"
+            ).with_exec(["bash", "-c", _SCAN_ONE])
+            try:
+                return name, True, (await ctr.stdout()).strip()
+            except dagger.ExecError as exc:
+                detail = (exc.stdout or "").strip() or (exc.stderr or "").strip()
+                return name, False, detail
+
+        # Fan out: all skills scan concurrently, install layer built once.
+        results = await asyncio.gather(*(run_one(n) for n in skills))
+
+        mode = (
+            "LLM validation (provider=openai)" if use_llm else "static-only (--no-llm)"
+        )
+        report = [f"SkillSpector gate: {mode}; {len(skills)} skills in parallel", ""]
+        failed = []
+        for name, ok, out in results:
+            report.append(out)
+            if not ok:
+                failed.append(name)
+        report.append("")
+        report.append("=" * 60)
+        if failed:
+            report.append("SECURITY GATE FAILED: " + ", ".join(failed))
+            # Raise so `dagger call` exits non-zero and the CI gate fails.
+            raise RuntimeError("\n".join(report))
+        report.append(f"SECURITY GATE PASSED -- {len(skills)} skills clean")
+        return "\n".join(report)
 
     @function
     def dist(
