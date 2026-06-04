@@ -26,10 +26,10 @@ set -uo pipefail
 mkdir -p /reports
 
 if [ -n "${NVIDIA_INFERENCE_KEY:-}" ]; then
-  LLM_FLAG=""
+  USE_LLM=1; LLM_FLAG=""
   echo "SkillSpector: LLM validation ENABLED (provider=${SKILLSPECTOR_PROVIDER:-nv_build})"
 else
-  LLM_FLAG="--no-llm"
+  USE_LLM=0; LLM_FLAG="--no-llm"
   echo "SkillSpector: no API key -> static-only scan (--no-llm)"
 fi
 
@@ -38,6 +38,11 @@ if [ "${#skills[@]}" -eq 0 ]; then
   echo "no skills found"; exit 0
 fi
 
+# When an LLM call drops, SkillSpector silently falls back to its fragile static
+# heuristics (e.g. flagging XML comments as "hidden instructions"). That verdict
+# is unreliable, so we retry the skill rather than trust it. We never PASS on a
+# degraded scan, and fail closed if the LLM stays unreachable after retries.
+MAX_ATTEMPTS=3
 overall=0
 for s in "${skills[@]}"; do
   name=$(basename "$s")
@@ -45,18 +50,34 @@ for s in "${skills[@]}"; do
   echo "============================================================"
   echo "SkillSpector gate: $name"
   echo "============================================================"
-  set +e
-  skillspector scan "$s" $LLM_FLAG --format markdown --output "/reports/${name}.md"
-  rc=$?
-  set -e
-  cat "/reports/${name}.md" 2>/dev/null || true
-  if [ "$rc" -eq 0 ]; then
+  status="error"
+  attempt=1
+  while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+    set +e
+    skillspector scan "$s" $LLM_FLAG --format markdown \
+      --output "/reports/${name}.md" >"/tmp/${name}.log" 2>&1
+    rc=$?
+    set -e
+    cat "/tmp/${name}.log"
+    if [ "$rc" -eq 0 ]; then
+      status="pass"; break
+    fi
+    if [ "$USE_LLM" -eq 1 ] && grep -q "LLM call failed" "/tmp/${name}.log"; then
+      echo ">> $name: LLM degraded (attempt ${attempt}/${MAX_ATTEMPTS}); retrying..."
+      attempt=$((attempt + 1))
+      sleep 5
+      continue
+    fi
+    # rc != 0 with a clean LLM verdict -> a genuine HIGH/CRITICAL finding.
+    status="fail"; break
+  done
+  if [ "$status" = "pass" ]; then
     echo "GATE PASS: $name"
-  elif [ "$rc" -eq 1 ]; then
+  elif [ "$status" = "fail" ]; then
     echo "GATE FAIL: $name -- risk_score > 50 (HIGH/CRITICAL, do not install)"
     overall=1
   else
-    echo "GATE ERROR: $name -- skillspector exited $rc"
+    echo "GATE ERROR: $name -- LLM unreachable after ${MAX_ATTEMPTS} attempts (failing closed)"
     overall=1
   fi
 done

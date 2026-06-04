@@ -1,5 +1,7 @@
 # Skills
 
+[![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/security.yml?branch=main&label=SkillSpector&logo=nvidia)](https://github.com/norandom/Skills/actions/workflows/security.yml)
+
 Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
 ## Skills in this repo
