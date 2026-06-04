@@ -1,6 +1,6 @@
 # Skills
 
-Skills I use with Claude and a few compatible tools. Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
+Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
 ## Skills in this repo
 
@@ -15,8 +15,6 @@ Turns a rough request into a clear prompt using Gartner's ReFLECT framework: Rol
 ### drawio `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/drawio.skill)
 
 General draw.io diagram creation through the MCP tools. Covers the three tool types (Mermaid, XML, CSV), URL presentation rules for the Hermes WebUI, Mermaid syntax shortcuts, and executive/boardroom palettes. The base for the domain-specific viz skills below; use it for any draw.io task that doesn't fit one of them.
-
-📖 Background: [Rapid dashboarding with self-hosted AI systems](https://osroadwarrior.info/rapid-dashboarding-with-self-hosted-ai-systems/).
 
 ### intana-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/intana-viz.skill)
 
@@ -38,7 +36,7 @@ SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inq
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
-### cobesy `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+### cobesy `v1.2.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
 COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
 
@@ -219,3 +217,21 @@ dagger call dist export --path=./dist
 The module lives in `.dagger/` (Python SDK, pinned in `dagger.json`). Generated SDK bindings under `.dagger/sdk/` are not committed; Dagger regenerates them on load.
 
 > Note: Dagger 0.21+ auto-loads `.env` files from the working directory upward. If an ancestor directory holds a `.env` with `export`-style lines, Dagger aborts with a parse error. Drop a local `.env` containing `DUMMY=dummy` in the repo root to shield it — Dagger loads the nearest file and stops walking up. This file is git-ignored.
+
+## Security gate
+
+Every skill is scanned with [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) before it ships. SkillSpector checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate **fails the build** if any skill scores above 50 (HIGH/CRITICAL), so a flagged skill is never published.
+
+The gate is a Dagger function, so it runs identically in CI and locally:
+
+```bash
+dagger call scan                                                  # static-only (no key)
+dagger call scan --nvidia-inference-key=env:NVIDIA_INFERENCE_KEY  # + LLM validation pass
+```
+
+Two workflows enforce it:
+
+- **`security.yml`** runs on every pull request and push to `main`.
+- **`release.yml`** runs it as a `gate` job that `release` depends on — no gate, no release.
+
+With an LLM key the scan runs SkillSpector's second-stage validation (provider `nv_build`, NVIDIA's [build.nvidia.com](https://build.nvidia.com)) to cut false positives; without one it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`NVIDIA_INFERENCE_KEY`**. The scanner is pinned to a SkillSpector commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
