@@ -27,7 +27,7 @@ This skill is organized by **action intent**, not by topic. A topic (EBITDA, rat
 | should I, which is better, how do I improve, what method, recommend | **ADVISE** |
 | check, review, is this right, sanity-check, critique, validate | **REFLECT** |
 
-If a request mixes intents (common: "build a DCF **and** tell me if my assumptions are sane"), run MODEL then REFLECT in sequence. Do not switch workflows until the current intent has produced its output and passed its evidence/formula checks.
+If a request mixes intents (common: "build a DCF **and** tell me if my assumptions are sane"), run MODEL then REFLECT in sequence. Do not switch workflows until the current intent has produced its initial output and passed its evidence/formula/Python-verification checks.
 
 ---
 
@@ -58,7 +58,7 @@ Read existing numbers and explain them. No new template; produce findings.
 
 Diagnostic anchors: EBITDA margin healthy but net margin weak → look below the operating line (interest + tax). ROA falling YoY → assets growing faster than profit (red flag unless early-growth). Falling CCC → improving cash efficiency.
 
-Every ratio or diagnostic claim must show the source data, formula, substitution, result, units, and comparison basis. If the source data is absent, call it an information gap rather than inventing a result.
+Every ratio or diagnostic claim must show the source data, formula, substitution, step-by-step calculation, result, units, comparison basis, and Python verification. If the source data is absent or the Python check mismatches, call it an information gap or unresolved mismatch rather than inventing a result.
 
 ## ADVISE / CONSULT
 
@@ -70,7 +70,7 @@ Recommend a process or method with trade-offs.
 - Choose a valuation method → method-selection table in `valuation-dcf-wacc.md`.
 - Improve a modeling process → `modeling-best-practices.md`.
 
-Recommendations backed by numbers must cite the formula trace or the assumption behind the number. Recommendations not backed by evidence must be labeled judgment calls.
+Recommendations backed by numbers must cite the formula trace, step-by-step calculation, Python verification, or the assumption behind the number. Recommendations not backed by evidence must be labeled judgment calls.
 
 ## REFLECT
 
@@ -87,6 +87,8 @@ Check integrity before the number is trusted. Run these gates:
 | Any hardcoded values in formula cells? | `spreadsheet-conventions.md` | move to assumptions sheet |
 | Do validation checks pass on every sheet? | `spreadsheet-conventions.md` | fix before delivery |
 | Does every stated number have source, formula, substitution, result, units, and check? | `auditability-and-math-rigor.md` | add trace or remove/downgrade the number |
+| Was every material initial result recalculated in Python? | `auditability-and-math-rigor.md` | run Python verification before delivery |
+| Did Python reveal any mismatch? | `auditability-and-math-rigor.md` | resolve source/unit/sign/formula/rounding issue or withhold the number |
 | Is the workflow drifting into another intent before the current output is checked? | `auditability-and-math-rigor.md` | finish the current intent, then start the next |
 
 For a deeper assumption critique, hand the assumptions to the `reflect` skill; for failure-mode analysis, hand the finished model to `premortem`.

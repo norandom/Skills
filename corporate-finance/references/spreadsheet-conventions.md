@@ -32,12 +32,12 @@ The rule users must hear every time: **fill only blue and yellow cells; never ty
 
 ## Evidence and formula trace
 
-Every material output must be traceable. At minimum, the Evidence & Audit Trail sheet should contain:
+Every material output must be traceable and independently verified. At minimum, the Evidence & Audit Trail sheet should contain:
 
-| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Result | Units | Check |
-|---|---|---|---|---|---|---|---|---|
+| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Step-by-step calculation | Result | Units | Check | Python verification | Mismatch status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
 
-Use it for EBITDA, ratios, CCC, FCFF, WACC, terminal value, enterprise value, equity value, budget totals, and cash runway. If a number cannot be traced to source data or a named assumption, do not present it as a result.
+Use it for EBITDA, ratios, CCC, FCFF, WACC, terminal value, enterprise value, equity value, budget totals, and cash runway. If a number cannot be traced to source data or a named assumption, or if Python verification is incomplete or mismatched, do not present it as a result.
 
 ---
 
@@ -53,7 +53,8 @@ Put an error/consistency check block at the **top or end of every sheet**. Minim
 | No hardcodes | No constants embedded in formulas |
 | Sign discipline | Outflows negative, inflows positive, consistently |
 | Sensitivity present | Key drivers have a WACC×g or price×volume table |
-| Evidence trace complete | Material outputs have source, formula, substitution, result, units, and check |
+| Evidence trace complete | Material outputs have source, formula, substitution, step-by-step calculation, result, units, and check |
+| Python verification complete | Material outputs have independent Python recalculation and mismatch status |
 
 A model that fails any of these is not ready to present — fix before delivering.
 
@@ -65,7 +66,7 @@ A model that fails any of these is not ready to present — fix before deliverin
 - Wire the three integration links (Cash from CF; Equity roll-forward; other CA/CL as ratios) — see `three-statement-model.md`.
 - Label every assumption; never leave a magic number unexplained.
 - Decompose long formulas into helper rows/sheets; avoid opaque formulas.
-- Document formulas in the workbook and in the narrative output; never state a calculated number without its trace.
+- Document formulas in the workbook and in the narrative output; never state a calculated number without its trace, step-by-step calculation, and Python verification.
 - Where a template anchor exists (e.g. worked five-year cash flow), seed it so the user sees a working example to overwrite.
 
 ---

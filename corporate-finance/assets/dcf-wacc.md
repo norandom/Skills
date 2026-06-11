@@ -12,7 +12,7 @@ Fill-in spec for an FCFF discounted-cash-flow valuation with a WACC build-up and
 | Inputs | H | forecast EBIT, tax, D&A, ΔNWC, CAPEX → from model |
 | WACC + g | A | risk-free, ERP, beta, premiums, cost of debt, tax, terminal g → yellow |
 | Sources | S | source sheets/cells and evidence status for each input |
-| Math trace | M | source -> formula -> substitution -> result -> units -> check |
+| Math trace | M | source -> formula -> substitution -> step-by-step calculation -> result -> units -> check -> Python verification -> mismatch status |
 | Output | O | Enterprise value → Equity value + sensitivity |
 
 ## Sheet list
@@ -81,13 +81,13 @@ Build a WACC × terminal-growth grid (and ideally a price × volume grid on reve
 
 ## Evidence & Audit Trail sheet
 
-| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Result | Units | Check |
-|---|---|---|---|---|---|---|---|---|
-| FCFF | FCFF forecast | IS, WC, CAPEX | EBIT - cash taxes + D&A - increase in NWC - CAPEX | linked cells | show values | output | currency | ties to statements |
-| WACC | WACC sheet | assumptions | E/V x CoE + D/V x after-tax CoD | linked assumptions | show values | output | % | E/V + D/V = 100% |
-| Terminal value | Terminal value sheet | FCFF, WACC, g | CF_n x (1 + g) / (WACC - g) | linked cells | show values | output | currency | g discipline passes |
-| Enterprise value | Discounting | PV FCFF, PV TV | sum(PV FCFF) + PV TV | linked cells | show values | output | currency | TV share shown |
-| Equity value | Bridge | EV, debt, cash, adjustments | entity value - interest-bearing liabilities - NCI | linked cells | show values | output | currency | bridge reconciles |
+| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Step-by-step calculation | Result | Units | Check | Python verification | Mismatch status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| FCFF | FCFF forecast | IS, WC, CAPEX | EBIT - cash taxes + D&A - increase in NWC - CAPEX | linked cells | show values | show arithmetic sequence | output | currency | ties to statements | Python recomputation | match/resolved/open |
+| WACC | WACC sheet | assumptions | E/V x CoE + D/V x after-tax CoD | linked assumptions | show values | show arithmetic sequence | output | % | E/V + D/V = 100% | Python recomputation | match/resolved/open |
+| Terminal value | Terminal value sheet | FCFF, WACC, g | CF_n x (1 + g) / (WACC - g) | linked cells | show values | show arithmetic sequence | output | currency | g discipline passes | Python recomputation | match/resolved/open |
+| Enterprise value | Discounting | PV FCFF, PV TV | sum(PV FCFF) + PV TV | linked cells | show values | show arithmetic sequence | output | currency | TV share shown | Python recomputation | match/resolved/open |
+| Equity value | Bridge | EV, debt, cash, adjustments | entity value - interest-bearing liabilities - NCI | linked cells | show values | show arithmetic sequence | output | currency | bridge reconciles | Python recomputation | match/resolved/open |
 
 Do not report last-cent precision. Present a value range when WACC, growth, margins, or cash-flow assumptions are volatile.
 
@@ -105,6 +105,6 @@ Do not report last-cent precision. Present a value range when WACC, growth, marg
 | Discounted TV share of EV shown and < ~75% | true |
 | WACC inputs in yellow, formulas elsewhere | true |
 | Sensitivity grid present | true |
-| Evidence trace complete | true |
+| Evidence trace complete with Python verification | true |
 
 *Based on personal notes from Bojan Radojicic / bojanfin.com materials and MBA financial-modeling materials; not an original-source excerpt.*

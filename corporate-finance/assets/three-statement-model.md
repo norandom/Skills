@@ -12,7 +12,7 @@ Fill-in build spec for generating an integrated Income Statement + Balance Sheet
 | History (opening balances) | H | last actual BS + P&L → blue cells |
 | Assumption set | A | growth %, margins, DSO/DIO/DPO, CAPEX, debt terms → yellow cells |
 | Sources | S | source statements, source cells, evidence status |
-| Math trace | M | source -> formula -> substitution -> result -> units -> check |
+| Math trace | M | source -> formula -> substitution -> step-by-step calculation -> result -> units -> check -> Python verification -> mismatch status |
 | Output | O | 3 linked statements + checks |
 
 ## Cell colour legend (apply in every sheet)
@@ -85,11 +85,11 @@ Worked 5-year anchor (sanity scale, '000): Cash ending ≈ 1623 / 1950 / 3665 / 
 
 Create one row for each material output.
 
-| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Result | Units | Check |
-|---|---|---|---|---|---|---|---|---|
-| EBITDA | IS!B? | Revenue/Opex schedules | Revenue - COGS - Opex | linked cells | show values | output | currency | ties to IS |
-| Cash ending | CF!B? | CF lines | Cash beginning + total CF | linked cells | show values | output | currency | ties to BS Cash |
-| Equity | BS!B? | opening equity, NI, dividends | Opening equity + NI - dividends | linked cells | show values | output | currency | equity roll check |
+| Output | Sheet/cell | Source | Formula | Inputs/cells | Substitution | Step-by-step calculation | Result | Units | Check | Python verification | Mismatch status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| EBITDA | IS!B? | Revenue/Opex schedules | Revenue - COGS - Opex | linked cells | show values | show arithmetic sequence | output | currency | ties to IS | Python recomputation | match/resolved/open |
+| Cash ending | CF!B? | CF lines | Cash beginning + total CF | linked cells | show values | show arithmetic sequence | output | currency | ties to BS Cash | Python recomputation | match/resolved/open |
+| Equity | BS!B? | opening equity, NI, dividends | Opening equity + NI - dividends | linked cells | show values | show arithmetic sequence | output | currency | equity roll check | Python recomputation | match/resolved/open |
 
 ## Validation checks (put on the checks sheet)
 
@@ -100,6 +100,6 @@ Create one row for each material output.
 | Equity roll | Closing equity − (opening + NI − dividends) | = 0 |
 | No hardcodes in statements | statements reference schedules only | true |
 | Debt non-negative | closing debt | ≥ 0 |
-| Evidence trace complete | source/formula/substitution/result/units/check for material outputs | true |
+| Evidence trace complete | source/formula/substitution/step-by-step/result/units/check/Python verification/mismatch status for material outputs | true |
 
 *Based on personal notes from Bojan Radojicic / bojanfin.com materials; not an original-source excerpt.*
