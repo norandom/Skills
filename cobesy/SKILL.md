@@ -1,17 +1,17 @@
 ---
 name: cobesy
-version: 1.2.0
+version: 1.3.0
 description: >
   COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge
   (docs, repos, architecture, decks) into work people actually adopt. It checks
   the culture first (Schein assumptions, Edmondson safety, Scientist Mode), then
   compresses the message (Minto, Dirksen, Knowles), then plans how adoption moves
   through the network (Centola, Jackson, Berger REDUCE, cascades). The same
-  cognitive engine also compiles knowledge into written and projected artifacts:
-  blog posts (technical and financial), a thesis, journal article, or slides,
-  with a governing idea, an opening that holds attention, a sentence-level linter,
-  and a humanizer pass (Belcher, Cron, Kolin, Graff & Birkenstein, Klinkenborg,
-  Williams & Bizup). Use it for
+  cognitive engine also structures written and projected artifacts: blog posts
+  (technical and financial), a thesis, journal article, or slides, with a
+  skeleton grid, headlines, bullets, emphasis, writing advice, style guidance,
+  and keywords before prose (Belcher, Cron, Kolin, Graff & Birkenstein,
+  Klinkenborg, Williams & Bizup). Use it for
   rollouts, buy-in, change management, briefings, resistance, onboarding, or to
   structure a piece of writing where the knowledge is there but the structure
   keeps getting lost. Skip it for factual lookup or single-fact Q&A.
@@ -33,10 +33,13 @@ source works on culture, networks, learning, and influence. See
 `references/source-map.md` for the bibliography and substitutions.
 
 The same Cognitive engine has a second output. Instead of a live agenda it can
-compile the knowledge into a written or projected piece: a blog post, a thesis,
-slides, or a journal article. That path adds six writing works and emits a
-`composition_blueprint`. See `references/composition.md`. Use it when the
-knowledge is there but the structure keeps getting lost as the material grows.
+structure a written or projected piece: a blog post, a thesis, slides, or a
+journal article. By default, this path emits a first-pass `composition_blueprint`:
+a skeleton grid with headlines, bullets, emphasis, writing advice, style
+guidance, audience-leading cues, and keywords to use. Do not write the article,
+paper, or slide prose unless the user explicitly asks for prose or a full draft.
+See `references/composition.md`. Use it when the knowledge is there but the
+structure keeps getting lost as the material grows.
 
 ---
 
@@ -139,10 +142,12 @@ Run `raw_knowledge` through `references/03-cognitive-layer.md`.
 If the deliverable is a written or projected piece, run the same hierarchy
 through the composition back-end in `references/composition.md` instead. It sorts
 the work by four grains (macro governing idea, opening, paragraph move, sentence),
-adapts to the format (blog, thesis, slides, journal article), and emits
-`composition_blueprint` via `assets/composition-blueprint.md`. The writing linter
-and humanizer output checks in that file are the writing-grain version of the
-Phase 5 gate.
+adapts to the format (blog, thesis, slides, journal article), and emits a
+first-pass `composition_blueprint` via `assets/composition-blueprint.md`. Default
+to a skeleton grid: headlines, bullet points, emphasis guidance, writing advice,
+style guidance, audience-leading cues, and keywords to use. Avoid marketing
+language. Do not draft the article, paper, or slide prose unless the user
+explicitly asks for a draft, prose, final copy, or full article.
 
 ### Phase 3: Behavioral sequencing (the path)
 Run the rollout through `references/02-behavioral-layer.md`.
@@ -183,8 +188,8 @@ TOC, scope creep, flat exposition, expert fog, sentence sprawl, reader mismatch,
 AI slop / generic voice). Same rule: a failed check sends you back to the grain
 that owns it.
 
-Then run the humanizer pass before delivery. The final prose must pass these
-output conditions:
+If the user explicitly asked for prose, run the humanizer pass before delivery.
+Drafted prose must pass these output conditions:
 - no significance inflation, vague authority, forced trios, generic upbeat endings, or chatbot phrasing;
 - no AI-looking output symbols: em dashes, curly quotes, emoji decoration, emoticons, decorative bold, or chatbot-style visual formatting unless the user explicitly asks for them;
 - sentence rhythm varies without turning cute or over-written;
@@ -259,5 +264,5 @@ Templates, fill and deliver:
 - `assets/change-brief.md`: the assembled three-artifact deliverable.
 - `assets/agenda-pyramid.md`: Minto agenda skeleton.
 - `assets/adoption-map.md`: Centola/Jackson rollout plan.
-- `assets/composition-blueprint.md`: the writing deliverable (blog, thesis, slides, journal article).
+- `assets/composition-blueprint.md`: first-pass messaging skeleton for written or projected pieces (blog, thesis, slides, journal article).
 - `assets/prompt-library.md`: ready prompts to drive the agent per layer.

@@ -1,8 +1,10 @@
 # Composition Blueprint — {{piece title}}
 
-The writing deliverable from the Cognitive layer's composition back-end. One
-governing idea, an opening that earns attention, a structure that carries the
-thread, and a linter pass. Pick the format block that applies.
+The first-pass messaging skeleton from the Cognitive layer's composition
+back-end. It gives the grid, headlines, bullets, emphasis, writing advice, style
+guidance, audience-leading cues, and keywords to use. It does not draft the
+article, paper, or slide prose unless the user explicitly asks for prose or a
+full draft. Pick the format block that applies.
 
 See `references/composition.md` for the frameworks behind each field.
 
@@ -29,17 +31,18 @@ See `references/composition.md` for the frameworks behind each field.
 - **Protagonist** (often the reader / a stand-in): _____
 - **What's happening** (situation, big picture): _____
 - **What's at stake** (a specific consequence): _____
-- **First two sentences, drafted:** _____
+- **Opening guidance, not prose by default:** _____
+- **Words to avoid in the opening:** marketing language, vague transformation claims, generic urgency
 
-## 4. The structure
+## 4. Skeleton grid
 TOC or slide-headline string. Each head names a claim; the heads in sequence
-should read as the argument.
+should read as the argument. Use bullets and emphasis notes, not drafted prose.
 
-| # | Head / slide headline | Claim it carries | Serves the governing idea? |
-|---|---|---|---|
-| 1 | _____ | _____ | ☐ |
-| 2 | _____ | _____ | ☐ |
-| 3 | _____ | _____ | ☐ |
+| # | Head / slide headline | Bullet points to cover | Emphasis / audience-leading cue | Keywords to use | Serves the governing idea? |
+|---|---|---|---|---|---|
+| 1 | _____ | _____ | _____ | _____ | ☐ |
+| 2 | _____ | _____ | _____ | _____ | ☐ |
+| 3 | _____ | _____ | _____ | _____ | ☐ |
 
 - [ ] MECE: no overlap, nothing essential missing
 - [ ] Post-outline done: each paragraph's topic sentence matches its head
@@ -49,6 +52,10 @@ should read as the argument.
 - **The naysayer / strongest objection (bear case, failure mode):** _____
 - **Your answer to it:** _____
 - **The "so what" / stakes for the reader:** _____
+- **Where to put emphasis for efficient message creation:** _____
+- **Style guidance:** _____
+- **Writing advice:** _____
+- **Marketing-language ban:** no hype, no vague claims, no generic thought-leadership phrasing
 
 ## 6. Linter pass
 | Malady | Grain | Hit? | Fix applied |
@@ -63,7 +70,7 @@ should read as the argument.
 | Reader mismatch | Opening | ☐ | _____ |
 | AI slop / generic voice | Output | ☐ | _____ |
 
-## 6a. Humanizer pass
+## 6a. Humanizer pass, only if prose was explicitly requested
 - [ ] Removed significance inflation, vague authority, forced trios, and generic upbeat endings
 - [ ] Removed chatbot phrasing and tutorial signposting
 - [ ] Filtered AI-looking symbols: no em dashes, curly quotes, emoji decoration, emoticons, or decorative bold unless requested
@@ -110,5 +117,6 @@ should read as the argument.
 ## 8. Final output conditions
 - [ ] A reader can state the governing idea after the first screen
 - [ ] Every section, paragraph, or slide serves that idea
-- [ ] The final prose sounds human enough to publish without a separate cleanup pass
+- [ ] The default output is a skeleton grid, not drafted prose
+- [ ] Any prose was explicitly requested before drafting
 - [ ] The final formatting does not look machine-generated: no decorative symbols, no emoticons, no mechanical bold labels, no em-dash habit

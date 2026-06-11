@@ -7,10 +7,13 @@ Article in Twelve Weeks*; Kolin *Successful Writing at Work*; Williams & Bizup
 *Style: Lessons in Clarity and Grace*.
 
 The agenda back-end (`03-cognitive-layer.md`) compiles the Minto hierarchy into a
-live session. This back-end compiles the same hierarchy into a written or
+live session. This back-end structures the same hierarchy for a written or
 projected artifact: a blog post, a thesis chapter, a journal article, or a slide
 deck. Same governing conclusion, same MECE key line, same working-memory limit.
-Different delivery.
+Different delivery. By default, produce the first-pass skeleton only: grid,
+headlines, bullets, emphasis, writing advice, style guidance, audience-leading
+cues, and keywords. Do not write article prose unless the user explicitly asks
+for a draft, prose, final copy, or a full article.
 
 The premise the user brought: the knowledge is already there. The skill of
 getting it across is the bottleneck, and structure is the first thing that breaks
@@ -247,14 +250,18 @@ publication, not the results.
 Produce, for the chosen format:
 - **The one governing idea** in a single sentence (the through-line).
 - **Kolin's four keys**: audience, purpose, message, style/tone, plus the action.
-- **The opening**: protagonist, situation, stakes (Cron); the first two sentences
-  drafted.
-- **The structure**: TOC or slide-headline string, each head matched to its
-  claim, marked MECE.
-- **Paragraph / slide moves**: where the naysayer sits, where the stakes land.
+- **The opening**: protagonist, situation, stakes (Cron), plus guidance for how
+  the opening should work. Do not draft the first sentences by default.
+- **The skeleton grid**: TOC or slide-headline string, each head matched to its
+  claim, marked MECE, with bullet points, emphasis notes, audience-leading cues,
+  and keywords to use.
+- **Paragraph / slide moves**: where the naysayer sits, where the stakes land,
+  where to put emphasis, and how to guide the reader efficiently.
+- **Style guardrails**: tone, vocabulary, keywords to use, and words or marketing
+  claims to avoid.
 - **Linter pass**: maladies checked, hits and fixes noted.
-- **Humanizer pass**: AI-writing tells checked, output symbols filtered, remaining
-  tells named, final prose revised until it sounds like a person writing for this
-  reader.
+- **Humanizer pass, only if prose was explicitly requested**: AI-writing tells
+  checked, output symbols filtered, remaining tells named, final prose revised
+  until it sounds like a person writing for this reader.
 - For a thesis: the didactic plan (why-before-what, chunking, what moves to
   appendices).

@@ -77,24 +77,29 @@ to the governing idea. Check that topic sentences match their headings (Belcher)
 
 ### Opening — attention
 ```
-Write the opening for {{piece}} for {{audience}}. Use Cron: name the protagonist
-(likely the reader), the situation, and a specific stake. First sentences must
-put a ball in play, not define terms. Confirm Kolin's four keys (audience,
-purpose, message, tone) and the action I want the reader to take.
+Design the opening for {{piece}} for {{audience}} without drafting prose. Use
+Cron: name the protagonist (likely the reader), the situation, and a specific
+stake. Give opening guidance, words to use, words to avoid, and where to put
+emphasis so the first sentences will put a ball in play, not define terms.
+Confirm Kolin's four keys (audience, purpose, message, tone) and the action I
+want the reader to take.
 ```
 
 ### Meso — paragraph moves
 ```
-Recast this section as argument, not report (Belcher). For the key paragraph,
-frame it as they-say / I-say, plant the strongest naysayer ({{bear case / failure
-mode}}), answer it, and end on the "so what" for the reader.
+Turn this section into a message skeleton, not prose. Recast it as argument, not
+report (Belcher). For the key paragraph or slide, provide the they-say / I-say
+move, the strongest naysayer ({{bear case / failure mode}}), the answer, the "so
+what" for the reader, emphasis notes, and keywords to use.
 ```
 
 ### Micro — sentence linter
 ```
-Tighten these paragraphs. Apply Klinkenborg (short sentences, cut the anxiety of
-sequence) and Williams & Bizup (subjects = characters, verbs = actions, old info
-before new, un-nominalize, kill actor-hiding passive). Show before/after.
+Give sentence-level style guidance for these paragraphs. Apply Klinkenborg
+(short sentences, cut the anxiety of sequence) and Williams & Bizup (subjects =
+characters, verbs = actions, old info before new, un-nominalize, kill
+actor-hiding passive). Show rewrite rules and examples only if I explicitly ask
+for before/after prose.
 ```
 
 ### Full linter pass
@@ -102,17 +107,21 @@ before new, un-nominalize, kill actor-hiding passive). Show before/after.
 Run the writing linter on this draft: first-paragraph drop-off, data dump,
 mismatched TOC, scope creep, flat exposition, expert fog, sentence sprawl, reader
 mismatch, and AI slop / generic voice. For each hit, name the grain and fix it.
-Then run the humanizer pass: ask what still makes the prose sound AI-generated,
-name the remaining tells, and revise until the piece sounds written by a person
-for this reader. Apply the output-symbol filter too: no em dashes, curly quotes,
-emoji decoration, emoticons, decorative bold, or chatbot-style visual formatting
-unless I explicitly asked for them.
+If prose was explicitly requested, run the humanizer pass: ask what still makes
+the prose sound AI-generated, name the remaining tells, and revise until the
+piece sounds written by a person for this reader. Otherwise, return only fixes,
+style guidance, emphasis notes, and output-symbol guardrails: no em dashes,
+curly quotes, emoji decoration, emoticons, decorative bold, or chatbot-style
+visual formatting unless I explicitly asked for them.
 ```
 
 ### Format adapters
 ```
 Compile {{raw_knowledge}} into a composition_blueprint for {{blog (tech/finance)
 | thesis | slides | academic journal article}}. Fill
-assets/composition-blueprint.md and apply the format-specific checks plus the
-humanizer output conditions, including the output-symbol filter.
+assets/composition-blueprint.md as a first-pass skeleton grid with headlines,
+bullets, emphasis notes, writing advice, style guidance, audience-leading cues,
+and keywords to use. Avoid marketing language. Apply the format-specific checks
+and output-symbol guardrails. Do not write article, paper, or slide prose unless
+I explicitly ask for it.
 ```
