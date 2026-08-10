@@ -49,7 +49,7 @@ Use it for rollouts, buy-in, change management, briefings, resistance, or onboar
 
 📖 Background: [COBESY or SNAFU?](https://hanse-hedge.fund/cobesy-or-snafu/).
 
-### corporate-finance `v1.2.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
+### corporate-finance `v1.3.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
 
 corporate-finance starts with what the user is trying to do: build, analyze, advise, or reflect. From there it pulls the right explanation and the right spreadsheet structure. MODEL/BUILD covers three-statement models, budgets, 13-week cash flows, DCF/WACC, ratio dashboards, and EBITDA bridges as XLSX or Claude for Excel workbooks. ANALYZE/DIAGNOSE covers common-size, ratio, and trend analysis. ADVISE/CONSULT handles valuation-method and budgeting-method choices, EBITDA levers, and cash levers. REFLECT checks terminal value, sensitivity, and Non-GAAP / manipulation risks. The workflow stays on the selected intent until the output and checks are done.
 
@@ -57,11 +57,11 @@ It ships ten references (EBITDA, ratios and analysis, the three-statement model,
 
 📖 Background: [Autopilot lies. AI analysis crashed. Fix here.](https://hanse-hedge.fund/autopilot-lies-ai-analysis-crashed-fix-here/).
 
-### financial-modeling-sheet `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/financial-modeling-sheet.skill)
+### financial-modeling-sheet `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/financial-modeling-sheet.skill)
 
 House style for quantitative Excel workbooks. It governs how a workbook looks and is organized, not what it calculates — the goal being a file where a reader can tell, without clicking a single cell, which numbers were typed, which were chosen, which were calculated, which were imported, and which one is the answer. It is applied inside Excel through an assistant add-in (Claude for Excel, ChatGPT for Excel) driving the live workbook. Four modes: CREATE, EXTEND, AUDIT (never writes), and RESTYLE (gated behind approval, a backup, and a change log).
 
-It ships two deliberately non-mixable palette profiles — the semantic House Style default and the classic Audit Standard, which disagree about whether gray means source data or calculation — plus nine semantic cell classes, a named style registry with legacy aliases, tab colors as a purpose code, a layout skeleton every sheet shares (rows 1–2 blank, title on row 3, columns A and B empty, content at column C), a menu generated last from the actual tab order and actual tab colors, number formats with a leading-minus negative convention, chart selection rules, formula-integrity rules, and a definition of done that doubles as the audit deliverable. Power Query output gets its own treatment: moved to `Data <n> <short id>` sheets at the end, the built-in table style stripped and replaced by the house header and body styles, a `PQ: <headline>` caption above the header row, types set in the query, formatting verified to survive a refresh, and the data referenced rather than copied. It prescribes roles, not sheet names: only Menu, Documentation, and Dashboard are named; task sheets follow the actual work.
+It ships two deliberately non-mixable palette profiles — the semantic House Style default (blue source data, yellow assumptions, unfilled formulas) and the classic Audit Standard (orange inputs, gray calculations), which read the same fills in contradictory ways — plus nine semantic cell classes, a named style registry with legacy aliases, tab colors as a purpose code, a layout skeleton every sheet shares (rows 1–2 blank, title on row 3, columns A and B empty, content at column C), a menu generated last from the actual tab order and actual tab colors, number formats with a leading-minus negative convention, chart selection rules, formula-integrity rules, and a definition of done that doubles as the audit deliverable. Power Query output gets its own treatment: moved to `Data <n> <short id>` sheets at the end, the built-in table style stripped and replaced by the house header and body styles, a `PQ: <headline>` caption above the header row, types set in the query, formatting verified to survive a refresh, and the data referenced rather than copied. It prescribes roles, not sheet names: only Menu, Documentation, and Dashboard are named; task sheets follow the actual work.
 
 ## MCP servers
 

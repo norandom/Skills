@@ -12,13 +12,13 @@ One paragraph. Is this workbook trustworthy for a reader who did not build it? N
 
 ## 2. Profile and architecture
 
-- **Palette profile in force:** House Style / Audit Standard / **mixed** / none.
+- **Color convention in force:** House Style (current) / Audit Standard / legacy house palette / **mixed** / none.
 - **Sheet order:** does it run menu, documentation, dashboard, then task sheets?
 - **Tab colors:** applied? do same-level sheets share a color?
 - **Menu:** does row order match tab order? do swatches match the actual tabs? do all links resolve?
 - **Skeleton:** rows 1–2 blank, title on row 3, columns A and B empty, content at column C?
 
-A mixed palette profile is reported here and is always blocking — it inverts the meaning of gray and makes every other finding secondary.
+A mixed color convention is reported here and is always blocking — the same fill means opposite things in each convention (yellow is a tunable assumption under the current House Style but the key result under the legacy palette; gray is an output under House Style but a calculation under Audit Standard), and it makes every other finding secondary. A workbook coherently in the legacy house palette is **not** mixed; report it as its own convention.
 
 ## 3. Findings
 

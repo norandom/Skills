@@ -10,11 +10,11 @@ That choice is deliberate. The add-in sees what Excel sees: real named styles, r
 
 **1. Instruct per block, by range and semantic class.**
 
-> "Apply the `SourceData` style to `D9:D19` on `Task 1` — fill `#D0D0D0`, Arial 10 black, no border."
+> "Apply the `SourceData` style to `D9:D19` on `Task 1` — fill `#BDD7EE`, Arial 10 black, no border."
 
 Never "format this sheet" or "make the results look good". Every instruction names a range and the class that range belongs to. If you cannot name the class, go back to `cell-classes.md` before touching the cell.
 
-**2. Name the class, not just the color.** The class is what a later reader can check against Documentation; the color is a consequence of it. An instruction that says only "make it gray" produces a workbook nobody can audit.
+**2. Name the class, not just the color.** The class is what a later reader can check against Documentation; the color is a consequence of it. An instruction that says only "make it blue" produces a workbook nobody can audit.
 
 **3. Create the named styles first, then apply them by name.** One pass to define `Header`, `SectionHeader`, `RowTitle`, `SourceData`, `Input`, `Constant`, `Output`, `Result`, `Recommended`, `Note`, `ExplanatoryText`, `CheckPass/Warn/Fail`. Then every subsequent instruction is "apply `Output` to …". This is what makes a later restyle one change instead of a thousand.
 
@@ -41,7 +41,7 @@ Set widths **after** the content and styles are in place, then check that nothin
 
 ## Colors
 
-Give hex with the `#`, as Excel's color picker accepts it: `#D0D0D0`, `#333399`, `#FFC000`. The full palette is in `named-styles.md`.
+Give hex with the `#`, as Excel's color picker accepts it: `#BDD7EE`, `#333399`, `#FFC000`. The full palette is in `named-styles.md`.
 
 For tab colors and menu swatches: **read the actual tab color out of the workbook and apply that value to the swatch.** Do not retype a color from the architecture table — a sheet may legitimately carry a different level color than you expect, and a swatch that is one shade off teaches the reader the code is approximate.
 

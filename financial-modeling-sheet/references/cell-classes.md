@@ -11,45 +11,46 @@ Colors below are the **House Style** profile. Under Audit Standard, map through 
 Ask, in this order:
 
 1. **Did a human put this number here?** -> class 1, 2, or 3.
-   - Is it data the model consumes — sourced, observed, assumed? -> **1. Source / assumption** (gray).
-   - Is it a knob the reader turns to run a different scenario? -> **2. User control** (orange `#FFCC99`).
-   - Is it fixed by the task, policy, or methodology and not expected to change? -> **3. Constant** (`#FABF8F`).
+   - Is it data from the world, filled once — a historical actual, an opening balance, an observed or imported value? -> **1. Source data** (blue `#BDD7EE`).
+   - Is it an assumption or driver the reader tunes — a growth rate, a margin, a scenario knob? -> **2. Assumption / driver** (yellow `#FFFF00`).
+   - Is it fixed by the task, policy, or methodology and not expected to change? -> **3. Constant** (gold `#FFD966`).
 2. **Did Excel compute it from cells in this workbook?** -> **4. Local calculation** (no fill).
 3. **Did something outside Excel compute it?** -> **5. External model** (no fill, marker in the marker column).
 4. **Is it a value a reader consumes rather than a step?** -> 6, 7, or 8.
    - An ordinary result -> **6. Output** (`#F2F2F2`).
-   - The number the decision turns on -> **7. Key result** (`#FFFF00`).
+   - The number the decision turns on -> **7. Key result** (navy `#000080`, white bold).
    - The option actually chosen -> **8. Recommended** (`#E2EFDA`).
 5. **Is it prose about the model?** -> **9. Note / explanatory text**.
 
-Role beats mechanism. A cross-sheet formula such as `='Shared Inputs'!D12` sitting in a parameter block is still class 1: its role is *this is the input this block consumes*. **Do not color cross-sheet links green or treat them as calculations** just because they contain an `=`.
+Role beats mechanism. A cross-sheet formula such as `='Shared Inputs'!D12` sitting in a parameter block is class 1: its role is *this is the input this block consumes* — the knob itself stays yellow where it lives and is tuned, in the shared inputs; the surfaced copy is blue because nobody edits it here. **Do not color cross-sheet links green or treat them as calculations** just because they contain an `=`.
 
 ---
 
-## 1. Source and assumption data — `SourceData`
+## 1. Source data, filled once — `SourceData`
 
-Base data, sourced parameters, assumptions, market or operational inputs, parameter values feeding a local model block, and **Power Query output** — imported data is source data no matter which mechanism delivered it (`power-query-data-sheets.md`).
+Data from the world: historical actuals, opening balances, market or operational observations, sourced parameter values, values a block consumes from the shared inputs, and **Power Query output** — imported data is source data no matter which mechanism delivered it (`power-query-data-sheets.md`). The corporate-finance "blue cells": the user fills them once, and they change only when the world does.
 
-- Fill `#D0D0D0`, Arial 10, black, usually no border.
+- Fill `#BDD7EE` (blue), Arial 10, black, usually no border.
 - Number aligned normally; units in the adjacent column.
 - A note is required whenever the source, override, or basis is not obvious from the label.
 
-This is the class that carries the model's epistemic risk. Every gray cell is a claim about the world that someone must be able to defend.
+This is the class that carries the model's epistemic risk. Every blue cell is a claim about the world that someone must be able to defend.
 
-## 2. User-controlled model inputs — `Input`
+## 2. Assumptions and drivers — `Input`
 
-Scenario controls, model switches, range limits, simulation parameters, iteration counts — anything the reader is *invited* to change.
+Growth rates, margins, day counts, scenario controls, model switches, range limits, simulation parameters — anything the reader is *invited* to change and re-read the dashboard. The corporate-finance "yellow cells": the user tunes them.
 
-- Fill `#FFCC99`, Aptos Narrow 11, font `#3F3F76`, thin `#7F7F7F` border on all sides.
+- Fill `#FFFF00` (yellow), Aptos Narrow 11, font `#3F3F76`, thin `#7F7F7F` border on all sides.
 
-The border matters: it makes the cell look like a form field. These must be unmistakably distinct from gray source data, because the instruction "change this and re-read the dashboard" applies to them and not to gray.
+The border matters: it makes the cell look like a form field. These must be unmistakably distinct from blue source data, because the instruction "change this and re-read the dashboard" applies to yellow and not to blue.
 
 ## 3. Fixed or task-given constants — `Constant`
 
 Values given by the task, defined by policy or methodology, not expected to update with source data, but required as a constant for a calculation.
 
-- Fill `#FABF8F`, Aptos Narrow 11 or Arial 10, black, thin `#7F7F7F` top border. Full thin box only where clarity demands it.
-- The mathematical symbols and labels *accompanying* a constant use `ExplanatoryText` (gray italic), **not** the orange fill. Color the value, not its name.
+- Fill `#FFD966` (gold), Aptos Narrow 11 or Arial 10, black, thin `#7F7F7F` top border. Full thin box only where clarity demands it.
+- Gold sits in the yellow family on purpose — a human entered it — but visibly muted: it is not an invitation to tune.
+- The mathematical symbols and labels *accompanying* a constant use `ExplanatoryText` (gray italic), **not** the gold fill. Color the value, not its name.
 
 ## 4. Local calculations
 
@@ -89,9 +90,9 @@ The light fill plus dark border reads as "this is a finished number", distinct f
 
 The important answers: decision-critical outputs, the headline values, the primary analytical conclusions.
 
-- Fill `#FFFF00`, Arial 10 bold, black, minimal borders. A thin `#B2B2B2` edge is acceptable where the result abuts a note card.
+- Fill `#000080` (navy), Arial 10 bold, white `#FFFFFF`, minimal borders. A thin `#B2B2B2` edge is acceptable where the result abuts a note card.
 
-**Do not use yellow for ordinary calculations.** Yellow is a scarce resource. A sheet with three yellow cells communicates; a sheet with thirty communicates nothing. If you find yourself yellowing a column, those are `Output` cells and one of them is the `Result`.
+The idiomatic "headline total" of a financial model. **Do not use navy for ordinary calculations.** Navy is a scarce resource. A sheet with three navy cells communicates; a sheet with thirty communicates nothing. If you find yourself navy-filling a column, those are `Output` cells and one of them is the `Result`.
 
 ## 8. Recommended or selected result
 
@@ -99,7 +100,7 @@ The selected scenario, the best-ranked alternative, the winning strategy, the pr
 
 - Fill `#E2EFDA`, Arial 11 bold, font `#375623`, wrap text where needed, vertically centered.
 
-Distinct from `Result` on purpose: yellow says *this is the number*, pale green says *this is the choice*. A comparison table of five options has five `Output` rows, one of them pale green.
+Distinct from `Result` on purpose: navy says *this is the number*, pale green says *this is the choice*. A comparison table of five options has five `Output` rows, one of them pale green.
 
 ## 9. Notes and explanatory text
 
@@ -137,8 +138,9 @@ Check colors are identical under both palette profiles.
 | Anti-pattern | Why it fails |
 |---|---|
 | Formatting the entire used range one way | Asserts every cell has the same role; destroys the code |
-| Coloring cross-sheet links as a separate class | Confuses mechanism with role; a surfaced assumption is still an assumption |
-| Yellow on every calculated number | Kills the signal that marks the actual answer |
-| Orange fill on the label next to a constant | Colors the name instead of the value |
+| Coloring cross-sheet links as a separate class | Confuses mechanism with role; a surfaced input is still an input |
+| Yellow on a calculated number | Yellow claims "tune me"; a calculation is not tunable — and typing over it destroys the formula |
+| Navy on every output row | Kills the signal that marks the actual answer |
+| Gold fill on the label next to a constant | Colors the name instead of the value |
 | Bordered grids everywhere | Fill hierarchy plus whitespace already carries the structure |
 | Coloring a cell before knowing its class | Formatting is a claim; an unclassified claim is a guess |

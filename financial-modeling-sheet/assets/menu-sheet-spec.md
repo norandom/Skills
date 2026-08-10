@@ -59,7 +59,7 @@ Row height `15 pt`.
 13   Scenario Grid                   [mid blue] intermediate: two-driver scenario grid
 14   Optimization                    [dk blue] advanced: constrained optimization results
 15
-16   Fill only the colored input cells. Never type over an unfilled calculation cell.
+16   Fill only the blue and yellow cells. Never type over an unfilled calculation cell.
 ```
 
 Row 15 blank; row 16 is the reader instruction in `ExplanatoryText`.

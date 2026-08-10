@@ -7,8 +7,8 @@ The goal is a file where a reader who has never opened it can tell, at a glance 
 ## What it covers
 
 - **Four modes** — CREATE a workbook, EXTEND one, AUDIT it against the standard (never writes), or RESTYLE it (writes, so it is gated behind approval, a backup, and a change log).
-- **Two palette profiles** — House Style (default) and the classic Audit Standard. They contradict each other: gray means *source data* in one and *calculation* in the other. One profile per workbook, declared in Documentation, never mixed.
-- **Nine semantic cell classes** — source data, user controls, fixed constants, local calculations, external model calls, outputs, key results, recommended results, notes — plus PASS/WARN/FAIL checks.
+- **Two palette profiles** — House Style (default) and the classic Audit Standard. They contradict each other: fill marks *role* in one (blue source data, yellow assumptions, unfilled calculations) and *provenance* in the other (orange typed, gray computed). One profile per workbook, declared in Documentation, never mixed.
+- **Nine semantic cell classes** — source data, assumptions and drivers, fixed constants, local calculations, external model calls, outputs, key results, recommended results, notes — plus PASS/WARN/FAIL checks.
 - **A named style registry** with English canonical names and legacy aliases, so an existing workbook's styles get reused rather than duplicated.
 - **A layout skeleton every sheet shares** — rows 1–2 blank, title on row 3, columns A and B empty, content anchored at column C.
 - **Sheet architecture** — menu, documentation, dashboard, then task sheets named after the actual work; optional shared-input, engine, and support-calculation roles. Tab colors as a purpose code.
@@ -36,13 +36,13 @@ The skill prescribes **roles**, not sheet names. Only Menu, Documentation, and D
 
 ## Sources
 
-Synthesizes a house style observed in a multi-module quantitative assessment workbook with the standard financial-modeling color-coding convention (orange inputs, gray calculations, green font for mixed cells, green/red control checks) found across modeling handbooks and audit practice. The conventions predate this skill; the reconciliation of the two conflicting palettes into named, non-mixable profiles is this skill's own.
+Synthesizes a house style observed in a multi-module quantitative assessment workbook with the standard financial-modeling color-coding convention (orange inputs, gray calculations, green font for mixed cells, green/red control checks) found across modeling handbooks and audit practice. The default House Style palette adopts the corporate-finance color coding — blue for starting amounts filled once, yellow for assumptions the user tunes, no fill for formulas — while the gray/orange scheme of the originally observed workbook survives as a recognized legacy palette for auditing and extending older files. The conventions predate this skill; the reconciliation of the conflicting palettes into named, non-mixable profiles is this skill's own.
 
 ## Layout
 
 - `SKILL.md` — prime directives, mode lock, how-to, capability map, routing.
 - `references/mode-map.md` — the four modes, preservation contract, approval gates, change log.
-- `references/palette-profiles.md` — the two profiles, the gray conflict, mapping, profile-neutral rules.
+- `references/palette-profiles.md` — the two profiles, the fill conflict, the legacy palette, mapping, profile-neutral rules.
 - `references/cell-classes.md` — the nine classes plus checks, with classification tests.
 - `references/named-styles.md` — exact style specifications and the full color reference.
 - `references/workbook-architecture.md` — sheet order, tab colors, view, layout skeleton.

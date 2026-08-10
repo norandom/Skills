@@ -23,7 +23,7 @@ Data <n> <short id>
 | 4 | — | *empty* | spacer |
 | 5 | `C5:F5` | `PQ: <simple headline>` (text in `C5`), `PQ` in the marker column | `RowTitle` — `#333399`, Arial 9 bold, font `#FFFF00` |
 | 6 | `C6:…` | table header row — the loaded table's own header | `SectionHeader` — `#333399`, Arial 9 bold white |
-| 7+ | `C7:…` | data body | `SourceData` — `#D0D0D0`, Arial 10 black |
+| 7+ | `C7:…` | data body | `SourceData` — `#BDD7EE`, Arial 10 black |
 
 Columns A and B empty, ~`20 pt`. **Load destination is `C6`.**
 
@@ -35,7 +35,7 @@ Columns A and B empty, ~`20 pt`. **Load destination is `C6`.**
  4
  5   PQ: daily ECB reference rates            PQ      <- RowTitle, indigo/yellow
  6   Date         Currency   Rate                     <- SectionHeader, table header row
- 7   2026-07-31   EUR/USD    1.0842                   <- SourceData gray from here down
+ 7   2026-07-31   EUR/USD    1.0842                   <- SourceData blue from here down
  8   2026-07-30   EUR/USD    1.0817
  9   2026-07-29   EUR/USD    1.0863
 ...
@@ -98,7 +98,7 @@ Never copy the data into a task sheet. Never type inside the loaded range — a 
 - [ ] Loaded at `C6`; rows 1–2 blank, title on row 3, columns A and B empty.
 - [ ] Built-in table style removed; banding and total row off; AutoFilter kept.
 - [ ] `PQ: <headline>` caption on row 5 in `RowTitle`, `PQ` in the marker column.
-- [ ] Header row `SectionHeader`; body uniformly `SourceData` gray, no unfilled cells.
+- [ ] Header row `SectionHeader`; body uniformly `SourceData` blue, no unfilled cells.
 - [ ] Types set in the query; display formats uniform per column; percentages as fractions; leading-zero codes as text.
 - [ ] Preserve cell formatting on, adjust column width off, **verified by an actual refresh**.
 - [ ] Every consumer references the sheet; nothing copies it; no typed values or formula columns inside the table.

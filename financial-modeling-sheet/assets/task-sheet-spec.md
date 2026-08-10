@@ -19,7 +19,7 @@ Every analytical block on the sheet follows the same order. A reader scrolling d
   6
   7   PARAMETERS .....................................    <- SectionHeader, indigo
   8   Driver                Value      Unit    Source
-  9   Discount rate         0.0850     —       Inputs D9      <- SourceData, gray
+  9   Discount rate         0.0850     —       Inputs D9      <- SourceData, blue
  10   Volatility            0.2100     p.a.    Inputs D11     <- SourceData
  11   Horizon               12         months  Inputs D16     <- SourceData
  12
@@ -41,10 +41,10 @@ Every analytical block on the sheet follows the same order. A reader scrolling d
 
 1. **Section title** — indigo `SectionHeader` bar.
 2. **Methodology note** — `Note` or `ExplanatoryText`, where the method is not self-evident.
-3. **Parameter block** — the inputs this block consumes, gray `SourceData`, before any formula. Cross-sheet links to the shared inputs stay gray: role beats mechanism.
+3. **Parameter block** — the inputs this block consumes, blue `SourceData`, before any formula. Cross-sheet links to the shared inputs stay blue: role beats mechanism — the knob is yellow only where it lives and is tuned.
 4. **Calculation block** — unfilled, Arial 10. Long formulas split into named helper rows.
 5. **Output block** — `Output`, bordered, with units and a method marker in the right-hand column.
-6. **Interpretation** — what the numbers mean; `Result` for the decisive figure, `Recommended` where a choice is made.
+6. **Interpretation** — what the numbers mean; navy `Result` for the decisive figure, `Recommended` where a choice is made.
 
 ---
 
@@ -68,9 +68,9 @@ Placed to the right of or below the block whose data they show — same sheet, s
 
 - [ ] Rows 1–2 blank, title on row 3, columns A and B empty.
 - [ ] Six-block shape in order, with parameters before formulas.
-- [ ] Parameter cells gray, including cross-sheet links.
+- [ ] Parameter cells blue, including cross-sheet links.
 - [ ] Calculations unfilled and quiet.
-- [ ] Outputs bordered light gray; exactly one `Result` where there is a decisive figure.
+- [ ] Outputs bordered light gray; exactly one navy `Result` where there is a decisive figure.
 - [ ] Method markers in the right-hand column.
 - [ ] No editable literal inside any formula.
 - [ ] Blank row between blocks; no merged cells.

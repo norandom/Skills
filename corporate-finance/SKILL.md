@@ -1,6 +1,6 @@
 ---
 name: corporate-finance
-version: 1.2.0
+version: 1.3.0
 description: >
   Corporate finance and financial-modeling workbench for spreadsheets, analysis, advice, and model review. Covers EBITDA, ratios, common-size/trend analysis, 3-statement models, cash-flow statements, 13-week forecasts, working capital/CCC, DCF/WACC/valuation, and budgeting. Produces XLSX / Claude-for-Excel workbooks with assumption sheets, validation checks, color-coded inputs, auditable formula traces, and Python recalculation checks. Triggers on "build a financial model", "make a budget", "3-statement model", "DCF", "WACC", "valuation", "cash flow forecast", "ratio analysis", "EBITDA", "common-size", "P&L template", or model review. Every stated number needs source, formula, substitution, units, result, Python verification, and mismatch status. Skip for bookkeeping entries, tax filing, or personal-finance budgeting.
 ---

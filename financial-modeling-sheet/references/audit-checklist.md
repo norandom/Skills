@@ -49,16 +49,17 @@ The workbook is deliverable only when every line passes. In AUDIT mode, this lis
 - [ ] Every user-facing sheet is listed; hidden and purely technical sheets are omitted deliberately.
 - [ ] Every menu hyperlink resolves to the intended sheet's `A1`.
 - [ ] Menu swatches match the **actual** tab colors exactly.
-- [ ] The reader instruction ("fill only colored input cells; never type over a calculation") appears on the menu and wherever the editable inputs live.
+- [ ] The reader instruction ("fill only the blue and yellow cells; never type over an unfilled calculation cell") appears on the menu and wherever the editable inputs live.
 
 ### Semantics
 
-- [ ] One palette profile in force, declared on Documentation, not mixed.
-- [ ] Source data, user controls, constants, calculations, model calls, outputs, key results, and recommendations are each visually distinct.
+- [ ] One color convention in force — current House Style, Audit Standard, or the legacy house palette — declared on Documentation, never mixed.
+- [ ] Source data, assumptions, constants, calculations, model calls, outputs, key results, and recommendations are each visually distinct.
+- [ ] Filled-once source data (blue) and tunable assumptions (yellow) are not conflated: a knob is yellow only where it lives and is edited; a copy surfaced into a parameter block is blue.
 - [ ] No block was formatted without first being classified; no whole-used-range formatting.
-- [ ] Calculations remain unfilled and quiet (House Style) or uniformly gray (Audit Standard).
-- [ ] Yellow appears only on genuine key results.
-- [ ] **Zero work-in-progress fills remain.**
+- [ ] Calculations remain unfilled and quiet (House Style, legacy house palette) or uniformly gray (Audit Standard).
+- [ ] Navy appears only on genuine key results; yellow fills only on assumptions the reader is invited to tune.
+- [ ] **Zero work-in-progress fills remain** — no `#F8CBAD` (House Style), no `#FFFF99` (Audit Standard).
 - [ ] Green-font mixed-content cells are zero, or each is justified in Documentation.
 
 ### Numbers
@@ -94,7 +95,7 @@ The workbook is deliverable only when every line passes. In AUDIT mode, this lis
 - [ ] Query output lives on its own `Data <n> <short id>` sheet, last in tab order, tab `#BFBFBF`, listed in the menu.
 - [ ] Loaded at `C6`; built-in table style removed; banding and total row off; AutoFilter kept.
 - [ ] `PQ: <headline>` caption in `RowTitle` directly above the header row, with `PQ` in the marker column.
-- [ ] Header row `SectionHeader`; body uniformly `SourceData` gray with no unfilled cells.
+- [ ] Header row `SectionHeader`; body uniformly `SourceData` blue with no unfilled cells.
 - [ ] Column types set in the query; display formats applied per column and uniform down each column.
 - [ ] "Preserve cell formatting" on, "Adjust column width" off, verified by an actual refresh.
 - [ ] Every consumer references the data; nothing copies it; no typed values or formula columns inside the loaded range.
@@ -107,7 +108,7 @@ AUDIT mode delivers a report, never a modified file. Structure it as:
 
 **1. Verdict.** One paragraph: is this workbook trustworthy for a reader who did not build it? Name the single worst problem.
 
-**2. Profile and architecture.** Which palette profile is in force (or that they are mixed), whether the sheet order and tab colors follow the code, whether the menu matches the tabs.
+**2. Profile and architecture.** Which color convention is in force — current House Style, Audit Standard, or the legacy house palette — or that conventions are mixed; whether the sheet order and tab colors follow the code; whether the menu matches the tabs.
 
 **3. Findings**, severity-ordered:
 

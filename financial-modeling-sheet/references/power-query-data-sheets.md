@@ -27,7 +27,7 @@ Rules:
 - Keep it short. Excel caps sheet names at 31 characters, and the space in the name means every reference to the sheet must be quoted: `='Data 1 fx_rates'!C7`. Long slugs make every downstream formula worse.
 - Lowercase, underscore-separated slugs. No spaces inside the slug — the one space in `Data 1 ` is enough.
 
-**Tab color `#BFBFBF`.** Mid gray, matching the gray family that means source data throughout the workbook, and dark enough to be distinguishable from Documentation's near-white `#E8E8E8` on the tab strip.
+**Tab color `#BFBFBF`.** Mid gray — the workbook's tab color for loaded data — and dark enough to be distinguishable from Documentation's near-white `#E8E8E8` on the tab strip.
 
 List data sheets in the menu. A reader auditing a figure needs to find the source, and unlike support calculations these sheets carry the workbook's provenance.
 
@@ -63,11 +63,11 @@ Excel loads every query with a built-in table style — banded blue rows, its ow
 | Table style | **None** (`TableStyleMedium2` etc. removed); banded rows and banded columns off |
 | PQ caption row | `RowTitle` — `#333399`, Arial 9 bold, font `#FFFF00` |
 | Table header row | `SectionHeader` — `#333399`, Arial 9 bold, white |
-| Data body cells | `SourceData` — `#D0D0D0`, Arial 10, black |
+| Data body cells | `SourceData` — `#BDD7EE`, Arial 10, black |
 | Total row | off |
 | AutoFilter | **keep** — this is the sanctioned filtering case |
 
-The body stays uniformly gray, and that is correct here: the whole block is genuinely one semantic class. **A reader must never see an unfilled cell inside a PQ table** — unfilled means "calculated on this sheet", which is exactly what this data is not.
+The body stays uniformly blue, and that is correct here: the whole block is genuinely one semantic class — data filled from the world, refreshed by the machine, tuned by nobody. **A reader must never see an unfilled cell inside a PQ table** — unfilled means "calculated on this sheet", which is exactly what this data is not.
 
 ### Surviving a refresh
 
@@ -142,7 +142,7 @@ Rules:
   4   (empty)  |
   5   (empty)  |  PQ: daily ECB reference rates            PQ   <- RowTitle, indigo/yellow; marker in F
   6   (empty)  |  Date         Currency   Rate                  <- SectionHeader = table header row
-  7   (empty)  |  2026-07-31   EUR/USD    1.0842                <- SourceData gray, from here down
+  7   (empty)  |  2026-07-31   EUR/USD    1.0842                <- SourceData blue, from here down
   8   (empty)  |  2026-07-30   EUR/USD    1.0817
 ```
 
@@ -161,7 +161,7 @@ Rules:
 - [ ] Loaded at `C6`; rows 1–2 blank, title on row 3, columns A and B empty.
 - [ ] Built-in table style removed; banding off; total row off; AutoFilter kept.
 - [ ] `PQ: <headline>` caption in `RowTitle` directly above the header row, with `PQ` in the marker column.
-- [ ] Header row `SectionHeader`; body uniformly `SourceData` gray with no unfilled cells.
+- [ ] Header row `SectionHeader`; body uniformly `SourceData` blue with no unfilled cells.
 - [ ] Column types set in the query; display formats applied per column, uniform down each column.
 - [ ] Percentages stored as fractions; leading-zero codes stored as text; dates are real dates.
 - [ ] "Preserve cell formatting" enabled; "Adjust column width" disabled; **verified by an actual refresh**.

@@ -28,10 +28,10 @@ Palette in use:
 | Title | `#000080` |
 | Context bar, section bars | `#333399` |
 | Table headers | `#333399` (white text) |
-| Surfaced inputs | `#D0D0D0` |
+| Surfaced inputs | `#BDD7EE` |
 | Outputs | `#F2F2F2` |
 | Recommendation | `#E2EFDA` |
-| Key metric | `#FFFF00` |
+| Key metric | `#000080` (white bold font) |
 | Explanatory card | `#FFFFCC` |
 
 Hard rules:
@@ -76,7 +76,7 @@ Each analytical block follows the same six-part shape:
 
 1. **Section title** — indigo bar, `SectionHeader`.
 2. **Methodology note** — `Note` or `ExplanatoryText`, where the method is not self-evident.
-3. **Parameter block** — the inputs this block consumes, gray `SourceData`, before any formula.
+3. **Parameter block** — the inputs this block consumes, blue `SourceData` (blue even when surfaced by a cross-sheet link — nobody edits it here), before any formula.
 4. **Calculation block** — unfilled, Arial 10, long formulas split into helper rows.
 5. **Output block** — `Output`, bordered.
 6. **Interpretation or recommendation** — what the numbers mean; `Result` for the decisive figure, `Recommended` where a choice is made.
@@ -115,8 +115,8 @@ Column layout:
 |---|---|---|---|
 | Label | Value | Unit | Source / method marker |
 
-- Base data and sourced parameters use gray `SourceData`.
-- Orange `Input` is used **only** for genuinely user-controlled scenario or model settings, kept in their own clearly-headed block, not interleaved with base data.
+- Base data and sourced parameters use blue `SourceData` — filled once, changed only when the world changes.
+- Yellow `Input` marks the assumptions and drivers the user tunes — growth rates, margins, scenario and model settings — kept in their own clearly-headed block, not interleaved with base data. This sheet is where the yellow knobs live; elsewhere they appear only as blue surfaced links.
 - `Constant` for values fixed by the task or methodology.
 - Blank row between groups.
 - Every non-obvious value gets a source in column F or a `Note`.
@@ -125,7 +125,7 @@ Rules:
 
 - **Do not scatter editable values across calculation blocks.** The exception is a clearly identified scenario control adjacent to the block it drives — and even then, prefer a link back to the shared inputs.
 - Every input must be referenced by at least one formula. An unused input is either dead or evidence of a broken link; find out which.
-- Repeat the reader instruction near the top: *fill only the colored input cells; never type over an unfilled calculation cell.*
+- Repeat the reader instruction near the top: *fill only the blue and yellow cells; never type over an unfilled calculation cell.*
 
 ---
 
@@ -149,7 +149,7 @@ Query output loaded to the worksheet. Full rules in `power-query-data-sheets.md`
 - **Last in tab order**, after everything else. Tab color `#BFBFBF`. Listed in the menu — these sheets carry the workbook's provenance.
 - Named `Data <n> <short id>`, the slug matching the Power Query query name.
 - Loaded to `C6` so the sheet keeps the standard skeleton, one query per sheet.
-- The built-in table style is **replaced**: banding off, total row off, AutoFilter kept, header row `SectionHeader`, body uniformly `SourceData` gray.
+- The built-in table style is **replaced**: banding off, total row off, AutoFilter kept, header row `SectionHeader`, body uniformly `SourceData` blue — imported data is source data, filled once by the refresh.
 - A `PQ: <simple headline>` caption in `RowTitle` sits directly above the header row, with `PQ` in the marker column.
 - Column types set in the query; display formats applied per column.
 - **Everything downstream references the data.** Never copy it, never type into it — a refresh silently overwrites the edit.
@@ -163,5 +163,5 @@ Machinery. Long schedules, lookup tables, intermediate grids, unit conversions, 
 - Last in tab order, **no tab color**.
 - Omitted from the menu unless users need direct access — note the omission in Documentation.
 - Same skeleton (row 3 title, columns A/B empty) so it does not feel like a different workbook.
-- Still classified: gray for sourced inputs, unfilled for calculations, `Output` where something feeds a task sheet.
+- Still classified: blue for sourced inputs, unfilled for calculations, `Output` where something feeds a task sheet.
 - This is where "it got long" goes. It is not where "it got messy" goes — the same rules apply.

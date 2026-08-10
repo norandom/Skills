@@ -8,13 +8,15 @@ Notes layer: personal notes about `02 3 Statements model.xlsx` and `Best practic
 
 ## Cell color coding
 
-| Color | Meaning | Who edits |
-|---|---|---|
-| **Blue** | Starting amounts / opening balances (historical actuals) | User fills once |
-| **Yellow** | Assumptions (growth %, rates, drivers) | User tunes |
-| **No fill / black text** | Formula cells | **Never edit** — driven by blue + yellow |
+| Color | Fill | Meaning | Who edits |
+|---|---|---|---|
+| **Blue** | `#BDD7EE` | Starting amounts / opening balances (historical actuals) | User fills once |
+| **Yellow** | `#FFFF00` | Assumptions (growth %, rates, drivers) | User tunes |
+| **No fill / black text** | — | Formula cells | **Never edit** — driven by blue + yellow |
 
 The rule users must hear every time: **fill only blue and yellow cells; never type over a formula cell; never keep a hardcoded number inside a formula.**
+
+The `financial-modeling-sheet` skill implements this same palette as its default House Style profile and extends it with named styles for constants (`#FFD966`), outputs (`#F2F2F2`), key results (navy `#000080`, white bold), and checks. When both skills are in play, the colors agree by construction — use these exact hexes.
 
 ---
 

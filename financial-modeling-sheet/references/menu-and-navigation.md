@@ -12,8 +12,8 @@ The menu lives in columns `C:F`, following the standard skeleton: rows 1–2 bla
 |---|---|---|
 | Main title | `C3:F3` | workbook or assessment title, text in `C3` |
 | Spacer | row 4 | blank |
-| Contents bar | `C5:F5` | `Inhaltsverzeichnis` / `Contents`, text in `C5` |
-| Table header | `C6:F6` | `Sheet` \| `Farbe/Color` \| `Anmerkung/Note` |
+| Contents bar | `C5:F5` | `Contents`, text in `C5` (legacy workbooks may read `Inhaltsverzeichnis`) |
+| Table header | `C6:F6` | `Sheet` \| `Color` \| `Note` |
 | Navigation rows | row 7 onward | one row per sheet, in tab order |
 
 ### Dimensions
@@ -117,6 +117,6 @@ Keep the note column short and functional — what the sheet is for, not what it
 
 The menu is also the right place for the one instruction every reader needs:
 
-> Fill only the colored input cells. Never type over an unfilled calculation cell.
+> Fill only the blue and yellow cells. Never type over an unfilled calculation cell.
 
 Put it as `ExplanatoryText` below the last navigation row, after a blank row.

@@ -76,7 +76,7 @@ Borders are the last resort, not the first tool. Fill hierarchy and whitespace c
 | Indigo section headers | none |
 | Standard calculation cells | none |
 | Output cells / output tables | thin `#3F3F3F` box |
-| User-control inputs | thin `#7F7F7F` box |
+| Assumption / driver inputs | thin `#7F7F7F` box |
 | Fixed constants | thin `#7F7F7F` top border |
 | Dashboard note cards | thin `#B2B2B2` box |
 | Key results | minimal; thin `#B2B2B2` only where abutting a note card |

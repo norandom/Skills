@@ -86,31 +86,36 @@ Use the built-in `Hlink` style where the workbook has it. Hyperlinks belong in t
 
 ## Semantic cell styles (House Style profile)
 
-### `SourceData` — source data and assumptions
-*Legacy alias: `Annahme`*
+### `SourceData` — source data, filled once
+*Legacy alias: `Annahme`; legacy fill: gray `#D0D0D0`*
+
+Historical actuals, opening balances, market and operational observations, imported (Power Query) data — the corporate-finance "blue cells" the user fills once.
 
 | Property | Value |
 |---|---|
-| Fill | `#D0D0D0` |
+| Fill | `#BDD7EE` (blue) |
 | Font | Arial 10, black |
 | Border | none (usually) |
 | Alignment | default (numbers right) |
 
-### `Input` — user-controlled model inputs
+### `Input` — assumptions and drivers the user tunes
+*Legacy fill: orange `#FFCC99`*
+
+Growth rates, margins, day counts, scenario controls, simulation parameters — the corporate-finance "yellow cells" the user tunes.
 
 | Property | Value |
 |---|---|
-| Fill | `#FFCC99` |
+| Fill | `#FFFF00` (yellow) |
 | Font | Aptos Narrow 11 |
 | Font color | `#3F3F76` |
 | Border | thin `#7F7F7F`, all four sides |
 
 ### `Constant` — fixed / task-given constants
-*Legacy alias: `MBA_Input`*
+*Legacy alias: `MBA_Input`; legacy fill: `#FABF8F`*
 
 | Property | Value |
 |---|---|
-| Fill | `#FABF8F` |
+| Fill | `#FFD966` (gold) |
 | Font | Aptos Narrow 11 or Arial 10, black |
 | Border | thin `#7F7F7F` **top** border; full thin box only where clarity requires it |
 
@@ -124,12 +129,15 @@ Use the built-in `Hlink` style where the workbook has it. Hyperlinks belong in t
 | Border | thin `#3F3F3F`, all four sides |
 
 ### `Result` — key results
+*Legacy fill: yellow `#FFFF00` (now the `Input` fill — see `palette-profiles.md`)*
 
 | Property | Value |
 |---|---|
-| Fill | `#FFFF00` |
-| Font | Arial 10, bold, black |
+| Fill | `#000080` (navy) |
+| Font | Arial 10, bold, white `#FFFFFF` |
 | Border | minimal; thin `#B2B2B2` where it abuts a note card |
+
+The idiomatic "headline total" of a financial model: navy fill, white bold figure. It shares the navy with `Header`, but a `Header` is text on the title row; a `Result` is a number at the end of a block or on the dashboard — position and content keep them apart.
 
 ### `Recommended` — recommended / selected result
 
@@ -160,8 +168,8 @@ Use the built-in `Hlink` style where the workbook has it. Hyperlinks belong in t
 | `ExplanatoryText` | — | gloss |
 | `Note` | — | note card |
 | `Hlink` | — | hyperlink |
-| `SourceData` | `Annahme` | 1. source / assumption |
-| `Input` | — | 2. user control |
+| `SourceData` | `Annahme` | 1. source data, filled once |
+| `Input` | — | 2. assumption / driver, tuned |
 | `Constant` | `MBA_Input` | 3. fixed constant |
 | *(no style — no fill)* | — | 4. local calculation |
 | *(no style — no fill + marker)* | — | 5. external model call |
@@ -179,17 +187,20 @@ Every color this standard uses, in one place.
 | Hex | Used for |
 |---|---|
 | `#000000` | menu tab; body font |
-| `#000080` | main title fill (navy) |
+| `#000080` | main title fill; key result fill (navy) |
 | `#333399` | section header fill (indigo) |
-| `#FFFF00` | key result fill; `RowTitle` font |
+| `#BDD7EE` | source data fill (blue, filled once) |
+| `#FFFF00` | assumption / driver input fill; `RowTitle` font |
+| `#FFD966` | fixed constant fill (gold) |
 | `#FFFFCC` | note card fill |
-| `#FFFF99` | **transient** work-in-progress fill only |
-| `#D0D0D0` | source data / assumption fill |
+| `#F8CBAD` | **transient** work-in-progress fill only (House Style) |
+| `#FFFF99` | **transient** work-in-progress fill only (Audit Standard) |
+| `#D0D0D0` | Audit Standard calculation fill; legacy house source data |
 | `#F2F2F2` | standard output fill |
 | `#E8E8E8` | documentation tab |
 | `#BFBFBF` | Power Query data tab |
-| `#FFCC99` | user-control input fill |
-| `#FABF8F` | fixed constant fill |
+| `#FFCC99` | Audit Standard input fill; legacy house input |
+| `#FABF8F` | legacy house constant fill |
 | `#3F3F76` | input font |
 | `#3F3F3F` | output font and border |
 | `#7F7F7F` | input/constant border; explanatory-text font |

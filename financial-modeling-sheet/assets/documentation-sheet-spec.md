@@ -25,16 +25,16 @@ Section bars: `SectionHeader` — `#333399`, Arial 9 bold white. One blank row b
 
 **2. Methodology** — the approach, the formulas that carry the result, and why this method rather than the obvious alternative. Formulas as text, referencing the cells that implement them.
 
-**3. Color convention** — the declared palette profile, spelled out. Reproduce the legend as actual formatted cells so the reader sees the colors, not a description of them:
+**3. Color convention** — the declared palette profile, spelled out (the default House Style shown; see `palette-profiles.md`). Reproduce the legend as actual formatted cells so the reader sees the colors, not a description of them:
 
 ```
-   Legend
-   [gray  #D0D0D0]  source data and inputs the workbook consumes
-   [orange #FFCC99] user-controlled scenario inputs — change these
-   [orange #FABF8F] fixed constants given by the task
+   Legend — House Style (semantic classes)
+   [blue  #BDD7EE]  source data filled once — historicals, opening balances, imported data
+   [yellow #FFFF00] assumptions and drivers the user tunes — change these
+   [gold  #FFD966]  fixed constants given by the task
    [no fill       ] calculations — do not overwrite
    [lt gray #F2F2F2] outputs
-   [yellow #FFFF00] key results
+   [navy  #000080]  key results — white bold font
    [pale green #E2EFDA] recommended option
    green font       formula contains an embedded constant (to be fixed)
 ```
@@ -49,7 +49,7 @@ Section bars: `SectionHeader` — `#333399`, Arial 9 bold white. One blank row b
 
 **8. Limitations** — what the workbook does not model and where it should not be trusted. The most valuable section and the most often skipped. Be specific: "assumes constant volatility; unreliable beyond a 12-month horizon" beats "results are indicative".
 
-**9. Operating instructions** — which cells to change, in what order, what to re-read afterwards. Lead with the one rule: *fill only the colored input cells; never type over an unfilled calculation cell.*
+**9. Operating instructions** — which cells to change, in what order, what to re-read afterwards. Lead with the one rule: *fill only the blue and yellow cells; never type over an unfilled calculation cell; never keep a hardcoded number inside a formula.*
 
 **10. Update requirements** — what must be refreshed, how often, by whom, and how to tell when it is stale.
 

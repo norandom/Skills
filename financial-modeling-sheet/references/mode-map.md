@@ -121,7 +121,7 @@ Every RESTYLE ends with a log the user can review and reverse:
 
 | Sheet | Range | Before | After | Reason |
 |---|---|---|---|---|
-| `Task 1` | `D7:D19` | no fill, Calibri 11 | `SourceData` (gray `#D0D0D0`, Arial 10) | sourced parameters were indistinguishable from calculations |
+| `Task 1` | `D7:D19` | no fill, Calibri 11 | `SourceData` (blue `#BDD7EE`, Arial 10) | sourced parameters were indistinguishable from calculations |
 | Dashboard | tab color | none | `#7030A0` | tab color is the purpose code |
 
 Report counts too: cells reclassified, sheets recolored, links repaired, formats normalized. If you left something alone deliberately, say so — an unexplained omission reads as an oversight.

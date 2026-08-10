@@ -53,7 +53,7 @@ Why: Excel tables impose their own formatting layer that overrides named styles,
 
 - **Do not add conditional formatting for decoration.** Data bars, color scales, and icon sets inside a calculation grid make it impossible to tell the semantic fill from the computed one.
 - **Never use conditional formatting to alter the negative-number convention.** Negatives are black with a leading minus (`number-formats.md`).
-- Where conditional formatting is genuinely useful — a large grid where outliers matter, a heatmap of sensitivities — keep its colors **separate from the core input/output palette**. Do not use `#D0D0D0`, `#FFCC99`, `#FABF8F`, `#F2F2F2`, `#FFFF00`, or `#E2EFDA` in a conditional rule.
+- Where conditional formatting is genuinely useful — a large grid where outliers matter, a heatmap of sensitivities — keep its colors **separate from the core input/output palette**. Do not use `#BDD7EE`, `#FFFF00`, `#FFD966`, `#F2F2F2`, `#000080`, or `#E2EFDA` in a conditional rule — nor `#FFCC99` or `#D0D0D0` in an Audit Standard workbook.
 - Check cells are the sanctioned exception: PASS/WARN/FAIL colors may be applied by conditional formatting, since they sit outside the core palette by design.
 - Document every conditional-formatting rule in Documentation. An invisible rule that colors a cell is indistinguishable from a manual fill to the next reader, and it will be wrong eventually.
 
@@ -65,6 +65,6 @@ Common enough to deserve a house pattern:
 
 - Row and column headers use `RowTitle` (indigo, yellow bold) so the axes of the grid are unmistakable.
 - Grid cells are `Output` if they are results to read, unfilled if they are intermediate.
-- The base case gets a `Result` fill; the selected case, if different, gets the pale-green recommendation fill.
+- The base case gets the `Result` style (navy fill, white bold figure); the selected case, if different, gets the pale-green recommendation fill.
 - One number format across the whole grid — mixed precision in a sensitivity table is unreadable.
 - Put the two varied drivers' names and units in the corner cell as `ExplanatoryText`.

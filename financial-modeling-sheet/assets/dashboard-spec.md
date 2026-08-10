@@ -26,13 +26,13 @@ Columns A and B stay empty throughout, ~`20 pt` wide.
  7   HEADLINE RESULT ..................................
  8
  9   Selected option            Option B — hedged     <- Recommended, #E2EFDA, Arial 11 bold #375623, row 30 pt
-10   Key metric                 4.31                  <- Result, #FFFF00, Arial 10 bold, links to its source
+10   Key metric                 4.31                  <- Result, navy #000080, Arial 10 bold white, links to its source
 11   Decision basis             lowest downside at    <- Note, #FFFFCC, wrapped, thin #B2B2B2 border
 12                              equal expected value
 ```
 
 - The key metric is a **link**, never a typed number.
-- Exactly one `Result` cell per decision. If there are three, none of them reads as the answer.
+- Exactly one `Result` cell per decision — navy is the scarce look-here color. If there are three, none of them reads as the answer.
 
 ## Block 2 — supporting outputs
 
@@ -57,7 +57,7 @@ Columns A and B stay empty throughout, ~`20 pt` wide.
 23   Volatility          0.2100     p.a.     model estimate
 ```
 
-Surfaced inputs use `SourceData` gray `#D0D0D0` — they are inputs even though the cell holds a cross-sheet formula. Role beats mechanism.
+Surfaced inputs use `SourceData` blue `#BDD7EE` — the dashboard consumes them, nobody edits them here, even though the cell holds a cross-sheet formula. Role beats mechanism. The tunable knob itself is yellow only where it lives and is edited, in the shared inputs.
 
 ## Block 4 — integrity checks
 
@@ -81,7 +81,7 @@ Placed to the right (from column J) or below. `XYScatter` / `XYScatterLines` / `
 
 - [ ] Every value on this sheet is a link to the sheet that computed it — zero typed results.
 - [ ] Exactly one `Result` cell per decision; `Recommended` marks the chosen option.
-- [ ] Surfaced inputs are gray, not treated as calculations.
+- [ ] Surfaced inputs are blue, not treated as calculations.
 - [ ] Checks show delta and location, in both color and text.
 - [ ] Key-result rows vertically centered, ~`30 pt`.
 - [ ] Fits one screen, or the overflow is deliberate.

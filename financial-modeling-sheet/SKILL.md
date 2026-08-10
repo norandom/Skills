@@ -1,8 +1,8 @@
 ---
 name: financial-modeling-sheet
-version: 1.0.0
+version: 1.1.0
 description: >
-  House style for quantitative Excel workbooks: sheet architecture, tab colors, menu and hyperlink navigation, semantic cell classes, named styles, number formats, the negative-value convention, dashboard and documentation standards, charts, and a definition-of-done audit. Four modes — CREATE a workbook, EXTEND one, AUDIT conformance (never writes), RESTYLE legacy formatting. Two non-mixable palette profiles: House Style (default — gray source data, orange user controls, no-fill calculations, light-gray outputs, yellow key results) and Audit Standard (orange inputs, gray calculations, green font for mixed cells). Triggers on "standardize this workbook", "format my Excel model", "style this spreadsheet", "workbook house style", "tab colors", "build a menu sheet", "color-code inputs vs formulas", a Power Query load, or a formatting review. Applies to finance, risk, research, operations, and engineering assessments. Governs presentation only — it does not verify arithmetic.
+  House style for quantitative Excel workbooks: sheet architecture, tab colors, menu and hyperlink navigation, semantic cell classes, named styles, number formats, the negative-value convention, dashboard and documentation standards, charts, and a definition-of-done audit. Four modes — CREATE a workbook, EXTEND one, AUDIT conformance (never writes), RESTYLE legacy formatting. Two non-mixable palette profiles: House Style (default, matching the corporate-finance blue/yellow convention — blue source data filled once, yellow assumptions the user tunes, no-fill calculations, light-gray outputs, navy key results) and Audit Standard (orange inputs, gray calculations, green font for mixed cells). Triggers on "standardize this workbook", "format my Excel model", "style this spreadsheet", "workbook house style", "tab colors", "build a menu sheet", "color-code inputs vs formulas", a Power Query load, or a formatting review. Applies to finance, risk, research, operations, and engineering assessments. Governs presentation only — it does not verify arithmetic.
 ---
 
 # Financial modeling sheet: workbook house style
@@ -26,7 +26,7 @@ It is domain-neutral. Financial models are the primary case, but the same archit
 Three rules override everything else in this skill:
 
 1. **Classify every cell or block by semantic role first** (`references/cell-classes.md`), then apply the matching named style. If you cannot name the role, do not color the cell.
-2. **One palette profile per workbook, declared in Documentation, never mixed** (`references/palette-profiles.md`). The default is House Style. Mixing profiles inverts the meaning of gray and destroys the reader's ability to audit at a glance.
+2. **One palette profile per workbook, declared in Documentation, never mixed** (`references/palette-profiles.md`). The default is House Style. Mixing profiles makes the same fill mean two different things and destroys the reader's ability to audit at a glance.
 3. **Preserve what is already coherent.** In EXTEND, AUDIT, and RESTYLE modes, formulas, cross-sheet references, charts, notes, named styles, column widths, hidden structures, and locally coherent formatting survive untouched unless the user explicitly asked for a full restyle. You are standardizing a workbook, not rebuilding it.
 
 This skill does not verify arithmetic. Whether a number is *correct* is outside its scope; whether a reader can tell what that number **is** — typed, chosen, calculated, imported, decisive — is entirely inside it. When a request mixes the two, do the presentation work and say plainly which findings are formatting and which would need the math checked separately.
@@ -77,9 +77,9 @@ This standard is applied **inside Excel**, through an assistant add-in (Claude f
 ## Capability map
 
 - **A. Modes and the preservation contract**: what each mode may touch, approval gates, change logs: `references/mode-map.md`.
-- **B. Palette profiles**: House Style vs Audit Standard, the gray conflict, the mapping table, the profile-neutral rules (green font for mixed cells, transient WIP fill): `references/palette-profiles.md`.
+- **B. Palette profiles**: House Style vs Audit Standard, the fill-meaning conflict, the legacy house palette, the mapping table, the profile-neutral rules (green font for mixed cells, transient WIP fill): `references/palette-profiles.md`.
 - **C. Semantic cell classes**: the nine roles from source data to recommended result, plus checks and warnings: `references/cell-classes.md`.
-- **D. Named styles**: the exact style registry — `Header`, `SectionHeader`, `RowTitle`, `SourceData`, `Input`, `Constant`, `Output`, `Result`, `Note`, `ExplanatoryText`, `Hlink`: `references/named-styles.md`.
+- **D. Named styles**: the exact style registry — `Header`, `SectionHeader`, `RowTitle`, `SourceData`, `Input`, `Constant`, `Output`, `Result`, `Recommended`, `Note`, `ExplanatoryText`, `Hlink`, `CheckPass`/`CheckWarn`/`CheckFail`: `references/named-styles.md`.
 - **E. Workbook architecture**: sheet order, tab-color code, workbook view, the row-3 / column-C anchor, the no-merge rule: `references/workbook-architecture.md`.
 - **F. Navigation**: menu geometry, swatches, hyperlink syntax and escaping, what to omit: `references/menu-and-navigation.md`.
 - **G. Sheet standards**: dashboard, documentation, task sheets, shared inputs, engine, support calculations, data sheets: `references/sheet-standards.md`.
@@ -113,9 +113,9 @@ Carry these fields across every phase and record them on the Documentation sheet
 
 ## Decision points
 
-- **Which palette profile?** New workbook, or the user wants the semantic 9-class scheme -> House Style. Existing workbook already coherently using orange-input/gray-formula -> Audit Standard, keep it. Never both. (`references/palette-profiles.md`.)
-- **Gray or orange for this cell?** Is it data the model consumes (sourced, assumed, market/operational) -> gray `SourceData`. Is it a control the user turns to run a scenario -> orange `Input`. Is it a constant fixed by the task or methodology -> `Constant`. A cross-sheet formula that *surfaces* an assumption is still gray; role beats mechanism. (`references/cell-classes.md`.)
-- **Output or Result?** Any calculated value a reader consumes -> light-gray `Output`. The value the decision turns on -> yellow `Result`. The option actually chosen -> pale-green recommendation. If everything is yellow, nothing is. (`references/cell-classes.md`.)
+- **Which palette profile?** New workbook, or the user wants the semantic 9-class scheme -> House Style (the corporate-finance blue/yellow convention). Existing workbook already coherently using orange-input/gray-formula -> Audit Standard, keep it. Existing workbook on the old gray-source/orange-control house scheme -> the legacy house palette; match it, do not convert without approval. Never mix. (`references/palette-profiles.md`.)
+- **Blue or yellow for this cell?** Is it data the world supplied, filled once — a historical actual, an opening balance, an observed or imported value, a value surfaced from the shared inputs -> blue `SourceData`. Is it an assumption or driver the user tunes to run a scenario -> yellow `Input`. Is it a constant fixed by the task or methodology -> gold `Constant`. A cross-sheet formula that *surfaces* an input into a parameter block is still blue — it is consumed there, not edited; role beats mechanism. (`references/cell-classes.md`.)
+- **Output or Result?** Any calculated value a reader consumes -> light-gray `Output`. The value the decision turns on -> navy `Result`, white bold. The option actually chosen -> pale-green recommendation. If everything is navy, nothing is. (`references/cell-classes.md`.)
 - **Freeze panes?** Default no. Add only when a sheet is long or wide enough that the header scrolls out of sight during normal reading. (`references/workbook-architecture.md`.)
 - **A chart or a table?** Does the relationship between two metrics carry the message -> chart. Does the reader need the exact figures -> table. Decoration -> neither. (`references/charts-and-tables.md`.)
 - **Table or formatted range?** Formatted range by default. Formal Excel table only when filtering, structured references, or aggregation genuinely require it — and for Power Query output, which necessarily lands as a table. (`references/charts-and-tables.md`.)
@@ -142,7 +142,7 @@ Carry these fields across every phase and record them on the Documentation sheet
 References (normative rules):
 
 - `references/mode-map.md`: the four modes, preservation contract, approval gates, change log format.
-- `references/palette-profiles.md`: House Style vs Audit Standard, the gray conflict, mapping table, profile-neutral rules.
+- `references/palette-profiles.md`: House Style vs Audit Standard, the fill-meaning conflict, the legacy house palette, mapping table, profile-neutral rules.
 - `references/cell-classes.md`: the nine semantic classes plus checks and warnings, with classification tests.
 - `references/named-styles.md`: exact specification of every named style — fill, font, color, border, alignment.
 - `references/workbook-architecture.md`: sheet order, tab colors, workbook view, starting positions, no-merge rule.

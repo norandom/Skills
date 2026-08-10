@@ -31,30 +31,30 @@ Widths: C ~`117 pt`, D ~`80 pt`, E ~`60 pt`, F ~`90 pt`.
 
 ## The three input classes, kept apart
 
-Group them. Do not interleave — the whole point of three fills is that a reader can find the ones they are allowed to change.
+Group them. Do not interleave — the whole point of three fills is that a reader can see at a glance which cells are filled once (blue) and which they are invited to keep tuning (yellow).
 
 ```
  7   BASE DATA .......................................
  8   Driver                Value     Unit    Source
- 9   Spot price            118.40    EUR     exchange close 2026-07-31   <- SourceData, gray #D0D0D0
+ 9   Spot price            118.40    EUR     exchange close 2026-07-31   <- SourceData, blue #BDD7EE
 10   Volume                12,400    units   ERP export 2026-07-28       <- SourceData
 11   Volatility            0.2100    p.a.    estimated, see Docu §2      <- SourceData
 12
 13   SCENARIO CONTROLS ...............................
 14   Control               Value     Unit    Note
-15   Scenario              Base      —       Base / Upside / Downside    <- Input, orange #FFCC99, bordered
+15   Scenario              Base      —       Base / Upside / Downside    <- Input, yellow #FFFF00, bordered
 16   Horizon               12        months  1–36                        <- Input
 17   Stress multiplier     1.00      x       1.00 = no stress            <- Input
 18
 19   FIXED CONSTANTS .................................
 20   Constant              Value     Unit    Basis
-21   Day count             360       days    methodology                 <- Constant, #FABF8F, thin top border
+21   Day count             360       days    methodology                 <- Constant, gold #FFD966, thin top border
 22   Confidence level      0.9500    —       task specification          <- Constant
 ```
 
-- **Base data** (`SourceData`, gray) — what the workbook consumes. Every row needs a source in column F.
-- **Scenario controls** (`Input`, orange, bordered) — what the reader turns. Column F states the permitted range or the allowed values.
-- **Fixed constants** (`Constant`) — given by the task or methodology. Column F states the basis.
+- **Base data** (`SourceData`, blue) — what the workbook consumes, filled once from the world. Every row needs a source in column F.
+- **Scenario controls** (`Input`, yellow, bordered) — what the reader turns. Column F states the permitted range or the allowed values.
+- **Fixed constants** (`Constant`, gold) — given by the task or methodology. Column F states the basis.
 - Blank row between groups.
 
 The labels in column C are plain Arial 10, unfilled. **Color the value, not its name.**
@@ -70,7 +70,7 @@ The labels in column C are plain Arial 10, unfilled. **Color the value, not its 
 - Percentages stored as fractions, formatted `0.00%`.
 - The reader instruction on row 5, verbatim:
 
-  > Fill only the colored input cells. Never type over an unfilled calculation cell.
+  > Fill only the blue and yellow cells. Never type over an unfilled calculation cell.
 
 ---
 
