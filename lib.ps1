@@ -1,4 +1,4 @@
-# lib.ps1 — shared helpers for install.ps1.
+# lib.ps1 - shared helpers for install.ps1.
 # Dot-source this file; do not execute it directly.
 #
 # State knobs (set in the caller before invoking helpers):
@@ -68,7 +68,7 @@ function Test-SkillDescriptions {
         $file = Join-Path $script:LibRoot "$name/SKILL.md"
         $len  = Get-SkillDescriptionLength -Path $file
         if ($len -gt $script:LibDescMax) {
-            Write-Warning ("{0,-24}  description {1} chars > {2} — Claude Desktop / Code will silently drop this skill" -f $name, $len, $script:LibDescMax)
+            Write-Warning ("{0,-24}  description {1} chars > {2} - Claude Desktop / Code will silently drop this skill" -f $name, $len, $script:LibDescMax)
             $ok = $false
         }
     }
@@ -151,7 +151,7 @@ function Install-LibTarget {
         $kind = $null
         Invoke-Lib "ln -s $target $link" { $script:_last = New-DirLink -Link $link -Target $target }
         if (-not $script:LibDryRun) { $kind = $script:_last }
-        $suffix = if ($kind -eq 'junction') { ' (junction; SymbolicLink denied — enable Developer Mode for true symlinks)' } else { '' }
+        $suffix = if ($kind -eq 'junction') { ' (junction; SymbolicLink denied - enable Developer Mode for true symlinks)' } else { '' }
         Write-Host ("         + {0}{1}" -f $name, $suffix)
     }
 }

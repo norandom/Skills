@@ -1,13 +1,18 @@
-# install-gui.ps1 — point-and-click installer for Windows (WinForms).
+# install-gui.ps1 - point-and-click installer for Windows (WinForms).
 #
-# Launch by double-clicking install-gui.cmd (a .ps1 opens in an editor on
-# double-click; the .cmd shim runs it with the right execution policy).
+# Launch by streaming bootstrap-gui.ps1, double-clicking Skills Installer.vbs,
+# or running install-gui.cmd. The streamed bootstrap refreshes the managed repo
+# before opening this wizard.
 #
 # Wraps the same lib.ps1 logic install.ps1 uses, behind a native dialog:
 #   choose Install/Uninstall, tick tools and skills, Preview the dry run,
 #   then Apply. Falls back to a console wizard if WinForms is unavailable.
 [CmdletBinding()]
-param()
+param(
+    [switch]$NoConsoleFallback,
+    [switch]$SelfTest,
+    [switch]$GuiSmokeTest
+)
 
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib.ps1')
@@ -64,6 +69,8 @@ function Start-ConsoleWizard {
 
 # ---- WinForms wizard --------------------------------------------------------
 function Start-GuiWizard {
+    param([switch]$AutoPreview)
+
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
 
@@ -89,12 +96,13 @@ function Start-GuiWizard {
     $form.Controls.Add($toolsLabel)
 
     $toolsList = New-Object System.Windows.Forms.CheckedListBox
+    $toolsList.Name = 'ToolsList'
     $toolsList.Location = '16,68'; $toolsList.Size = New-Object System.Drawing.Size(516, 130)
     $toolsList.CheckOnClick = $true
     foreach ($t in $Targets) {
         $detected = Test-Path -LiteralPath $t.Path
         $suffix = if ($detected) { "($($t.Path))" } else { "(not detected: $($t.Path))" }
-        [void]$toolsList.Items.Add("$($t.Key) — $($t.Name) $suffix", $detected)
+        [void]$toolsList.Items.Add("$($t.Key) - $($t.Name) $suffix", $detected)
     }
     $form.Controls.Add($toolsList)
 
@@ -103,22 +111,27 @@ function Start-GuiWizard {
     $form.Controls.Add($skillsLabel)
 
     $skillsList = New-Object System.Windows.Forms.CheckedListBox
+    $skillsList.Name = 'SkillsList'
     $skillsList.Location = '16,230'; $skillsList.Size = New-Object System.Drawing.Size(516, 210)
     $skillsList.CheckOnClick = $true
     foreach ($s in (Get-SkillNames)) { [void]$skillsList.Items.Add($s, $true) }
     $form.Controls.Add($skillsList)
 
     $preview = New-Object System.Windows.Forms.Button
+    $preview.Name = 'PreviewButton'
     $preview.Text = 'Preview (dry run)'; $preview.Location = '16,452'; $preview.Size = '150,30'
     $apply = New-Object System.Windows.Forms.Button
+    $apply.Name = 'ApplyButton'
     $apply.Text = 'Apply'; $apply.Location = '350,452'; $apply.Size = '90,30'
     $cancel = New-Object System.Windows.Forms.Button
+    $cancel.Name = 'CancelButton'
     $cancel.Text = 'Cancel'; $cancel.Location = '442,452'; $cancel.Size = '90,30'
     $cancel.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
     $form.CancelButton = $cancel
     $form.Controls.AddRange(@($preview, $apply, $cancel))
 
     $output = New-Object System.Windows.Forms.TextBox
+    $output.Name = 'OutputText'
     $output.Location = '16,492'; $output.Size = New-Object System.Drawing.Size(516, 80)
     $output.Multiline = $true; $output.ScrollBars = 'Vertical'; $output.ReadOnly = $true
     $output.Font = New-Object System.Drawing.Font('Consolas', 8)
@@ -147,13 +160,64 @@ function Start-GuiWizard {
         [System.Windows.Forms.MessageBox]::Show("$($s.Mode) complete.", 'Skills Installer') | Out-Null
     })
 
+    $smokeTimer = $null
+    if ($AutoPreview) {
+        if ($toolsList.CheckedItems.Count -eq 0) { $toolsList.SetItemChecked(0, $true) }
+        $smokeTimer = New-Object System.Windows.Forms.Timer
+        $smokeTimer.Interval = 250
+        $smokeTimer.Add_Tick({
+            $smokeTimer.Stop()
+            $preview.PerformClick()
+            $script:GuiSmokeOutput = $output.Text
+            $form.Close()
+        })
+        $smokeTimer.Start()
+    }
+
     [void]$form.ShowDialog()
+    if ($smokeTimer) { $smokeTimer.Dispose() }
     $form.Dispose()
+}
+
+if ($SelfTest) {
+    $skills = @(Get-SkillNames)
+    if (-not $skills) { throw 'Self-test failed: no skills were discovered.' }
+    if (@($Targets.Key | Select-Object -Unique).Count -ne $Targets.Count) {
+        throw 'Self-test failed: duplicate target keys.'
+    }
+    $preview = Invoke-Run -DryRun $true -Mode 'Install' -Tools @($Targets[0].Key) -Skills @($skills[0])
+    if (-not $preview) { throw 'Self-test failed: dry-run preview was empty.' }
+    Write-Host "PASS: Windows GUI discovered $($skills.Count) skills and generated a dry-run preview."
+    return
+}
+
+if ($GuiSmokeTest) {
+    $script:GuiSmokeOutput = ''
+    Start-GuiWizard -AutoPreview
+    if ($script:GuiSmokeOutput -notmatch 'DRY:|already linked|link\s+|skip\s+') {
+        throw 'GUI smoke test failed: Preview did not produce dry-run output.'
+    }
+    Write-Host "PASS: live Windows GUI Preview produced $($script:GuiSmokeOutput.Length) characters of dry-run output."
+    return
 }
 
 try {
     Start-GuiWizard
 } catch {
-    Write-Warning "GUI unavailable ($($_.Exception.Message)); falling back to console."
-    Start-ConsoleWizard
+    if ($NoConsoleFallback) {
+        try {
+            Add-Type -AssemblyName System.Windows.Forms
+            [System.Windows.Forms.MessageBox]::Show(
+                "The GUI could not start.`r`n`r`n$($_.Exception.Message)",
+                'Skills Installer',
+                [System.Windows.Forms.MessageBoxButtons]::OK,
+                [System.Windows.Forms.MessageBoxIcon]::Error
+            ) | Out-Null
+        } catch {
+            Write-Error "GUI unavailable: $($_.Exception.Message)"
+        }
+    } else {
+        Write-Warning "GUI unavailable ($($_.Exception.Message)); falling back to console."
+        Start-ConsoleWizard
+    }
 }

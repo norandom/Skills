@@ -103,17 +103,30 @@ curl -fsSL https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.sh |
 irm https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.ps1 | iex
 ```
 
+For the native Windows GUI, stream the launcher directly—there is no installer
+file to save first:
+
+```powershell
+irm https://raw.githubusercontent.com/norandom/Skills/main/bootstrap-gui.ps1 | iex
+```
+
+To launch it from the Run dialog without a console window:
+
+```text
+powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command "iex (irm 'https://raw.githubusercontent.com/norandom/Skills/main/bootstrap-gui.ps1')"
+```
+
 The source is unpacked to `~/.local/share/skills` (macOS/Linux) or `%LOCALAPPDATA%\Skills` (Windows); override with `SKILLS_HOME`. Needs only `curl`/`tar` (or `wget`) or, on Windows, built-in PowerShell — no `git`. The skills are symlinked from that copy, so a re-run that refreshes it updates every linked tool at once.
 
-### GUI installer (double-click)
+### GUI installer
 
 If you'd rather click than type, after cloning or bootstrapping the repo:
 
 - **macOS** — double-click **`Skills Installer.app`** for native dialogs with no Terminal window. (If you downloaded the repo as a zip rather than cloning, macOS may quarantine it; right-click → Open once, or run `xattr -dr com.apple.quarantine "Skills Installer.app"`.) The plain `install-gui.command` still works too, but opens a Terminal.
 - **Linux** — double-click `install-gui.command` (mark it executable / "Run" if your file manager asks). Uses **zenity** if present; otherwise falls back to a terminal wizard.
-- **Windows** — double-click **`Skills Installer.vbs`** for the WinForms wizard with no console window (the equivalent of the macOS app; it starts PowerShell hidden). The `install-gui.cmd` shim also works but flashes a console; double-clicking the `.ps1` directly just opens an editor.
+- **Windows** — use the streamed `bootstrap-gui.ps1` command above, or double-click **`Skills Installer.vbs`** from a clone/release archive. Both open the WinForms wizard without a console window. The `install-gui.cmd` shim also works but flashes a console; double-clicking the `.ps1` directly just opens an editor.
 
-The wizard walks you through: Install or Uninstall, which tools to target (detected ones pre-checked), which skills to link, a dry-run **preview**, then apply. It reuses the same logic as the CLI scripts below, so the result is identical. Force a specific backend with `SKILLS_UI=zenity|osascript|terminal` on Unix.
+The wizard walks you through: Install or Uninstall, which tools to target (detected ones pre-checked), which skills to link, a dry-run **preview**, then apply. The Windows streamed launcher first refreshes the managed `%LOCALAPPDATA%\Skills` copy; that copy remains on disk because the tool integrations link to it. The wizard reuses the same logic as the CLI scripts below, so the result is identical. Force a specific backend with `SKILLS_UI=zenity|osascript|terminal` on Unix.
 
 ### macOS / Linux (CLI)
 
@@ -215,7 +228,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, bootstrap, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file.
+That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, CLI and Windows GUI bootstraps, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file.
 
 To build the same artifacts locally (requires Docker and the [Dagger CLI](https://docs.dagger.io/install)):
 

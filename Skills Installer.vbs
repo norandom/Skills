@@ -1,4 +1,4 @@
-' Skills Installer — no-console launcher for Windows.
+' Skills Installer - no-console launcher for Windows.
 '
 ' Double-click this file to run the WinForms wizard with no console window
 ' (the Windows equivalent of "Skills Installer.app" on macOS). The .ps1 opens
@@ -22,7 +22,7 @@ If Not fso.FileExists(ps1) Then
 End If
 
 ' Window style 0 = hidden; False = don't wait. The WinForms dialogs still show.
-args = " -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File " & """" & ps1 & """"
+args = " -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File " & """" & ps1 & """" & " -NoConsoleFallback"
 
 On Error Resume Next
 sh.Run "pwsh" & args, 0, False

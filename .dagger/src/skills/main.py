@@ -89,7 +89,8 @@ if ls mcp_servers/*.mcpb >/dev/null 2>&1; then cp mcp_servers/*.mcpb /dist/; fi
 # installer archive: scripts, launchers, and the no-console .vbs (flat layout)
 zip -j /dist/skills-installer.zip \
   install.sh install.ps1 install-gui.command install-gui.ps1 install-gui.cmd \
-  "Skills Installer.vbs" bootstrap.sh bootstrap.ps1 lib.sh lib.ps1 build.sh
+  "Skills Installer.vbs" bootstrap.sh bootstrap.ps1 bootstrap-gui.ps1 \
+  lib.sh lib.ps1 build.sh
 # macOS no-terminal launcher — a bundle, so keep its tree and the executable bit
 zip -qry /dist/skills-installer-macos-app.zip "Skills Installer.app"
 # checksums — written via a temp file so SHA256SUMS never lists itself
