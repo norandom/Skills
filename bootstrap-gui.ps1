@@ -9,9 +9,9 @@ Run directly from GitHub without first downloading an installer:
   irm https://raw.githubusercontent.com/norandom/Skills/main/bootstrap-gui.ps1 | iex
 
 The launcher itself is fileless, but the repo is intentionally persisted under
-%LOCALAPPDATA%\Skills (or SKILLS_HOME) because the installed skills are links
-to that managed copy. Re-running this command refreshes the copy before opening
-the installer.
+%LOCALAPPDATA%\Skills (or SKILLS_HOME) as the update source for the managed
+skill copies. Re-running this command refreshes the source before opening the
+installer.
 
 Env overrides:
   SKILLS_HOME   where to unpack      (default: %LOCALAPPDATA%\Skills)
@@ -74,19 +74,19 @@ try {
 
     $Url = "https://github.com/$Repo/archive/$Ref.zip"
     $tmp = Join-Path ([IO.Path]::GetTempPath()) ('skills-' + [Guid]::NewGuid().ToString('N'))
-    New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+    New-Item -ItemType Directory -Force -Path $tmp -Confirm:$false | Out-Null
     $zip = Join-Path $tmp 'src.zip'
     Invoke-WebRequest -Uri $Url -OutFile $zip -UseBasicParsing
 
     $status.Text = "Updating $Dest..."
     $progressForm.Refresh()
     [System.Windows.Forms.Application]::DoEvents()
-    Expand-Archive -Path $zip -DestinationPath $tmp -Force
+    Expand-Archive -Path $zip -DestinationPath $tmp -Force -Confirm:$false
 
     $extracted = Get-ChildItem -Path $tmp -Directory | Select-Object -First 1
     if (-not $extracted) { throw 'The downloaded archive did not contain a source directory.' }
-    New-Item -ItemType Directory -Force -Path $Dest | Out-Null
-    Copy-Item -Path (Join-Path $extracted.FullName '*') -Destination $Dest -Recurse -Force
+    New-Item -ItemType Directory -Force -Path $Dest -Confirm:$false | Out-Null
+    Copy-Item -Path (Join-Path $extracted.FullName '*') -Destination $Dest -Recurse -Force -Confirm:$false
 
     $gui = Join-Path $Dest 'install-gui.ps1'
     if (-not (Test-Path -LiteralPath $gui -PathType Leaf)) {
@@ -108,5 +108,5 @@ try {
     }
     Show-BootstrapError -Message ("Installation failed.`r`n`r`n" + $_.Exception.Message)
 } finally {
-    if ($tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue }
+    if ($tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue }
 }

@@ -56,7 +56,7 @@ function Start-ConsoleWizard {
 
     $allSkills = @(Get-SkillNames)
     Write-Host "`nSkills: $($allSkills -join ', ')"
-    $ans = Read-Host "Skill names to link (space-separated, blank = all)"
+    $ans = Read-Host "Skill names to install (space-separated, blank = all)"
     $skills = if ($ans.Trim()) { $ans -split '\s+' } else { $allSkills }
 
     Write-Host "`n----- preview (dry run) -----"
@@ -194,7 +194,7 @@ if ($SelfTest) {
 if ($GuiSmokeTest) {
     $script:GuiSmokeOutput = ''
     Start-GuiWizard -AutoPreview
-    if ($script:GuiSmokeOutput -notmatch 'DRY:|already linked|link\s+|skip\s+') {
+    if ($script:GuiSmokeOutput -notmatch 'DRY:|already linked|link\s+|copy\s+|skip\s+') {
         throw 'GUI smoke test failed: Preview did not produce dry-run output.'
     }
     Write-Host "PASS: live Windows GUI Preview produced $($script:GuiSmokeOutput.Length) characters of dry-run output."

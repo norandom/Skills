@@ -3,7 +3,7 @@
 [![SkillSpector](https://img.shields.io/github/actions/workflow/status/norandom/Skills/skillspector.yml?branch=main&label=SkillSpector)](https://github.com/norandom/Skills/actions/workflows/skillspector.yml)
 [![ClamAV](https://img.shields.io/github/actions/workflow/status/norandom/Skills/clamav.yml?branch=main&label=ClamAV)](https://github.com/norandom/Skills/actions/workflows/clamav.yml)
 
-Skills I use primarily with [opencode](https://opencode.ai) and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
+Skills I use primarily with Codex, [opencode](https://opencode.ai), and Claude Code, plus a few other compatible tools (Hermes, DeepSeek TUI, Antigravity CLI). Each one is a folder with a `SKILL.md` and a version. For tools that prefer a single bundle, run `./build.sh` to pack each into a `<name>.skill` zip, or download the prebuilt bundles from a [GitHub Release](https://github.com/norandom/Skills/releases) — they are not committed to the repo. Install whichever you want; more will land here over time.
 
 ## Skills in this repo
 
@@ -87,7 +87,7 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ### Quick install / update (no git required)
 
-One command downloads the latest source, unpacks it to a managed location, and links the skills into your tools. **Re-running it is also how you update** — it re-downloads the latest and relinks, so install and update are the same command.
+One command downloads the latest source, unpacks it to a managed location, and installs the skills into your tools. **Re-running it is also how you update** — it refreshes both the source and the installed skills, so install and update are the same command.
 
 **macOS / Linux:**
 
@@ -116,7 +116,7 @@ To launch it from the Run dialog without a console window:
 powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -Command "iex (irm 'https://raw.githubusercontent.com/norandom/Skills/main/bootstrap-gui.ps1')"
 ```
 
-The source is unpacked to `~/.local/share/skills` (macOS/Linux) or `%LOCALAPPDATA%\Skills` (Windows); override with `SKILLS_HOME`. Needs only `curl`/`tar` (or `wget`) or, on Windows, built-in PowerShell — no `git`. The skills are symlinked from that copy, so a re-run that refreshes it updates every linked tool at once.
+The source is unpacked to `~/.local/share/skills` (macOS/Linux) or `%LOCALAPPDATA%\Skills` (Windows); override with `SKILLS_HOME`. Needs only `curl`/`tar` (or `wget`) or, on Windows, built-in PowerShell — no `git`. macOS/Linux use symlinks; Windows uses managed directory copies that are refreshed on every re-run.
 
 ### GUI installer
 
@@ -126,7 +126,7 @@ If you'd rather click than type, after cloning or bootstrapping the repo:
 - **Linux** — double-click `install-gui.command` (mark it executable / "Run" if your file manager asks). Uses **zenity** if present; otherwise falls back to a terminal wizard.
 - **Windows** — use the streamed `bootstrap-gui.ps1` command above, or double-click **`Skills Installer.vbs`** from a clone/release archive. Both open the WinForms wizard without a console window. The `install-gui.cmd` shim also works but flashes a console; double-clicking the `.ps1` directly just opens an editor.
 
-The wizard walks you through: Install or Uninstall, which tools to target (detected ones pre-checked), which skills to link, a dry-run **preview**, then apply. The Windows streamed launcher first refreshes the managed `%LOCALAPPDATA%\Skills` copy; that copy remains on disk because the tool integrations link to it. The wizard reuses the same logic as the CLI scripts below, so the result is identical. Force a specific backend with `SKILLS_UI=zenity|osascript|terminal` on Unix.
+The wizard walks you through: Install or Uninstall, which tools to target (detected ones pre-checked), which skills to install, a dry-run **preview**, then apply. The Windows streamed launcher first refreshes the managed `%LOCALAPPDATA%\Skills` source and then refreshes the selected tool integrations from it. The wizard reuses the same logic as the CLI scripts below, so the result is identical. Force a specific backend with `SKILLS_UI=zenity|osascript|terminal` on Unix.
 
 ### macOS / Linux (CLI)
 
@@ -169,10 +169,11 @@ cd $env:USERPROFILE\Source\Skills
 .\install.ps1            # auto-detect: install into every tool whose dir exists
 ```
 
-`install.ps1` mirrors the bash script. It tries to create real symbolic links first and falls back to NTFS directory junctions when SymbolicLink is denied — junctions need no elevation and behave identically for skill discovery. For true symlinks, either enable **Settings → Privacy & security → For developers → Developer Mode** or run PowerShell as administrator.
+`install.ps1` installs managed directory copies by default. This works in ordinary PowerShell without Developer Mode, elevation, junctions, or symbolic-link privileges. Re-run it after updating the source to refresh the installed copies. Existing links created by older installer versions are migrated automatically. Pass `-Link` only if you explicitly prefer links; that mode tries a symbolic link first and falls back to an NTFS directory junction.
 
 | Flag | Target |
 | ---- | ------ |
+| `-Codex` | `%USERPROFILE%\.codex\skills` (Codex) |
 | `-Claude` | `%USERPROFILE%\.claude\skills` (Claude Code) |
 | `-Hermes` | `%USERPROFILE%\.hermes\skills` |
 | `-Opencode` | `%USERPROFILE%\.config\opencode\skills` |
@@ -181,17 +182,18 @@ cd $env:USERPROFILE\Source\Skills
 | `-All` | every target above whose parent dir exists (default) |
 | `-DryRun` | preview without changing anything |
 | `-Force` | replace existing entries at the destination |
-| `-Uninstall` | remove the links |
+| `-Link` | opt into directory links instead of managed copies |
+| `-Uninstall` | remove installer-managed copies or links |
 
 If PowerShell refuses to run unsigned scripts, allow it for this process only: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
 
 ### Skill-description validation
 
-Both installers check each skill's `description:` field before linking. Claude Desktop and Claude Code silently drop any skill whose description exceeds **1024 characters**, so the script prints a `WARN` line for each oversize skill and proceeds. Trim the description in `SKILL.md` to fix it. Override the cap with `LIB_DESC_MAX=2048 ./install.sh` (bash) or `$env:LIB_DESC_MAX = 2048; .\install.ps1` (PowerShell) if you need to test against a different limit.
+Both installers check each skill's `description:` field before installation. Claude Desktop and Claude Code silently drop any skill whose description exceeds **1024 characters**, so the script prints a `WARN` line for each oversize skill and proceeds. Trim the description in `SKILL.md` to fix it. Override the cap with `LIB_DESC_MAX=2048 ./install.sh` (bash) or `$env:LIB_DESC_MAX = 2048; .\install.ps1` (PowerShell) if you need to test against a different limit.
 
 ### Upload-based tools (Claude Desktop, ChatGPT app)
 
-The symlink installers do **not** target Claude Desktop or the ChatGPT app — these tools don't discover skills from linked folders. Instead you upload the packed `.skill` bundle (or share it org-wide), and the tool stores its own copy.
+The local filesystem installers do **not** target Claude Desktop or the ChatGPT app — these tools don't discover skills from those folders. Instead you upload the packed `.skill` bundle (or share it org-wide), and the tool stores its own copy.
 
 1. Get the bundle: download it from the [latest release](https://github.com/norandom/Skills/releases/latest) (the `⬇ .skill` links above), or build it locally with `./build.sh` (or `./build.sh skill <name>`) to produce `<name>/<name>.skill`.
 2. Upload it:

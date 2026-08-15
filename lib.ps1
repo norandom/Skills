@@ -3,13 +3,16 @@
 #
 # State knobs (set in the caller before invoking helpers):
 #   $script:LibDryRun = $true   print actions, do not run them
-#   $script:LibForce  = $true   replace existing links/files when linking
+#   $script:LibForce  = $true   replace existing unmanaged destination entries
+#   $script:LibUseLinks = $true use links instead of managed directory copies
 #   $env:LIB_DESC_MAX = 1024    override the skill-description char cap
 
 $script:LibRoot    = $PSScriptRoot
 $script:LibDescMax = if ($env:LIB_DESC_MAX) { [int]$env:LIB_DESC_MAX } else { 1024 }
+$script:LibMarkerName = '.norandom-skills-managed.json'
 if ($null -eq $script:LibDryRun) { $script:LibDryRun = $false }
 if ($null -eq $script:LibForce)  { $script:LibForce  = $false }
+if ($null -eq $script:LibUseLinks) { $script:LibUseLinks = $false }
 
 function Invoke-Lib {
     param([string]$Description, [scriptblock]$Block)
@@ -103,15 +106,57 @@ function Test-SameTarget {
 function New-DirLink {
     param([string]$Link, [string]$Target)
     try {
-        New-Item -ItemType SymbolicLink -Path $Link -Target $Target -ErrorAction Stop | Out-Null
+        New-Item -ItemType SymbolicLink -Path $Link -Target $Target -Confirm:$false -ErrorAction Stop | Out-Null
         return 'symlink'
     } catch {
-        New-Item -ItemType Junction -Path $Link -Target $Target -ErrorAction Stop | Out-Null
+        New-Item -ItemType Junction -Path $Link -Target $Target -Confirm:$false -ErrorAction Stop | Out-Null
         return 'junction'
     }
 }
 
-# Symlink every skill folder into <parent>\skills\.
+# True when a destination directory was created by this installer's copy mode.
+function Test-ManagedSkillCopy {
+    param([Parameter(Mandatory)][string]$Path)
+    return (Test-Path -LiteralPath (Join-Path $Path $script:LibMarkerName) -PathType Leaf)
+}
+
+# Stage a complete skill copy beside its destination and then move it into
+# place. The marker lets updates and uninstall distinguish managed copies from
+# directories owned by the user or another installer.
+function New-ManagedSkillCopy {
+    param(
+        [Parameter(Mandatory)][string]$Source,
+        [Parameter(Mandatory)][string]$Destination,
+        [Parameter(Mandatory)][string]$SkillName
+    )
+    $parent = Split-Path -Parent $Destination
+    $stage = Join-Path $parent ('.skills-stage-' + [Guid]::NewGuid().ToString('N'))
+    try {
+        Copy-Item -LiteralPath $Source -Destination $stage -Recurse -Force -Confirm:$false
+        [ordered]@{
+            managed_by = 'norandom/Skills install.ps1'
+            skill = $SkillName
+            source = [IO.Path]::GetFullPath($Source)
+        } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $stage $script:LibMarkerName) -Encoding UTF8 -Confirm:$false
+        Move-Item -LiteralPath $stage -Destination $Destination -Confirm:$false
+    } finally {
+        if (Test-Path -LiteralPath $stage) {
+            Remove-Item -LiteralPath $stage -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+function Remove-SkillEntry {
+    param([Parameter(Mandatory)][string]$Path, [string]$LinkType)
+    if ($LinkType -in @('SymbolicLink','Junction')) {
+        Remove-Item -LiteralPath $Path -Force -Confirm:$false
+    } else {
+        Remove-Item -LiteralPath $Path -Recurse -Force -Confirm:$false
+    }
+}
+
+# Install every skill folder into <parent>\skills\. Managed copies are the
+# Windows default; callers can set $script:LibUseLinks for the old link mode.
 # Honors $script:LibDryRun and $script:LibForce.
 function Install-LibTarget {
     param([Parameter(Mandatory)][string]$Label, [string]$Parent)
@@ -123,40 +168,56 @@ function Install-LibTarget {
     }
     $dstDir = Join-Path $Parent 'skills'
     if (-not (Test-Path -LiteralPath $dstDir -PathType Container)) {
-        Invoke-Lib "mkdir $dstDir" { New-Item -ItemType Directory -Path $dstDir -Force | Out-Null }
+        Invoke-Lib "mkdir $dstDir" { New-Item -ItemType Directory -Path $dstDir -Force -Confirm:$false | Out-Null }
     }
-    Write-Host ("link   {0,-16}  -> {1}" -f $Label, $dstDir)
+    $verb = if ($script:LibUseLinks) { 'link' } else { 'copy' }
+    Write-Host ("{0,-6} {1,-16}  -> {2}" -f $verb, $Label, $dstDir)
 
     foreach ($name in Get-SkillNames) {
-        $link   = Join-Path $dstDir $name
+        $entry  = Join-Path $dstDir $name
         $target = Join-Path $script:LibRoot $name
 
-        if (Test-Path -LiteralPath $link) {
-            $item = Get-Item -LiteralPath $link -Force
+        if (Test-Path -LiteralPath $entry) {
+            $item = Get-Item -LiteralPath $entry -Force
             $linkType = $item.LinkType
             $cur = @($item.Target) | Select-Object -First 1
-            if ($linkType -in @('SymbolicLink','Junction') -and (Test-SameTarget $cur $target)) {
+            $managedCopy = $linkType -notin @('SymbolicLink','Junction') -and (Test-ManagedSkillCopy -Path $entry)
+
+            if ($script:LibUseLinks -and $linkType -in @('SymbolicLink','Junction') -and (Test-SameTarget $cur $target)) {
                 Write-Host ("         = {0} (already linked)" -f $name); continue
             }
-            if ($script:LibForce) {
-                Invoke-Lib "rm $link" { Remove-Item -LiteralPath $link -Recurse -Force }
+            if (-not $script:LibUseLinks -and $managedCopy) {
+                Invoke-Lib "refresh $entry" { Remove-SkillEntry -Path $entry -LinkType $linkType }
+            } elseif (-not $script:LibUseLinks -and $linkType -in @('SymbolicLink','Junction') -and (Test-SameTarget $cur $target)) {
+                # Seamlessly migrate installations made by older versions.
+                Invoke-Lib "replace link $entry with copy" { Remove-SkillEntry -Path $entry -LinkType $linkType }
+            } elseif ($script:LibUseLinks -and $managedCopy) {
+                Invoke-Lib "replace managed copy $entry with link" { Remove-SkillEntry -Path $entry -LinkType $linkType }
+            } elseif ($script:LibForce) {
+                Invoke-Lib "rm $entry" { Remove-SkillEntry -Path $entry -LinkType $linkType }
             } elseif ($linkType -in @('SymbolicLink','Junction')) {
                 Write-Warning ("{0} (exists -> {1}; -Force to replace)" -f $name, (ConvertFrom-NtPath $cur))
                 continue
             } else {
-                Write-Warning ("{0} (exists, not a link; -Force to replace)" -f $name); continue
+                Write-Warning ("{0} (exists and is not managed by this installer; -Force to replace)" -f $name); continue
             }
         }
 
-        $kind = $null
-        Invoke-Lib "ln -s $target $link" { $script:_last = New-DirLink -Link $link -Target $target }
-        if (-not $script:LibDryRun) { $kind = $script:_last }
-        $suffix = if ($kind -eq 'junction') { ' (junction; SymbolicLink denied - enable Developer Mode for true symlinks)' } else { '' }
-        Write-Host ("         + {0}{1}" -f $name, $suffix)
+        if ($script:LibUseLinks) {
+            $kind = $null
+            Invoke-Lib "ln -s $target $entry" { $script:_last = New-DirLink -Link $entry -Target $target }
+            if (-not $script:LibDryRun) { $kind = $script:_last }
+            $suffix = if ($kind -eq 'junction') { ' (junction)' } else { '' }
+            Write-Host ("         + {0}{1}" -f $name, $suffix)
+        } else {
+            Invoke-Lib "copy $target $entry" { New-ManagedSkillCopy -Source $target -Destination $entry -SkillName $name }
+            Write-Host ("         + {0} (managed copy)" -f $name)
+        }
     }
 }
 
-# Remove repo-managed links from <parent>\skills\. Leaves unrelated files alone.
+# Remove repo-managed links or copies from <parent>\skills\. Leaves unrelated
+# files and directories alone.
 function Uninstall-LibTarget {
     param([Parameter(Mandatory)][string]$Label, [string]$Parent)
     $dstDir = if ($Parent) { Join-Path $Parent 'skills' } else { $null }
@@ -165,11 +226,12 @@ function Uninstall-LibTarget {
     }
     Write-Host ("uninst {0,-16}  -> {1}" -f $Label, $dstDir)
     foreach ($name in Get-SkillNames) {
-        $link = Join-Path $dstDir $name
-        if (-not (Test-Path -LiteralPath $link)) { continue }
-        $item = Get-Item -LiteralPath $link -Force
-        if ($item.LinkType -in @('SymbolicLink','Junction')) {
-            Invoke-Lib "rm $link" { Remove-Item -LiteralPath $link -Force }
+        $entry = Join-Path $dstDir $name
+        if (-not (Test-Path -LiteralPath $entry)) { continue }
+        $item = Get-Item -LiteralPath $entry -Force
+        $managedCopy = $item.LinkType -notin @('SymbolicLink','Junction') -and (Test-ManagedSkillCopy -Path $entry)
+        if ($item.LinkType -in @('SymbolicLink','Junction') -or $managedCopy) {
+            Invoke-Lib "rm $entry" { Remove-SkillEntry -Path $entry -LinkType $item.LinkType }
             Write-Host ("         - {0}" -f $name)
         }
     }
