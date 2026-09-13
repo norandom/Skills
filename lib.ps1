@@ -225,8 +225,13 @@ function New-LibPluginPackages {
         Write-LibText -Path (Join-Path $pluginRoot '.codex-plugin/plugin.json') -Text $codexText
         $claudeText = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-plugin.json.tpl') -Replacements $common
         Write-LibText -Path (Join-Path $pluginRoot '.claude-plugin/plugin.json') -Text $claudeText
+        $geminiText = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'gemini-plugin.json.tpl') -Replacements $codex
+        Write-LibText -Path (Join-Path $pluginRoot 'plugin.json') -Text $geminiText
+        Write-LibText -Path (Join-Path $pluginRoot '.gemini-plugin/plugin.json') -Text $geminiText
         Get-Content -LiteralPath (Join-Path $pluginRoot '.codex-plugin/plugin.json') -Raw | ConvertFrom-Json | Out-Null
         Get-Content -LiteralPath (Join-Path $pluginRoot '.claude-plugin/plugin.json') -Raw | ConvertFrom-Json | Out-Null
+        Get-Content -LiteralPath (Join-Path $pluginRoot 'plugin.json') -Raw | ConvertFrom-Json | Out-Null
+        Get-Content -LiteralPath (Join-Path $pluginRoot '.gemini-plugin/plugin.json') -Raw | ConvertFrom-Json | Out-Null
         Write-Host ("  plugin {0,-24} -> plugins/{0}" -f $name)
     }
 }
@@ -244,6 +249,7 @@ function New-LibMarketplaceCatalogs {
     $config = Get-LibMarketplaceConfig
     $codexEntries = @()
     $claudeEntries = @()
+    $geminiEntries = @()
     foreach ($plugin in $config.plugins) {
         $common = [ordered]@{
             NAME_JSON = ConvertTo-LibJson ([string]$plugin.name)
@@ -254,8 +260,10 @@ function New-LibMarketplaceCatalogs {
         }
         $codexEntry = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'codex-marketplace-entry.json.tpl') -Replacements $common
         $claudeEntry = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-marketplace-entry.json.tpl') -Replacements $common
+        $geminiEntry = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'gemini-marketplace-entry.json.tpl') -Replacements $common
         $codexEntries += (($codexEntry -split '\r?\n' | ForEach-Object { "    $_" }) -join "`n")
         $claudeEntries += (($claudeEntry -split '\r?\n' | ForEach-Object { "    $_" }) -join "`n")
+        $geminiEntries += (($geminiEntry -split '\r?\n' | ForEach-Object { "    $_" }) -join "`n")
     }
     $catalogReplacement = [ordered]@{ PLUGIN_ENTRIES = ($codexEntries -join ",`n") }
     $codexCatalog = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'codex-marketplace.json.tpl') -Replacements $catalogReplacement
@@ -263,9 +271,13 @@ function New-LibMarketplaceCatalogs {
     $catalogReplacement.PLUGIN_ENTRIES = ($claudeEntries -join ",`n")
     $claudeCatalog = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-marketplace.json.tpl') -Replacements $catalogReplacement
     Write-LibText -Path (Join-Path $script:LibRoot '.claude-plugin/marketplace.json') -Text $claudeCatalog
+    $catalogReplacement.PLUGIN_ENTRIES = ($geminiEntries -join ",`n")
+    $geminiCatalog = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'gemini-marketplace.json.tpl') -Replacements $catalogReplacement
+    Write-LibText -Path (Join-Path $script:LibRoot '.gemini-plugin/marketplace.json') -Text $geminiCatalog
     Get-Content -LiteralPath (Join-Path $script:LibRoot '.agents/plugins/marketplace.json') -Raw | ConvertFrom-Json | Out-Null
     Get-Content -LiteralPath (Join-Path $script:LibRoot '.claude-plugin/marketplace.json') -Raw | ConvertFrom-Json | Out-Null
-    Write-Host "  catalogs -> $Ref (Codex, Claude Code)"
+    Get-Content -LiteralPath (Join-Path $script:LibRoot '.gemini-plugin/marketplace.json') -Raw | ConvertFrom-Json | Out-Null
+    Write-Host "  catalogs -> $Ref (Codex, Claude Code, Gemini)"
 }
 
 function New-LibMarketplace {
@@ -282,11 +294,14 @@ function Update-LibMarketplaceRelease {
     $config = Get-LibMarketplaceConfig
     foreach ($plugin in $config.plugins) {
         $name = [string]$plugin.name
-        foreach ($vendor in @('codex', 'claude')) {
+        foreach ($vendor in @('codex', 'claude', 'gemini')) {
             $spec = "${Ref}:plugins/$name/.$vendor-plugin/plugin.json"
             & git -C $script:LibRoot cat-file -e $spec
             if ($LASTEXITCODE -ne 0) { throw "$Ref does not contain the $vendor manifest for $name" }
         }
+        $spec = "${Ref}:plugins/$name/plugin.json"
+        & git -C $script:LibRoot cat-file -e $spec
+        if ($LASTEXITCODE -ne 0) { throw "$Ref does not contain the root plugin.json for $name" }
     }
     New-LibMarketplaceCatalogs -Ref $Ref
 }

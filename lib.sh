@@ -197,8 +197,26 @@ lib_generate_plugin_packages() {
       DESCRIPTION_JSON "$(lib__json_string "$description")" \
       SOURCE_PATH "$name"
 
+    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-plugin.json.tpl" \
+      "$plugin_root/plugin.json" \
+      NAME_JSON "$(lib__json_string "$name")" \
+      VERSION_JSON "$(lib__json_string "$version")" \
+      DESCRIPTION_JSON "$(lib__json_string "$description")" \
+      KEYWORDS_JSON "$keywords" \
+      SOURCE_PATH "$name"
+
+    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-plugin.json.tpl" \
+      "$plugin_root/.gemini-plugin/plugin.json" \
+      NAME_JSON "$(lib__json_string "$name")" \
+      VERSION_JSON "$(lib__json_string "$version")" \
+      DESCRIPTION_JSON "$(lib__json_string "$description")" \
+      KEYWORDS_JSON "$keywords" \
+      SOURCE_PATH "$name"
+
     jq empty "$plugin_root/.codex-plugin/plugin.json"
     jq empty "$plugin_root/.claude-plugin/plugin.json"
+    jq empty "$plugin_root/plugin.json"
+    jq empty "$plugin_root/.gemini-plugin/plugin.json"
 
     printf '  plugin %-24s -> plugins/%s\n' "$name" "$name"
   done < <(lib__marketplace_plugins)
@@ -209,15 +227,16 @@ lib__validate_marketplace_ref() {
   case "$1" in *[[:space:]]*) echo "marketplace ref cannot contain whitespace: $1" >&2; return 1 ;; esac
 }
 
-# Generate the two catalogs from the same plugin allowlist and release ref.
+# Generate the three catalogs from the same plugin allowlist and release ref.
 lib_generate_marketplace_catalogs() {
   lib_require jq
-  local ref="$1" plugin name category keywords entry codex_entries='' claude_entries='' sep=''
-  local tmp_dir codex_entry_file claude_entry_file
+  local ref="$1" plugin name category keywords entry codex_entries='' claude_entries='' gemini_entries='' sep=''
+  local tmp_dir codex_entry_file claude_entry_file gemini_entry_file
   lib__validate_marketplace_ref "$ref"
   tmp_dir="$(mktemp -d)"
   codex_entry_file="$tmp_dir/codex.json"
   claude_entry_file="$tmp_dir/claude.json"
+  gemini_entry_file="$tmp_dir/gemini.json"
 
   while IFS= read -r plugin; do
     [ -n "$plugin" ] || continue
@@ -243,6 +262,16 @@ lib_generate_marketplace_catalogs() {
       SOURCE_PATH "$name"
     entry="$(sed 's/^/    /' "$claude_entry_file")"
     claude_entries="${claude_entries}${sep}${entry}"
+
+    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-marketplace-entry.json.tpl" \
+      "$gemini_entry_file" \
+      NAME_JSON "$(lib__json_string "$name")" \
+      CATEGORY_JSON "$(lib__json_string "$category")" \
+      KEYWORDS_JSON "$keywords" \
+      REF_JSON "$(lib__json_string "$ref")" \
+      SOURCE_PATH "$name"
+    entry="$(sed 's/^/    /' "$gemini_entry_file")"
+    gemini_entries="${gemini_entries}${sep}${entry}"
     sep=$',\n'
   done < <(lib__marketplace_plugins)
 
@@ -250,10 +279,13 @@ lib_generate_marketplace_catalogs() {
     "$LIB_ROOT/.agents/plugins/marketplace.json" PLUGIN_ENTRIES "$codex_entries"
   lib__render_template "$LIB_MARKETPLACE_TEMPLATES/claude-marketplace.json.tpl" \
     "$LIB_ROOT/.claude-plugin/marketplace.json" PLUGIN_ENTRIES "$claude_entries"
+  lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-marketplace.json.tpl" \
+    "$LIB_ROOT/.gemini-plugin/marketplace.json" PLUGIN_ENTRIES "$gemini_entries"
   jq empty "$LIB_ROOT/.agents/plugins/marketplace.json"
   jq empty "$LIB_ROOT/.claude-plugin/marketplace.json"
+  jq empty "$LIB_ROOT/.gemini-plugin/marketplace.json"
   rm -rf "$tmp_dir"
-  printf '  catalogs -> %s (%s)\n' "$ref" 'Codex, Claude Code'
+  printf '  catalogs -> %s (%s)\n' "$ref" 'Codex, Claude Code, Gemini'
 }
 
 lib_generate_marketplace() {
@@ -262,7 +294,7 @@ lib_generate_marketplace() {
 }
 
 # Post-release operation: refuse to advertise a tag unless every configured
-# plugin package and both vendor manifests are actually present in that tag.
+# plugin package and vendor manifests are actually present in that tag.
 lib_update_marketplace_release() {
   local ref="$1" plugin name
   lib_require jq
@@ -277,6 +309,12 @@ lib_update_marketplace_release() {
     }
     git -C "$LIB_ROOT" cat-file -e "$ref:plugins/$name/.claude-plugin/plugin.json" || {
       echo "$ref does not contain the Claude manifest for $name" >&2; return 1;
+    }
+    git -C "$LIB_ROOT" cat-file -e "$ref:plugins/$name/.gemini-plugin/plugin.json" || {
+      echo "$ref does not contain the Gemini manifest for $name" >&2; return 1;
+    }
+    git -C "$LIB_ROOT" cat-file -e "$ref:plugins/$name/plugin.json" || {
+      echo "$ref does not contain the root plugin.json for $name" >&2; return 1;
     }
   done < <(lib__marketplace_plugins)
   lib_generate_marketplace_catalogs "$ref"

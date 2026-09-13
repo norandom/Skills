@@ -85,10 +85,10 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ### Marketplace build
 
-The marketplace pilot currently publishes `premortem` as an independently installable Claude Code and Codex plugin. The canonical content remains under `premortem/`; the build generates the standard plugin package under `plugins/premortem/` from shared templates in `.marketplace/templates/`:
+The marketplace pilot currently publishes `premortem` as an independently installable Claude Code, Codex, and Google / Gemini (Antigravity CLI) plugin. The canonical content remains under `premortem/`; the build generates the standard plugin package under `plugins/premortem/` from shared templates in `.marketplace/templates/`:
 
 ```bash
-./build.sh marketplace marketplace-pilot     # package + both catalogs
+./build.sh marketplace marketplace-pilot     # package + all three catalogs
 ./build.sh marketplace-manifests             # package only, before tagging
 ./build.sh marketplace-release v1.12.0       # catalog refs only, after release
 ```
@@ -103,7 +103,7 @@ Windows maintainers can run the matching PowerShell entry point:
 .\build-marketplace.ps1 -Release v1.12.0
 ```
 
-`.marketplace/skills.json` is the marketplace allowlist and display metadata. `SKILL.md` remains authoritative for plugin name, version, description, and packaged content. Do not edit generated files under `plugins/` or the two root marketplace catalogs by hand.
+`.marketplace/skills.json` is the marketplace allowlist and display metadata. `SKILL.md` remains authoritative for plugin name, version, description, and packaged content. Do not edit generated files under `plugins/` or the root marketplace catalogs by hand.
 
 After pushing the generated files to the `marketplace-pilot` branch, test the repository-backed install in clean sessions:
 
@@ -113,6 +113,8 @@ codex plugin add premortem@norandom-skills
 
 claude plugin marketplace add https://github.com/norandom/Skills.git#marketplace-pilot
 claude plugin install premortem@norandom-skills
+
+agy plugin install plugins/premortem
 ```
 
 ## Install
@@ -261,7 +263,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-That fires `.github/workflows/release.yml`, which first regenerates marketplace plugin packages and fails if the tag does not contain the committed result. It then runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, CLI and Windows GUI bootstraps, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file. After publication, the workflow updates both marketplace catalogs on `main` to point at the new tag and commits that generated ref change automatically.
+That fires `.github/workflows/release.yml`, which first regenerates marketplace plugin packages and fails if the tag does not contain the committed result. It then runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, CLI and Windows GUI bootstraps, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file. After publication, the workflow updates all three marketplace catalogs on `main` to point at the new tag and commits that generated ref change automatically.
 
 To build the same artifacts locally (requires Docker and the [Dagger CLI](https://docs.dagger.io/install)):
 

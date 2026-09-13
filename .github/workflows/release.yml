@@ -103,7 +103,7 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          git add .agents/plugins/marketplace.json .claude-plugin/marketplace.json
+          git add .agents/plugins/marketplace.json .claude-plugin/marketplace.json .gemini-plugin/marketplace.json
           if git diff --cached --quiet; then
             echo "Marketplace catalogs already point at $RELEASE_TAG"
             exit 0
