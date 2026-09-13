@@ -15,6 +15,7 @@ and update are the same command.
   # or, to pass flags, save then run:
   iwr https://raw.githubusercontent.com/norandom/Skills/main/bootstrap.ps1 -OutFile bootstrap.ps1
   ./bootstrap.ps1 -Claude
+  ./bootstrap.ps1 -Agy               # or -Antigravity
 
 Env overrides:
   SKILLS_HOME   where to unpack      (default: %LOCALAPPDATA%\Skills)

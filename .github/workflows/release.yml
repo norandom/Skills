@@ -52,6 +52,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Verify marketplace plugin packages are current
+        shell: bash
+        run: |
+          ./build.sh marketplace-manifests
+          if [[ -n "$(git status --porcelain -- plugins/)" ]]; then
+            git status --short -- plugins/
+            echo "Generated marketplace packages are missing or stale. Run ./build.sh marketplace-manifests and commit the result before tagging."
+            exit 1
+          fi
+
       - name: Build release artifacts with Dagger
         uses: dagger/dagger-for-github@v8.4.1
         with:
@@ -69,3 +79,37 @@ jobs:
             dist/SHA256SUMS
           generate_release_notes: true
           fail_on_unmatched_files: true
+
+  # Marketplace catalogs follow main, while each plugin source is pinned to the
+  # release that actually contains its generated package and vendor manifests.
+  update-marketplaces:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main with release tags
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Point marketplace catalogs at this release
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./build.sh marketplace-release "$RELEASE_TAG"
+
+      - name: Commit generated catalog refs
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          git add .agents/plugins/marketplace.json .claude-plugin/marketplace.json
+          if git diff --cached --quiet; then
+            echo "Marketplace catalogs already point at $RELEASE_TAG"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(marketplace): point plugins to $RELEASE_TAG"
+          git pull --rebase origin main
+          git push origin HEAD:main

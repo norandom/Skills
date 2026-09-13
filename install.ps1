@@ -10,7 +10,7 @@ Targets (default -All; only dirs whose parent exists get touched):
   -Hermes          %USERPROFILE%\.hermes\skills
   -Opencode        %USERPROFILE%\.config\opencode\skills
   -Deepseek        %USERPROFILE%\.deepseek\skills                     (DeepSeek TUI)
-  -Agy             %USERPROFILE%\.gemini\antigravity-cli\skills       (Antigravity CLI)
+  -Agy             %USERPROFILE%\.gemini\antigravity-cli\skills       (Antigravity CLI; aliases: -Antigravity, -AntigravityCli)
   -All             every target above
 
 Flags:
@@ -27,6 +27,8 @@ it prefers symbolic links and falls back to NTFS directory junctions.
 .EXAMPLE
 .\install.ps1                       # auto-detect every tool whose dir exists
 .\install.ps1 -Codex -Claude        # just these two
+.\install.ps1 -Agy                  # Antigravity CLI only
+.\install.ps1 -Antigravity          # alias for -Agy
 .\install.ps1 -DryRun               # preview
 .\install.ps1 -Force                # replace whatever's there
 .\install.ps1 -Link                 # opt into links instead of copies
@@ -39,6 +41,7 @@ param(
     [switch]$Hermes,
     [switch]$Opencode,
     [switch]$Deepseek,
+    [Alias('Antigravity', 'AntigravityCli')]
     [switch]$Agy,
     [switch]$All,
     [switch]$DryRun,

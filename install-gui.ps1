@@ -19,6 +19,7 @@ $ErrorActionPreference = 'Stop'
 
 # ---- target table: keep in lockstep with install.ps1 -----------------------
 $Targets = @(
+    [pscustomobject]@{ Key='codex';    Name='Codex';           Path=(Join-UserProfile '.codex') }
     [pscustomobject]@{ Key='claude';   Name='Claude Code';     Path=(Join-UserProfile '.claude') }
     [pscustomobject]@{ Key='hermes';   Name='Hermes';          Path=(Join-UserProfile '.hermes') }
     [pscustomobject]@{ Key='opencode'; Name='opencode';        Path=(Join-UserProfile '.config\opencode') }

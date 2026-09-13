@@ -10,6 +10,9 @@
 $script:LibRoot    = $PSScriptRoot
 $script:LibDescMax = if ($env:LIB_DESC_MAX) { [int]$env:LIB_DESC_MAX } else { 1024 }
 $script:LibMarkerName = '.norandom-skills-managed.json'
+$script:LibMarketplaceRoot = Join-Path $script:LibRoot '.marketplace'
+$script:LibMarketplaceConfig = Join-Path $script:LibMarketplaceRoot 'skills.json'
+$script:LibMarketplaceTemplates = Join-Path $script:LibMarketplaceRoot 'templates'
 if ($null -eq $script:LibDryRun) { $script:LibDryRun = $false }
 if ($null -eq $script:LibForce)  { $script:LibForce  = $false }
 if ($null -eq $script:LibUseLinks) { $script:LibUseLinks = $false }
@@ -112,6 +115,180 @@ function New-DirLink {
         New-Item -ItemType Junction -Path $Link -Target $Target -Confirm:$false -ErrorAction Stop | Out-Null
         return 'junction'
     }
+}
+
+# Read one scalar from SKILL.md frontmatter. Folded/block values are returned
+# as one line for use in generated JSON manifests.
+function Get-LibSkillField {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][string]$Name
+    )
+    $value = ''
+    $inBlock = $false
+    foreach ($line in (Get-Content -LiteralPath $Path)) {
+        if (-not $inBlock) {
+            if ($line -match ('^' + [regex]::Escape($Name) + ':\s*(.*)$')) {
+                $rest = $Matches[1] -replace '^[>|][-+]?\s*', ''
+                if ([string]::IsNullOrEmpty($rest)) {
+                    $inBlock = $true
+                } else {
+                    return ($rest -replace '^"(.*)"\s*$', '$1' -replace "^'(.*)'\s*$", '$1')
+                }
+            }
+            continue
+        }
+        if ($line -match '^---\s*$' -or $line -match '^\S') { break }
+        $trimmed = $line.TrimStart()
+        $value = if ($value) { "$value $trimmed" } else { $trimmed }
+    }
+    return $value
+}
+
+function ConvertTo-LibJson {
+    param([Parameter(Mandatory)]$Value)
+    return (ConvertTo-Json -InputObject $Value -Compress -Depth 20)
+}
+
+function Expand-LibTemplate {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][System.Collections.IDictionary]$Replacements
+    )
+    $text = Get-Content -LiteralPath $Path -Raw
+    foreach ($key in $Replacements.Keys) {
+        $text = $text.Replace(('{{' + $key + '}}'), [string]$Replacements[$key])
+    }
+    if ($text -match '{{[A-Z_][A-Z_]*}}') {
+        throw "Unresolved token $($Matches[0]) in template $Path"
+    }
+    return $text.TrimEnd("`r", "`n")
+}
+
+function Write-LibText {
+    param([Parameter(Mandatory)][string]$Path, [Parameter(Mandatory)][string]$Text)
+    $parent = Split-Path -Parent $Path
+    New-Item -ItemType Directory -Path $parent -Force -Confirm:$false | Out-Null
+    $encoding = New-Object Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText($Path, ($Text.TrimEnd("`r", "`n") + "`n"), $encoding)
+}
+
+function Get-LibMarketplaceConfig {
+    if (-not (Test-Path -LiteralPath $script:LibMarketplaceConfig -PathType Leaf)) {
+        throw "Missing marketplace config: $script:LibMarketplaceConfig"
+    }
+    return (Get-Content -LiteralPath $script:LibMarketplaceConfig -Raw | ConvertFrom-Json)
+}
+
+function New-LibPluginPackages {
+    $config = Get-LibMarketplaceConfig
+    foreach ($plugin in $config.plugins) {
+        $name = [string]$plugin.name
+        if ($name -notmatch '^[A-Za-z0-9_-]+$') { throw "Invalid marketplace plugin name: $name" }
+        $source = Join-Path $script:LibRoot $name
+        $skillFile = Join-Path $source 'SKILL.md'
+        if (-not (Test-Path -LiteralPath $skillFile -PathType Leaf)) { throw "Marketplace skill missing: $skillFile" }
+
+        $manifestName = Get-LibSkillField -Path $skillFile -Name 'name'
+        $version = Get-LibSkillField -Path $skillFile -Name 'version'
+        $description = Get-LibSkillField -Path $skillFile -Name 'description'
+        if ($manifestName -cne $name) { throw "$name folder/frontmatter name mismatch: $manifestName" }
+        if ($version -notmatch '^\d+\.\d+\.\d+(?:[+-][0-9A-Za-z.-]+)?$') { throw "$name has invalid semver: $version" }
+
+        $pluginRoot = Join-Path $script:LibRoot "plugins/$name"
+        $skillDestination = Join-Path $pluginRoot "skills/$name"
+        if (Test-Path -LiteralPath $pluginRoot) {
+            Remove-Item -LiteralPath $pluginRoot -Recurse -Force -Confirm:$false
+        }
+        New-Item -ItemType Directory -Path (Split-Path -Parent $skillDestination) -Force -Confirm:$false | Out-Null
+        Copy-Item -LiteralPath $source -Destination $skillDestination -Recurse -Force -Confirm:$false
+        Remove-Item -LiteralPath (Join-Path $skillDestination "$name.skill") -Force -Confirm:$false -ErrorAction SilentlyContinue
+        Remove-Item -LiteralPath (Join-Path $skillDestination $script:LibMarkerName) -Force -Confirm:$false -ErrorAction SilentlyContinue
+        Get-ChildItem -LiteralPath $skillDestination -Filter '.DS_Store' -Recurse -Force -ErrorAction SilentlyContinue |
+            Remove-Item -Force -Confirm:$false -ErrorAction SilentlyContinue
+
+        $common = [ordered]@{
+            NAME_JSON = ConvertTo-LibJson $name
+            VERSION_JSON = ConvertTo-LibJson $version
+            DESCRIPTION_JSON = ConvertTo-LibJson $description
+            SOURCE_PATH = $name
+        }
+        $codex = [ordered]@{}
+        foreach ($key in $common.Keys) { $codex[$key] = $common[$key] }
+        $codex.DISPLAY_NAME_JSON = ConvertTo-LibJson ([string]$plugin.displayName)
+        $codex.SHORT_DESCRIPTION_JSON = ConvertTo-LibJson ([string]$plugin.shortDescription)
+        $codex.CATEGORY_JSON = ConvertTo-LibJson ([string]$plugin.category)
+        $codex.KEYWORDS_JSON = ConvertTo-LibJson @($plugin.keywords)
+        $codex.DEFAULT_PROMPT_JSON = ConvertTo-LibJson ([string]$plugin.defaultPrompt)
+
+        $codexText = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'codex-plugin.json.tpl') -Replacements $codex
+        Write-LibText -Path (Join-Path $pluginRoot '.codex-plugin/plugin.json') -Text $codexText
+        $claudeText = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-plugin.json.tpl') -Replacements $common
+        Write-LibText -Path (Join-Path $pluginRoot '.claude-plugin/plugin.json') -Text $claudeText
+        Get-Content -LiteralPath (Join-Path $pluginRoot '.codex-plugin/plugin.json') -Raw | ConvertFrom-Json | Out-Null
+        Get-Content -LiteralPath (Join-Path $pluginRoot '.claude-plugin/plugin.json') -Raw | ConvertFrom-Json | Out-Null
+        Write-Host ("  plugin {0,-24} -> plugins/{0}" -f $name)
+    }
+}
+
+function Assert-LibMarketplaceRef {
+    param([Parameter(Mandatory)][string]$Ref)
+    if ([string]::IsNullOrWhiteSpace($Ref) -or $Ref -match '\s') {
+        throw "Marketplace ref must be non-empty and contain no whitespace: $Ref"
+    }
+}
+
+function New-LibMarketplaceCatalogs {
+    param([Parameter(Mandatory)][string]$Ref)
+    Assert-LibMarketplaceRef -Ref $Ref
+    $config = Get-LibMarketplaceConfig
+    $codexEntries = @()
+    $claudeEntries = @()
+    foreach ($plugin in $config.plugins) {
+        $common = [ordered]@{
+            NAME_JSON = ConvertTo-LibJson ([string]$plugin.name)
+            CATEGORY_JSON = ConvertTo-LibJson ([string]$plugin.category)
+            KEYWORDS_JSON = ConvertTo-LibJson @($plugin.keywords)
+            REF_JSON = ConvertTo-LibJson $Ref
+            SOURCE_PATH = [string]$plugin.name
+        }
+        $codexEntry = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'codex-marketplace-entry.json.tpl') -Replacements $common
+        $claudeEntry = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-marketplace-entry.json.tpl') -Replacements $common
+        $codexEntries += (($codexEntry -split '\r?\n' | ForEach-Object { "    $_" }) -join "`n")
+        $claudeEntries += (($claudeEntry -split '\r?\n' | ForEach-Object { "    $_" }) -join "`n")
+    }
+    $catalogReplacement = [ordered]@{ PLUGIN_ENTRIES = ($codexEntries -join ",`n") }
+    $codexCatalog = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'codex-marketplace.json.tpl') -Replacements $catalogReplacement
+    Write-LibText -Path (Join-Path $script:LibRoot '.agents/plugins/marketplace.json') -Text $codexCatalog
+    $catalogReplacement.PLUGIN_ENTRIES = ($claudeEntries -join ",`n")
+    $claudeCatalog = Expand-LibTemplate -Path (Join-Path $script:LibMarketplaceTemplates 'claude-marketplace.json.tpl') -Replacements $catalogReplacement
+    Write-LibText -Path (Join-Path $script:LibRoot '.claude-plugin/marketplace.json') -Text $claudeCatalog
+    Get-Content -LiteralPath (Join-Path $script:LibRoot '.agents/plugins/marketplace.json') -Raw | ConvertFrom-Json | Out-Null
+    Get-Content -LiteralPath (Join-Path $script:LibRoot '.claude-plugin/marketplace.json') -Raw | ConvertFrom-Json | Out-Null
+    Write-Host "  catalogs -> $Ref (Codex, Claude Code)"
+}
+
+function New-LibMarketplace {
+    param([Parameter(Mandatory)][string]$Ref)
+    New-LibPluginPackages
+    New-LibMarketplaceCatalogs -Ref $Ref
+}
+
+function Update-LibMarketplaceRelease {
+    param([Parameter(Mandatory)][string]$Ref)
+    Assert-LibMarketplaceRef -Ref $Ref
+    & git -C $script:LibRoot rev-parse --verify --quiet "$Ref^{commit}" | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "Unknown release ref: $Ref" }
+    $config = Get-LibMarketplaceConfig
+    foreach ($plugin in $config.plugins) {
+        $name = [string]$plugin.name
+        foreach ($vendor in @('codex', 'claude')) {
+            $spec = "${Ref}:plugins/$name/.$vendor-plugin/plugin.json"
+            & git -C $script:LibRoot cat-file -e $spec
+            if ($LASTEXITCODE -ne 0) { throw "$Ref does not contain the $vendor manifest for $name" }
+        }
+    }
+    New-LibMarketplaceCatalogs -Ref $Ref
 }
 
 # True when a destination directory was created by this installer's copy mode.

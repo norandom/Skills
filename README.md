@@ -83,6 +83,38 @@ The download links above always resolve to the [latest release](https://github.c
 
 It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` prefix preserved) and each `mcp_servers/<name>/` into `mcp_servers/<name>.mcpb` (flat layout — `manifest.json` at the root). Existing `.skill` artifacts are excluded from their own archive.
 
+### Marketplace build
+
+The marketplace pilot currently publishes `premortem` as an independently installable Claude Code and Codex plugin. The canonical content remains under `premortem/`; the build generates the standard plugin package under `plugins/premortem/` from shared templates in `.marketplace/templates/`:
+
+```bash
+./build.sh marketplace marketplace-pilot     # package + both catalogs
+./build.sh marketplace-manifests             # package only, before tagging
+./build.sh marketplace-release v1.12.0       # catalog refs only, after release
+```
+
+The Bash marketplace build requires `jq`; this is a maintainer/CI dependency only and is not needed to install or run a marketplace skill.
+
+Windows maintainers can run the matching PowerShell entry point:
+
+```powershell
+.\build-marketplace.ps1 -Ref marketplace-pilot
+.\build-marketplace.ps1 -ManifestsOnly
+.\build-marketplace.ps1 -Release v1.12.0
+```
+
+`.marketplace/skills.json` is the marketplace allowlist and display metadata. `SKILL.md` remains authoritative for plugin name, version, description, and packaged content. Do not edit generated files under `plugins/` or the two root marketplace catalogs by hand.
+
+After pushing the generated files to the `marketplace-pilot` branch, test the repository-backed install in clean sessions:
+
+```bash
+codex plugin marketplace add norandom/Skills --ref marketplace-pilot
+codex plugin add premortem@norandom-skills
+
+claude plugin marketplace add https://github.com/norandom/Skills.git#marketplace-pilot
+claude plugin install premortem@norandom-skills
+```
+
 ## Install
 
 ### Quick install / update (no git required)
@@ -178,13 +210,12 @@ cd $env:USERPROFILE\Source\Skills
 | `-Hermes` | `%USERPROFILE%\.hermes\skills` |
 | `-Opencode` | `%USERPROFILE%\.config\opencode\skills` |
 | `-Deepseek` | `%USERPROFILE%\.deepseek\skills` |
-| `-Agy` | `%USERPROFILE%\.gemini\antigravity-cli\skills` |
+| `-Agy` | `%USERPROFILE%\.gemini\antigravity-cli\skills` (Antigravity CLI; aliases: `-Antigravity`, `-AntigravityCli`) |
 | `-All` | every target above whose parent dir exists (default) |
 | `-DryRun` | preview without changing anything |
 | `-Force` | replace existing entries at the destination |
 | `-Link` | opt into directory links instead of managed copies |
 | `-Uninstall` | remove installer-managed copies or links |
-
 If PowerShell refuses to run unsigned scripts, allow it for this process only: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
 
 ### Skill-description validation
@@ -230,7 +261,7 @@ git tag v1.2.0
 git push origin v1.2.0
 ```
 
-That fires `.github/workflows/release.yml`, which runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, CLI and Windows GUI bootstraps, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file.
+That fires `.github/workflows/release.yml`, which first regenerates marketplace plugin packages and fails if the tag does not contain the committed result. It then runs the Dagger pipeline and attaches the artifacts to a GitHub Release: every `<name>.skill`, every `<name>.mcpb`, a `skills-installer.zip` (scripts, launchers, CLI and Windows GUI bootstraps, and the no-console `Skills Installer.vbs`), a `skills-installer-macos-app.zip` (the no-terminal `Skills Installer.app`, executable bit preserved), and a `SHA256SUMS` file. After publication, the workflow updates both marketplace catalogs on `main` to point at the new tag and commits that generated ref change automatically.
 
 To build the same artifacts locally (requires Docker and the [Dagger CLI](https://docs.dagger.io/install)):
 

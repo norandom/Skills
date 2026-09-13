@@ -1,0 +1,23 @@
+{
+  "name": "premortem",
+  "version": "1.0.0",
+  "description": "Stress-test a concrete plan, launch, hire, pricing change, strategy, or commitment by assuming it has already failed and reasoning backward. Use when the user has a real decision on the table and asks to 'premortem' it, 'stress-test' it, 'find blind spots', 'poke holes', or otherwise wants honest failure analysis instead of validation. Skip for vague ideas (help them plan first), questions with one right answer, or decisions that are already irreversible.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/premortem",
+  "repository": "https://github.com/norandom/Skills",
+  "keywords": ["decision-making","risk","strategy"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Premortem",
+    "shortDescription": "Stress-test a plan by reasoning backward from failure.",
+    "longDescription": "Stress-test a concrete plan, launch, hire, pricing change, strategy, or commitment by assuming it has already failed and reasoning backward. Use when the user has a real decision on the table and asks to 'premortem' it, 'stress-test' it, 'find blind spots', 'poke holes', or otherwise wants honest failure analysis instead of validation. Skip for vague ideas (help them plan first), questions with one right answer, or decisions that are already irreversible.",
+    "developerName": "norandom",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/norandom/Skills/tree/main/premortem",
+    "defaultPrompt": "Premortem this plan and identify the most actionable failure risks."
+  }
+}

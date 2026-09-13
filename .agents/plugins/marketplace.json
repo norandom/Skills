@@ -1,0 +1,22 @@
+{
+  "name": "norandom-skills",
+  "interface": {
+    "displayName": "No Random Skills"
+  },
+  "plugins": [
+    {
+      "name": "premortem",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/premortem",
+        "ref": "marketplace-pilot"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

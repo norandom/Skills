@@ -1,0 +1,16 @@
+{
+  "plugins": [
+    {
+      "name": "premortem",
+      "displayName": "Premortem",
+      "shortDescription": "Stress-test a plan by reasoning backward from failure.",
+      "category": "Productivity",
+      "keywords": [
+        "decision-making",
+        "risk",
+        "strategy"
+      ],
+      "defaultPrompt": "Premortem this plan and identify the most actionable failure risks."
+    }
+  ]
+}
