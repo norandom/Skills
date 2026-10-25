@@ -14,7 +14,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/cobesy",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Business",
       "keywords": ["change-management","communication","adoption"]
@@ -25,7 +25,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/corporate-finance",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Finance",
       "keywords": ["financial-modeling","valuation","cash-flow"]
@@ -36,7 +36,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/drawio",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Design",
       "keywords": ["drawio","diagrams","visualization"]
@@ -47,7 +47,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/financial-modeling-sheet",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Finance",
       "keywords": ["excel","financial-modeling","workbook-design"]
@@ -58,7 +58,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/game-theory-negotiation",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Business",
       "keywords": ["negotiation","game-theory","procurement"]
@@ -69,7 +69,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/intana-viz",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Data & Analytics",
       "keywords": ["intelligence-analysis","structured-analysis","drawio"]
@@ -80,7 +80,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/investigation-theory",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Security",
       "keywords": ["dfir","soc","incident-response"]
@@ -91,7 +91,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/premortem",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Productivity",
       "keywords": ["decision-making","risk","strategy"]
@@ -102,7 +102,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/reflect",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Productivity",
       "keywords": ["prompt-engineering","clarification","writing"]
@@ -113,7 +113,7 @@
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "plugins/strategic-foresight-viz",
-        "ref": "v2.0.0"
+        "ref": "v2.0.1"
       },
       "category": "Business",
       "keywords": ["strategic-foresight","scenario-planning","drawio"]

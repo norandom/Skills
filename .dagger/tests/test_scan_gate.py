@@ -7,6 +7,8 @@ import shutil
 import subprocess
 import unittest
 import uuid
+import runpy
+from unittest.mock import patch
 
 
 SOURCE = Path(__file__).parents[1] / "src" / "skills" / "main.py"
@@ -18,6 +20,17 @@ SCAN_ONE = next(
     and any(isinstance(target, ast.Name) and target.id == "_SCAN_ONE" for target in node.targets)
 )
 BASH = os.environ.get("TEST_BASH") or shutil.which("bash")
+
+
+class DiagnosticTests(unittest.TestCase):
+    def test_credentials_are_redacted(self):
+        redact = runpy.run_path(str(SOURCE.parents[2] / "scripts" / "scan_diagnostics.py"))["redact"]
+        with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test-private-value"}):
+            result = redact("test-private-value sk-ant-example Authorization: Bearer test-token")
+        self.assertNotIn("test-private-value", result)
+        self.assertNotIn("sk-ant-example", result)
+        self.assertNotIn("test-token", result)
+        self.assertIn("[REDACTED]", result)
 
 
 @unittest.skipUnless(BASH, "Bash is required")
@@ -61,6 +74,12 @@ class ScanGateTests(unittest.TestCase):
     def test_static_pass(self):
         result = self.run_gate(use_llm=False)
         self.assertEqual(result.returncode, 0)
+
+    def test_incomplete_scan_is_error_not_finding(self):
+        result = self.run_gate(scanner_rc=2)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("GATE ERROR", result.stdout)
+        self.assertNotIn("GATE FAIL", result.stdout)
 
 
 if __name__ == "__main__":

@@ -15,9 +15,10 @@ from typing import Annotated
 import dagger
 from dagger import DefaultPath, dag, function, object_type
 
-# SkillSpector has no release tags yet, so pin to a commit for reproducibility.
-# Bump this to re-pin against a newer scanner.
-_SKILLSPECTOR_REF = "2eb844780ab163f01468ecf142c40a2ec0fcaec0"
+# SkillSpector v2.13.1, pinned to the release commit for reproducibility.
+_SKILLSPECTOR_REF = "f3b25697d76256998ca9d42c198d256258d4c035"
+# ClamAV 1.5.4 (signature databases are still refreshed before each scan).
+_CLAMAV_IMAGE = "clamav/clamav:1.5.4@sha256:e19130cdebaeacc71fa46eab3ed6f69941f2f22aa5e08d55e9197f8edf43ce5e"
 
 # Scans ONE skill (env SKILL_DIR), exit 0 = pass, non-zero = gate breach.
 # Run one container per skill so the whole set scans concurrently; the install
@@ -34,7 +35,7 @@ status="error"
 attempt=1
 while [ "$attempt" -le "${MAX_ATTEMPTS:-3}" ]; do
   set +e
-  skillspector scan "$SKILL_DIR" $LLM_FLAG --format markdown \
+  skillspector scan "$SKILL_DIR" $LLM_FLAG --fail-on-incomplete --format markdown \
     --output "/tmp/${name}.md" >"/tmp/${name}.log" 2>&1
   rc=$?
   set -e
@@ -47,19 +48,25 @@ while [ "$attempt" -le "${MAX_ATTEMPTS:-3}" ]; do
   if [ "$rc" -eq 0 ]; then
     status="pass"; break
   fi
-  # rc != 0 with a clean LLM verdict -> a genuine HIGH/CRITICAL finding.
-  status="fail"; break
+  # Exit 1 is a finding or incomplete coverage; other nonzero codes are errors.
+  if [ "$rc" -eq 1 ]; then status="fail"; else status="error"; fi
+  break
 done
 if [ "$status" = "pass" ]; then
   echo "GATE PASS: $name"
   exit 0
 elif [ "$status" = "fail" ]; then
-  echo "GATE FAIL: $name -- risk_score > 50 (HIGH/CRITICAL, do not install)"
+  echo "GATE FAIL: $name -- high-risk finding or incomplete analysis (do not install)"
   echo "---- report ----"
-  cat "/tmp/${name}.md" 2>/dev/null || cat "/tmp/${name}.log" 2>/dev/null || true
+  if [ -f "/tmp/${name}.md" ]; then
+    python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.md"
+  else
+    python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.log"
+  fi
   exit 1
 else
-  echo "GATE ERROR: $name -- LLM unreachable after ${MAX_ATTEMPTS:-3} attempts (failing closed)"
+  echo "GATE ERROR: $name -- scan incomplete or LLM validation failed (failing closed; last exit=$rc)"
+  python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.log"
   exit 1
 fi
 """
@@ -162,11 +169,11 @@ class Skills:
                     f"skillspector @ git+https://github.com/NVIDIA/skillspector.git@{_SKILLSPECTOR_REF}",
                 ]
             )
-            # The pinned Anthropic provider uses https://api.anthropic.com/v1/.
-            # Haiku 5.5 defaults to medium effort. The compatibility API ignores
-            # reasoning_effort, so do not pretend an env flag can override it.
+            # v2.13.1 uses native ChatAnthropic, including explicit effort.
             .with_env_variable("SKILLSPECTOR_PROVIDER", "anthropic")
+            .with_env_variable("ANTHROPIC_BASE_URL", "https://api.anthropic.com")
             .with_env_variable("SKILLSPECTOR_MODEL", "claude-haiku-5-5")
+            .with_env_variable("SKILLSPECTOR_REASONING_EFFORT", "medium")
             .with_env_variable("SKILLSPECTOR_MODEL_REGISTRY", "/src/.dagger/skillspector-models.yaml")
             .with_env_variable("USE_LLM", "1" if use_llm else "0")
             .with_env_variable("LLM_FLAG", "" if use_llm else "--no-llm")
@@ -191,7 +198,7 @@ class Skills:
         results = await asyncio.gather(*(run_one(n) for n in skills))
 
         mode = (
-            "LLM validation (provider=anthropic, model=claude-haiku-5-5, effort=medium default)"
+            "LLM validation (provider=anthropic, model=claude-haiku-5-5, effort=medium)"
             if use_llm else "static-only (--no-llm)"
         )
         report = [f"SkillSpector gate: {mode}; {len(skills)} skills in parallel", ""]
@@ -225,7 +232,7 @@ class Skills:
         """
         ctr = (
             dag.container()
-            .from_("clamav/clamav:1.4")
+            .from_(_CLAMAV_IMAGE)
             .with_mounted_directory("/src", source)
             .with_exec(["sh", "-c", _CLAMAV])
         )
