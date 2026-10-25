@@ -1,7 +1,7 @@
 ---
 name: reflect
-version: 1.1.0
-description: "Turn a rough user request into a clear prompt using ReFLECT: Role, Format, Language, Example, Context, Task. Ask only for missing pieces that matter: always a missing Task, and missing Context or Example when the task depends on them. Use when the user says 'reflect this', 'apply ReFLECT', 'turn this into a good prompt', 'engineer this prompt', or gives a vague request they want cleaned up before it runs. Skip complete requests and do the work directly."
+version: 1.1.1
+description: "Clarify a rough request with ReFLECT: Role, Format, Language, Example, Context, Task. Use for prompt engineering, an explicit ReFLECT request, or an ambiguous task the user wants clarified before execution. Ask only for material gaps, confirm the prompt, then do the work. Skip complete requests and factual questions."
 ---
 
 # ReFLECT
@@ -41,7 +41,7 @@ Don't turn a 10-second ask into a questionnaire. ReFLECT is for requests substan
 
 Read the user's request and silently map what is present onto Role, Format, Language, Example, Context, and Task. Mark each part as present, inferable, or missing.
 
-Infer before asking. Check the conversation, attached files, `CLAUDE.md`, any `memory/` folder, and the repo. If the format is obvious from the request, such as "write a function" meaning code, do not ask. Spend about 30 seconds. A part you can reasonably infer is not missing.
+Infer before asking. Check the conversation, attached files, the repo, and relevant project instructions or saved project memory exposed by the user's workspace. Project instructions and memory are optional external context, not bundled skill dependencies; do not assume they exist or search unrelated projects. If the format is obvious from the request, such as "write a function" meaning code, do not ask. Spend about 30 seconds. A part you can reasonably infer is not missing.
 
 ---
 

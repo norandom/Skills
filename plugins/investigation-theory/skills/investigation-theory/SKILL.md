@@ -1,8 +1,12 @@
 ---
 name: investigation-theory
-version: 1.0.0
+version: 1.0.1
 description: >
-  Unified SOC / DFIR workflow rooted in Investigation Theory (Diagnostic Inquiry): six-stage loop, question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, Once Upon a Time compromise report, Security M&M peer review, and five standard draw.io diagrams. Triggers on alert triage, log analysis (proxy / mail / Windows / Sysmon / EDR / NetFlow), phishing, lateral movement, C2 / beaconing, data exfiltration, malware execution, insider threats, and on requests to write case notes, playbooks, attack timelines, dispositions, compromise reports, or run an M&M peer review. Also fires on prompts like "help me investigate this alert", "how do I analyze these logs", "build me a playbook for X", "what questions should I ask", "document this incident", or mentions of SOC workflows, triage queues, or incident severity. Does not fire on detection engineering or offensive / red-team work.
+  Guide SOC and DFIR investigations with Investigation Theory's Diagnostic
+  Inquiry workflow. Use for alert triage, evidence and log analysis, phishing,
+  lateral movement, C2, malware, exfiltration, and insider cases. Produces case
+  notes, playbooks, timelines, dispositions, compromise reports, and review
+  diagrams. Excludes detection engineering and offensive work.
 ---
 
 # Investigation Theory: InfoSec / Forensics
@@ -152,9 +156,9 @@ Hand this packet to `game-theory-negotiation` when trust changes payoffs, BATNA,
 
 ## Worked example — phishing alert through three loop cycles
 
-A compact end-to-end pass to anchor the workflow. The analyst is at Tier 1, working alone, and the case escalates to Tier 2 mid-investigation.
+A compact end-to-end pass to anchor the workflow. The analyst is at Tier 1, working alone, and the case escalates to Tier 2 mid-investigation. All filenames, process names, domains, accounts, and hostnames below are illustrative evidence values in a fictional case, not bundled inputs or instructions to download files, visit domains, or run commands.
 
-**Initial Observation (t0)** — IDS fires on inbound mail with attachment `Invoice_42.docm` to `jane.doe@corp`. Sender domain `accounts-billing.co` has no prior history.
+**Initial Observation (t0)** — IDS fires on inbound mail with attachment *Invoice_42.docm* to *jane.doe@corp*. Sender domain *accounts-billing.co* has no prior history.
 
 **Cycle 1 — falsify the alert**
 - *Interpreting Meaning:* relational cue (sender → recipient never seen), novelty cue (first-time domain). Dispositional cue (`.docm` macro file type).
@@ -167,13 +171,13 @@ A compact end-to-end pass to anchor the workflow. The analyst is at Tier 1, work
 
 **Cycle 2 — establish first-order impact**
 - *Question (Succeeding):* Did Jane open the message and execute the attachment? *(Source: mail gateway delivery log + Sysmon EID 1 on her host.)*
-- *Seeking Answers (Pivot):* mail logs confirm delivery 09:14, mail client read receipt 09:21. Sysmon shows `winword.exe` spawning `cmd.exe` spawning `powershell.exe` at 09:22 — macro execution chain.
+- *Seeking Answers (Pivot):* mail logs confirm delivery 09:14, mail client read receipt 09:21. Sysmon shows *winword.exe* spawning *cmd.exe* spawning *powershell.exe* at 09:22 — macro execution chain.
 - *Question (Capability-Matching, internal):* has this parent-child chain been seen on the network before? *(Source: EDR historical search.)*
 - *Seeking Answers (Aggregation):* zero prior occurrences in 90 days. Add timeline node `t1: macro → cmd → powershell on JANE-LAPTOP`. Functional boundary: Endpoint.
 
 **Cycle 3 — second-order impact**
 - *Question (Succeeding):* What did the PowerShell do? *(Source: PowerShell Script Block logging, proxy logs.)*
-- *Seeking Answers (Search expansion):* one outbound HTTPS to `cdn.accounts-billing.co` over port 8443. Proxy shows 412 KB downloaded `update.bin`. Add timeline nodes for the C2 contact and the file pull. Boundary crossings: Endpoint → Internal → Internet.
+- *Seeking Answers (Search expansion):* one outbound HTTPS to *cdn.accounts-billing.co* over port 8443. Proxy shows 412 KB downloaded *update.bin*. Add timeline nodes for the C2 contact and the file pull. Boundary crossings: Endpoint → Internal → Internet.
 - *Reaching a Conclusion:* execution chain + outbound retrieval + no prior baseline = **Disposition 4 — Malicious Logic** on JANE-LAPTOP. No evidence yet of additional hosts, so **Response Category: Elevated** (not Critical).
 
 **Close-out (Tier 2)**
@@ -182,7 +186,7 @@ A compact end-to-end pass to anchor the workflow. The analyst is at Tier 1, work
 - Evidence chain ties every conclusion to its specific log export.
 - Hive ticket filed, EDR isolation requested, the case is handed to IR if additional hosts surface.
 
-Gaps to track: lateral movement post-execution (timeline gap → next question), payload analysis of `update.bin` (sandbox → next question), credential exposure on JANE-LAPTOP. Each gap is a candidate for a new loop cycle or an explicit "out of scope" note in the case notes.
+Gaps to track: lateral movement post-execution (timeline gap → next question), payload analysis of *update.bin* (sandbox → next question), credential exposure on JANE-LAPTOP. Each gap is a candidate for a new loop cycle or an explicit "out of scope" note in the case notes.
 
 ---
 

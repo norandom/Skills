@@ -1,7 +1,7 @@
 {
   "name": "premortem",
-  "version": "1.0.0",
-  "description": "Stress-test a concrete plan, launch, hire, pricing change, strategy, or commitment by assuming it has already failed and reasoning backward. Use when the user has a real decision on the table and asks to 'premortem' it, 'stress-test' it, 'find blind spots', 'poke holes', or otherwise wants honest failure analysis instead of validation. Skip for vague ideas (help them plan first), questions with one right answer, or decisions that are already irreversible.",
+  "version": "1.0.1",
+  "description": "Stress-test a concrete plan or decision by assuming failure and reasoning backward. Use for a premortem, blind-spot review, or failure analysis of a launch, hire, pricing change, strategy, or commitment. Produces failure scenarios, hidden assumptions, warning signs, and plan changes. Skip vague ideas, factual questions, and irreversible decisions.",
   "author": {
     "name": "norandom",
     "url": "https://github.com/norandom"
@@ -13,7 +13,7 @@
   "interface": {
     "displayName": "Premortem",
     "shortDescription": "Stress-test a plan by reasoning backward from failure.",
-    "longDescription": "Stress-test a concrete plan, launch, hire, pricing change, strategy, or commitment by assuming it has already failed and reasoning backward. Use when the user has a real decision on the table and asks to 'premortem' it, 'stress-test' it, 'find blind spots', 'poke holes', or otherwise wants honest failure analysis instead of validation. Skip for vague ideas (help them plan first), questions with one right answer, or decisions that are already irreversible.",
+    "longDescription": "Stress-test a concrete plan or decision by assuming failure and reasoning backward. Use for a premortem, blind-spot review, or failure analysis of a launch, hire, pricing change, strategy, or commitment. Produces failure scenarios, hidden assumptions, warning signs, and plan changes. Skip vague ideas, factual questions, and irreversible decisions.",
     "developerName": "norandom",
     "category": "Productivity",
     "capabilities": [],

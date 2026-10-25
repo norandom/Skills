@@ -1,13 +1,11 @@
 ---
 name: drawio
-version: 1.0.0
+version: 1.0.1
 description: >-
-  General draw.io diagram creation via MCP tools. Covers the three tool types (Mermaid, XML, CSV),
-  URL presentation rules for the Hermes WebUI, Mermaid syntax reference shortcuts, domain-specific
-  palettes (executive/boardroom Gartner-style), and when to prefer each tool type. Use for any
-  draw.io task that doesn't fit a domain-specific skill (intana-viz, architecture-diagram, etc.).
-  Load this skill when the user asks for a draw.io diagram, a Mermaid diagram for draw.io, or any
-  visualization using the draw.io MCP tools.
+  Create draw.io diagrams through MCP using Mermaid, XML, or CSV. Use for
+  general diagram requests, Mermaid-to-draw.io rendering, and executive or
+  boardroom styling. Includes tool selection, XML checks, and Hermes link
+  presentation. For domain-specific analysis, use the relevant specialist skill.
 ---
 
 # Draw.io Diagram Creation
@@ -45,8 +43,8 @@ For the executive/boardroom Gartner-style palette, see the Domain-Specific Palet
 Draw.io URLs embed the entire diagram source in the URL fragment (`#create=` with `%`-encoded
 JSON). These URLs are very long (often thousands of characters).
 
-**Always present the bare URL on its own line.** Do NOT wrap it in Markdown link syntax
-`[text](url)`. The WebUI's Markdown renderer can mangle long URLs containing `%` escapes and
+**Always present the bare URL on its own line.** Do NOT use Markdown's labeled-link
+form (bracketed display text followed by a parenthesized URL). The WebUI's Markdown renderer can mangle long URLs containing `%` escapes and
 `#` fragments, producing broken links the user cannot open.
 
 ```

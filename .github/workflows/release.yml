@@ -28,15 +28,28 @@ jobs:
       - name: Test scanner failure handling
         run: python3 .dagger/tests/test_scan_gate.py
 
-      - name: SkillSpector security gate
+      - name: Collect SkillSpector reports
         uses: dagger/dagger-for-github@v8.4.1
         with:
           version: "0.21.3"
           verb: call
-          args: scan --anthropic-api-key=env:ANTHROPIC_API_KEY
+          args: scan-reports --anthropic-api-key=env:ANTHROPIC_API_KEY export --path=./scan-reports
         env:
           # Empty when the secret is unset -> the gate falls back to --no-llm.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Upload sanitized SkillSpector reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skillspector-reports
+          path: scan-reports/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Enforce SkillSpector verdict
+        if: always()
+        run: python3 .dagger/scripts/scan_reports.py check ./scan-reports
 
   # Malware gate: ClamAV must pass before anything is built or published.
   clamav:

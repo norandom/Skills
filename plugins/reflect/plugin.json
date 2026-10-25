@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "reflect",
-  "version": "1.1.0",
-  "description": "Turn a rough user request into a clear prompt using ReFLECT: Role, Format, Language, Example, Context, Task. Ask only for missing pieces that matter: always a missing Task, and missing Context or Example when the task depends on them. Use when the user says 'reflect this', 'apply ReFLECT', 'turn this into a good prompt', 'engineer this prompt', or gives a vague request they want cleaned up before it runs. Skip complete requests and do the work directly.",
+  "version": "1.1.1",
+  "description": "Clarify a rough request with ReFLECT: Role, Format, Language, Example, Context, Task. Use for prompt engineering, an explicit ReFLECT request, or an ambiguous task the user wants clarified before execution. Ask only for material gaps, confirm the prompt, then do the work. Skip complete requests and factual questions.",
   "author": {
     "name": "norandom",
     "url": "https://github.com/norandom"

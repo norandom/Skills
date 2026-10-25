@@ -10,6 +10,7 @@ before anything is published.
 """
 
 import asyncio
+import json
 from typing import Annotated
 
 import dagger
@@ -19,57 +20,6 @@ from dagger import DefaultPath, dag, function, object_type
 _SKILLSPECTOR_REF = "f3b25697d76256998ca9d42c198d256258d4c035"
 # ClamAV 1.5.4 (signature databases are still refreshed before each scan).
 _CLAMAV_IMAGE = "clamav/clamav:1.5.4@sha256:e19130cdebaeacc71fa46eab3ed6f69941f2f22aa5e08d55e9197f8edf43ce5e"
-
-# Scans ONE skill (env SKILL_DIR), exit 0 = pass, non-zero = gate breach.
-# Run one container per skill so the whole set scans concurrently; the install
-# layer is shared, so wall-clock is the slowest single skill, not the sum.
-#
-# When an LLM call drops, SkillSpector silently falls back to its fragile static
-# heuristics (e.g. flagging XML comments as "hidden instructions"). That verdict
-# is unreliable, so we retry the skill rather than trust it. We never PASS on a
-# degraded scan, and fail closed if the LLM stays unreachable after retries.
-_SCAN_ONE = r"""
-set -uo pipefail
-name="$(basename "$SKILL_DIR")"
-status="error"
-attempt=1
-while [ "$attempt" -le "${MAX_ATTEMPTS:-3}" ]; do
-  set +e
-  skillspector scan "$SKILL_DIR" $LLM_FLAG --fail-on-incomplete --format markdown \
-    --output "/tmp/${name}.md" >"/tmp/${name}.log" 2>&1
-  rc=$?
-  set -e
-  if [ "${USE_LLM:-0}" = "1" ] && grep -q "LLM call failed" "/tmp/${name}.log"; then
-    echo ">> $name: LLM degraded (attempt ${attempt}/${MAX_ATTEMPTS:-3}); retrying..." >&2
-    attempt=$((attempt + 1))
-    sleep 5
-    continue
-  fi
-  if [ "$rc" -eq 0 ]; then
-    status="pass"; break
-  fi
-  # Exit 1 is a finding or incomplete coverage; other nonzero codes are errors.
-  if [ "$rc" -eq 1 ]; then status="fail"; else status="error"; fi
-  break
-done
-if [ "$status" = "pass" ]; then
-  echo "GATE PASS: $name"
-  exit 0
-elif [ "$status" = "fail" ]; then
-  echo "GATE FAIL: $name -- high-risk finding or incomplete analysis (do not install)"
-  echo "---- report ----"
-  if [ -f "/tmp/${name}.md" ]; then
-    python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.md"
-  else
-    python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.log"
-  fi
-  exit 1
-else
-  echo "GATE ERROR: $name -- scan incomplete or LLM validation failed (failing closed; last exit=$rc)"
-  python3 /src/.dagger/scripts/scan_diagnostics.py "/tmp/${name}.log"
-  exit 1
-fi
-"""
 
 # Runs inside the ClamAV container. Refreshes signatures (best-effort; the
 # pinned image ships a baked database) then recursively scans the repo. clamscan
@@ -116,19 +66,37 @@ class Skills:
             "Anthropic API key; enables the LLM validation pass",
         ] = None,
     ) -> str:
-        """Security-gate every skill with NVIDIA SkillSpector.
+        """Fail-closed security gate; use scan-reports to export evidence before checking.
 
-        Scans each <skill>/SKILL.md for SkillSpector's 64 vulnerability
-        patterns (prompt injection, data exfiltration, excessive agency,
-        supply-chain, MCP issues, ...) and fails (non-zero) if any skill scores
-        risk > 50 (HIGH/CRITICAL). In CI this gates the release so a flagged
-        skill is never published.
+        Local: dagger call scan --anthropic-api-key=env:ANTHROPIC_API_KEY
+        Without a key, run static-only. Missing reports, incomplete coverage,
+        degraded analyzers, scanner errors, or risk > 50 fail the gate.
+        """
+        reports = await self.scan_reports(source, anthropic_api_key)
+        check = (
+            dag.container().from_("python:3.12-slim")
+            .with_mounted_directory("/src", source)
+            .with_mounted_directory("/reports", reports)
+            .with_exec(["python3", "/src/.dagger/scripts/scan_reports.py", "check", "/reports"])
+        )
+        try:
+            return await check.stdout()
+        except dagger.ExecError as exc:
+            raise RuntimeError((exc.stdout or "") + (exc.stderr or "")) from exc
 
-        With a key the scan runs the Anthropic Haiku LLM validation pass; without one it
-        falls back to static-only (--no-llm).
+    @function
+    async def scan_reports(
+        self,
+        source: Annotated[dagger.Directory, DefaultPath(".")],
+        anthropic_api_key: Annotated[
+            dagger.Secret | None,
+            "Anthropic API key; enables the LLM validation pass",
+        ] = None,
+    ) -> dagger.Directory:
+        """Export sanitized JSON and logs even when individual scans fail.
 
-        Static only:  dagger call scan
-        With LLM:     dagger call scan --anthropic-api-key=env:ANTHROPIC_API_KEY
+        Collection is not a passing security verdict. CI must subsequently run
+        `python3 .dagger/scripts/scan_reports.py check ./scan-reports`.
         """
         # Discover top-level skill dirs (those holding a SKILL.md).
         skills = []
@@ -142,7 +110,7 @@ class Skills:
                 skills.append(name)
         skills.sort()
         if not skills:
-            return "no skills found"
+            raise RuntimeError("No skills found; refusing an empty security scan")
 
         use_llm = anthropic_api_key is not None and bool(
             (await anthropic_api_key.plaintext()).strip()
@@ -175,9 +143,6 @@ class Skills:
             .with_env_variable("SKILLSPECTOR_MODEL", "claude-haiku-5-5")
             .with_env_variable("SKILLSPECTOR_REASONING_EFFORT", "medium")
             .with_env_variable("SKILLSPECTOR_MODEL_REGISTRY", "/src/.dagger/skillspector-models.yaml")
-            .with_env_variable("USE_LLM", "1" if use_llm else "0")
-            .with_env_variable("LLM_FLAG", "" if use_llm else "--no-llm")
-            .with_env_variable("MAX_ATTEMPTS", "3")
             .with_mounted_directory("/src", source)
             .with_workdir("/src")
         )
@@ -185,36 +150,27 @@ class Skills:
             base = base.with_secret_variable("ANTHROPIC_API_KEY", anthropic_api_key)
 
         async def run_one(name: str):
-            ctr = base.with_env_variable(
-                "SKILL_DIR", f"/src/{name}"
-            ).with_exec(["bash", "-c", _SCAN_ONE])
-            try:
-                return name, True, (await ctr.stdout()).strip()
-            except dagger.ExecError as exc:
-                detail = (exc.stdout or "").strip() or (exc.stderr or "").strip()
-                return name, False, detail
+            command = ["python3", "/src/.dagger/scripts/scan_reports.py", "collect",
+                       f"/src/{name}", "/reports", "--attempts", "3"]
+            if use_llm:
+                command.append("--use-llm")
+            ctr = base.with_exec(command)
+            # Evaluate each independent container concurrently; collector only
+            # returns success after it has recorded scanner status and evidence.
+            # Dagger v0.21.3 Directory.sync / with_directory / with_new_file:
+            # https://github.com/dagger/dagger/blob/v0.21.3/sdk/python/src/dagger/client/gen.py
+            return name, await ctr.directory("/reports").sync()
 
         # Fan out: all skills scan concurrently, install layer built once.
         results = await asyncio.gather(*(run_one(n) for n in skills))
 
-        mode = (
-            "LLM validation (provider=anthropic, model=claude-haiku-5-5, effort=medium)"
-            if use_llm else "static-only (--no-llm)"
-        )
-        report = [f"SkillSpector gate: {mode}; {len(skills)} skills in parallel", ""]
-        failed = []
-        for name, ok, out in results:
-            report.append(out)
-            if not ok:
-                failed.append(name)
-        report.append("")
-        report.append("=" * 60)
-        if failed:
-            report.append("SECURITY GATE FAILED: " + ", ".join(failed))
-            # Raise so `dagger call` exits non-zero and the CI gate fails.
-            raise RuntimeError("\n".join(report))
-        report.append(f"SECURITY GATE PASSED -- {len(skills)} skills clean")
-        return "\n".join(report)
+        reports = dag.directory().with_new_file("manifest.json", json.dumps({
+            "schema_version": 1, "skills": skills, "use_llm": use_llm,
+            "scanner_commit": _SKILLSPECTOR_REF,
+        }))
+        for name, directory in results:
+            reports = reports.with_directory(name, directory)
+        return reports
 
     @function
     async def malware(

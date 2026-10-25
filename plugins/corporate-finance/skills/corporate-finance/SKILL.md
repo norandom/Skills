@@ -1,15 +1,19 @@
 ---
 name: corporate-finance
-version: 1.3.0
+version: 1.3.1
 description: >
-  Corporate finance and financial-modeling workbench for spreadsheets, analysis, advice, and model review. Covers EBITDA, ratios, common-size/trend analysis, 3-statement models, cash-flow statements, 13-week forecasts, working capital/CCC, DCF/WACC/valuation, and budgeting. Produces XLSX / Claude-for-Excel workbooks with assumption sheets, validation checks, color-coded inputs, auditable formula traces, and Python recalculation checks. Triggers on "build a financial model", "make a budget", "3-statement model", "DCF", "WACC", "valuation", "cash flow forecast", "ratio analysis", "EBITDA", "common-size", "P&L template", or model review. Every stated number needs source, formula, substitution, units, result, Python verification, and mismatch status. Skip for bookkeeping entries, tax filing, or personal-finance budgeting.
+  Build, analyze, advise on, or review corporate financial models: three-statement
+  models, budgets, cash forecasts, DCF/WACC valuations, EBITDA, and ratios. Use
+  for auditable spreadsheet models and financial-statement interpretation, with
+  formula traces and Python verification. Excludes bookkeeping, tax filing,
+  audit opinions, and personal budgeting.
 ---
 
 # Corporate finance and financial modeling
 
 This skill starts with the finance action: build, analyze, advise, or reflect. From there it pulls two things: the explanation for the metric or method, and the spreadsheet structure that produces it. The point is simple: do the finance work in the right order, with the math visible.
 
-It uses personal notes about Bojan Radojicic / bojanfin.com corporate-finance material, including handbooks, the 50-sheet model map, and worked XLSX templates, plus personal notes about MBA financial-modeling material on traceability and formula discipline. It is not original source text or an excerpt from those materials. Per-note credits are in `README.md`.
+It uses personal notes about Bojan Radojicic / bojanfin.com corporate-finance material, including handbooks, the 50-sheet model map, and worked XLSX templates, plus personal notes about MBA financial-modeling material on traceability and formula discipline. It is not original source text or an excerpt from those materials. Per-note source credits appear in the relevant bundled reference notes.
 
 > Intent (action) -> explanation layer (concept) + template layer (spreadsheet) -> auditable artifact
 
@@ -46,7 +50,7 @@ Skip it for bookkeeping/journal entries, statutory tax filing, audit opinions, o
 
 1. Classify the intent and lock the workflow (`references/intent-map.md`). MODEL, ANALYZE, ADVISE, or REFLECT? If the user says "build/make/forecast" it is MODEL; "why/how is/interpret" is ANALYZE; "should I/what's better" is ADVISE; "check/is this right" is REFLECT. Stay in that flow until its output and checks are complete.
 2. Gather the context packet. You need entity, periods, granularity, currency, evidence status, and whichever inputs the chosen artifact consumes. Ask only for inputs that change the output.
-3. Pull the explanation layer. Read the topic reference: `ebitda.md`, `ratios-and-analysis.md`, `three-statement-model.md`, `cash-flow-working-capital.md`, `valuation-dcf-wacc.md`, or `budgeting.md`. This gives the reason for the metric and how to read it.
+3. Pull the explanation layer. Read the topic reference: `references/ebitda.md`, `references/ratios-and-analysis.md`, `references/three-statement-model.md`, `references/cash-flow-working-capital.md`, `references/valuation-dcf-wacc.md`, or `references/budgeting.md`. This gives the reason for the metric and how to read it.
 4. Pull the audit layer (`references/auditability-and-math-rigor.md`). Every material number needs this trace: source -> formula -> inputs/cells -> substitution -> step-by-step calculation -> result -> units -> check -> Python recalculation -> mismatch status.
 5. Pull the template layer. For MODEL intent, open the matching asset spec in `assets/` and follow `references/spreadsheet-conventions.md`: color coding, assumption sheet, evidence sheet, validation checks, no hardcoded values.
 6. Produce the initial artifact. Build the workbook, run the analysis, or write the advice. For MODEL, follow the 20-step build order in `references/modeling-best-practices.md` and split long formulas into helper rows or sheets. Treat this as the initial pass, not the final answer.

@@ -1,7 +1,7 @@
 ---
 name: premortem
-version: 1.0.0
-description: "Stress-test a concrete plan, launch, hire, pricing change, strategy, or commitment by assuming it has already failed and reasoning backward. Use when the user has a real decision on the table and asks to 'premortem' it, 'stress-test' it, 'find blind spots', 'poke holes', or otherwise wants honest failure analysis instead of validation. Skip for vague ideas (help them plan first), questions with one right answer, or decisions that are already irreversible."
+version: 1.0.1
+description: "Stress-test a concrete plan or decision by assuming failure and reasoning backward. Use for a premortem, blind-spot review, or failure analysis of a launch, hire, pricing change, strategy, or commitment. Produces failure scenarios, hidden assumptions, warning signs, and plan changes. Skip vague ideas, factual questions, and irreversible decisions."
 ---
 
 # Premortem
@@ -29,7 +29,7 @@ Failure scenarios are only as good as the input. Before running, you need three 
 2. **Who does it affect?** Audience, customer, team, stakeholders.
 3. **What does success look like?** Failure is the inversion of this.
 
-**First, scan what's already available** — the current conversation, `CLAUDE.md`, any `memory/` folder, files the user attached. Don't spend more than ~30 seconds. If you can infer an answer, don't ask.
+**First, scan what's already available** — the current conversation, attached files, and relevant project instructions or saved project memory exposed by the user's workspace. Project instructions and memory are optional external context, not files bundled with this skill; do not assume they exist or search unrelated projects. Don't spend more than ~30 seconds. If you can infer an answer, don't ask.
 
 **Then ask only for what's missing**, one question at a time. Stop asking the moment the threshold is met.
 
@@ -93,7 +93,7 @@ Don't write files by default. A premortem of a hire decision over coffee shouldn
 
 A premortem produces exactly the kind of insight worth keeping: a hidden assumption the user was making, or a validated decision-making pattern. At the end:
 
-- If a `memory/` directory exists at `~/.claude/projects/<project-id>/memory/` (auto-memory) or in the project, offer to save the hidden assumption as a `feedback` or `project` memory — whichever fits.
+- If the host exposes an existing auto-memory or project-memory location for the current project, offer to save the hidden assumption there as a `feedback` or `project` memory — whichever fits. This is an optional user-workspace destination, not a bundled resource; do not invent a path or create a memory store.
 - Don't save reflexively. Ask. The user knows whether the assumption generalizes beyond this one decision.
 
 ---

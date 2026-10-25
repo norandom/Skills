@@ -7,7 +7,7 @@ Skills I use primarily with Codex, [opencode](https://opencode.ai), and Claude C
 
 ## Skills in this repo
 
-### premortem `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/premortem.skill)
+### premortem `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/premortem.skill)
 
 Stress-tests a real decision by assuming it has already failed and reasoning backward to expose the hidden assumption you didn't think to question.
 
@@ -19,7 +19,7 @@ claude plugin install premortem@norandom-skills
 agy plugin install ./plugins/premortem
 ```
 
-### reflect `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/reflect.skill)
+### reflect `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/reflect.skill)
 
 Turns a rough request into a clear prompt using Gartner's ReFLECT framework: Role, Format, Language, Example, Context, and Task. It asks only for missing pieces that matter, confirms the resolved prompt, and then does the work. Includes an optional scored review pass for high-stakes output.
 
@@ -31,7 +31,7 @@ claude plugin install reflect@norandom-skills
 agy plugin install ./plugins/reflect
 ```
 
-### drawio `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/drawio.skill)
+### drawio `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/drawio.skill)
 
 General draw.io diagram creation through the MCP tools. Covers the three tool types (Mermaid, XML, CSV), URL presentation rules for the Hermes WebUI, Mermaid syntax shortcuts, and executive/boardroom palettes. The base for the domain-specific viz skills below; use it for any draw.io task that doesn't fit one of them.
 
@@ -43,7 +43,7 @@ claude plugin install drawio@norandom-skills
 agy plugin install ./plugins/drawio
 ```
 
-### intana-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/intana-viz.skill)
+### intana-viz `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/intana-viz.skill)
 
 Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
 
@@ -55,7 +55,7 @@ claude plugin install intana-viz@norandom-skills
 agy plugin install ./plugins/intana-viz
 ```
 
-### strategic-foresight-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/strategic-foresight-viz.skill)
+### strategic-foresight-viz `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/strategic-foresight-viz.skill)
 
 Strategic-foresight and futures-analysis visualizations rendered through the draw.io MCP. 24 techniques across seven categories: environmental scanning (PESTLE / GRNO, Macro / Meso / Micro), trend analysis, weak signals & perception, basic and advanced scenario planning (Three Futures, Futures Cone, Dator's Archetypes, Intuitive Logics, Lum's Four Steps, Layered Timeline), VUCA / CATUR assessments, What If / Then cross-impact, Consequence Analysis, Analogical Reasoning, and Stakeholder Analysis. Pairs with `intana-viz` for techniques outside the foresight catalog (ACH, Pre-Mortem, Futures Wheel, etc.).
 
@@ -69,7 +69,7 @@ claude plugin install strategic-foresight-viz@norandom-skills
 agy plugin install ./plugins/strategic-foresight-viz
 ```
 
-### investigation-theory `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/investigation-theory.skill)
+### investigation-theory `v1.0.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/investigation-theory.skill)
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
 
@@ -83,7 +83,7 @@ claude plugin install investigation-theory@norandom-skills
 agy plugin install ./plugins/investigation-theory
 ```
 
-### game-theory-negotiation `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
+### game-theory-negotiation `v1.1.2` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
 
@@ -95,7 +95,7 @@ claude plugin install game-theory-negotiation@norandom-skills
 agy plugin install ./plugins/game-theory-negotiation
 ```
 
-### cobesy `v1.3.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
+### cobesy `v1.3.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
 COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first with Schein, Edmondson, and Scientist Mode. Then it compresses the message with Minto, Dirksen, and Knowles, and plans how adoption moves through the network with Centola, Jackson, Berger REDUCE, and cascade logic.
 
@@ -113,7 +113,7 @@ claude plugin install cobesy@norandom-skills
 agy plugin install ./plugins/cobesy
 ```
 
-### corporate-finance `v1.3.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
+### corporate-finance `v1.3.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
 
 corporate-finance starts with what the user is trying to do: build, analyze, advise, or reflect. From there it pulls the right explanation and the right spreadsheet structure. MODEL/BUILD covers three-statement models, budgets, 13-week cash flows, DCF/WACC, ratio dashboards, and EBITDA bridges as XLSX or Claude for Excel workbooks. ANALYZE/DIAGNOSE covers common-size, ratio, and trend analysis. ADVISE/CONSULT handles valuation-method and budgeting-method choices, EBITDA levers, and cash levers. REFLECT checks terminal value, sensitivity, and Non-GAAP / manipulation risks. The workflow stays on the selected intent until the output and checks are done.
 
@@ -129,7 +129,7 @@ claude plugin install corporate-finance@norandom-skills
 agy plugin install ./plugins/corporate-finance
 ```
 
-### financial-modeling-sheet `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/financial-modeling-sheet.skill)
+### financial-modeling-sheet `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/financial-modeling-sheet.skill)
 
 House style for quantitative Excel workbooks. It governs how a workbook looks and is organized, not what it calculates — the goal being a file where a reader can tell, without clicking a single cell, which numbers were typed, which were chosen, which were calculated, which were imported, and which one is the answer. It is applied inside Excel through an assistant add-in (Claude for Excel, ChatGPT for Excel) driving the live workbook. Four modes: CREATE, EXTEND, AUDIT (never writes), and RESTYLE (gated behind approval, a backup, and a change log).
 
@@ -375,11 +375,20 @@ dagger call scan --anthropic-api-key=env:ANTHROPIC_API_KEY  # SkillSpector + Hai
 dagger call malware                                   # ClamAV
 ```
 
+To retain diagnostic evidence, export reports before enforcing the verdict:
+
+```bash
+dagger call scan-reports --anthropic-api-key=env:ANTHROPIC_API_KEY export --path=./scan-reports
+python3 .dagger/scripts/scan_reports.py check ./scan-reports
+```
+
+Report collection alone is not a passing security check. Both CI workflows always upload the sanitized report directory as a 14-day `skillspector-reports` artifact, then enforce the verdict separately. Each skill has full JSON reports, complete logs, and exit status for every attempt. Console summaries separate risk score, coverage status, missing references, and degraded analyzers. Missing or malformed reports fail closed. The local `scan-reports/` directory is git-ignored; raw credential-bearing output stays in ephemeral container scratch and is never exported.
+
 They run as **parallel, blocking gates**:
 
 - **`skillspector.yml`** and **`clamav.yml`** each run on every pull request and push to `main` (one badge above per scanner, linking to its results).
 - **`release.yml`** runs both as jobs `release` depends on — if either fails, nothing is published.
 
-**SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector v2.13.1](https://github.com/NVIDIA/SkillSpector/releases/tag/v2.13.1) checks skills for prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more. The gate fails on risk scores above 50 (HIGH/CRITICAL), incomplete analysis, or scanner errors. Skills scan in parallel with a shared install layer. With the GitHub repository secret **`ANTHROPIC_API_KEY`**, the LLM pass uses native Anthropic (`ANTHROPIC_BASE_URL=https://api.anthropic.com`), model `claude-haiku-5-5`, and explicit `SKILLSPECTOR_REASONING_EFFORT=medium`. Token limits are recorded in `.dagger/skillspector-models.yaml`. Without a key it runs static-only (`--no-llm`). Degraded LLM calls are retried and fail closed; bounded, credential-redacted diagnostics are printed on failure. The scanner is pinned to the v2.13.1 commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility.
+**SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector v2.13.1](https://github.com/NVIDIA/SkillSpector/releases/tag/v2.13.1) checks skills for prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more. The gate fails on risk scores above 50 (HIGH/CRITICAL), incomplete analysis, or scanner errors. Skills scan in parallel with a shared install layer. With the GitHub repository secret **`ANTHROPIC_API_KEY`**, the LLM pass uses native Anthropic (`ANTHROPIC_BASE_URL=https://api.anthropic.com`), model `claude-haiku-5-5`, and explicit `SKILLSPECTOR_REASONING_EFFORT=medium`. Token limits are recorded in `.dagger/skillspector-models.yaml`. Without a key it runs static-only (`--no-llm`). Degraded LLM calls are retried and fail closed; complete credential-redacted reports and logs are retained before verdict enforcement. The scanner is pinned to the v2.13.1 commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility.
 
 **ClamAV (malware).** [ClamAV](https://www.clamav.net) recursively scans the repo with its signature database, unpacking archives so the built `.skill` / `.mcpb` / `.app` bundles are covered too. The gate fails if any signature matches. It needs no key or account; `clamav/clamav:1.5.4` is pinned by digest in `.dagger/src/skills/main.py` (`_CLAMAV_IMAGE`) and ships a baked database that `freshclam` refreshes when the mirror is reachable.

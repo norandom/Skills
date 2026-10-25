@@ -1,8 +1,8 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "financial-modeling-sheet",
-  "version": "1.1.0",
-  "description": "House style for quantitative Excel workbooks: sheet architecture, tab colors, navigation, semantic cell classes, named styles, number formats, the negative-value convention, dashboards, charts, and a definition-of-done audit. Four modes — CREATE a workbook, EXTEND one, AUDIT conformance (never writes), RESTYLE legacy formatting. Two non-mixable palette profiles: House Style (default, blue/yellow convention — blue source data, yellow assumptions, no-fill calculations, light-gray outputs, navy key results) and Audit Standard (orange inputs, gray calculations, green font for mixed cells). Triggers on \"standardize this workbook\", \"format my Excel model\", \"style this spreadsheet\", \"workbook house style\", \"tab colors\", \"build a menu sheet\", \"color-code inputs vs formulas\", a Power Query load, or a formatting review. Governs presentation only — it does not verify arithmetic.",
+  "version": "1.1.1",
+  "description": "Apply house style to quantitative Excel workbooks through an Excel assistant add-in. Use to create, extend, audit, or restyle workbook layout, input/formula colors, named styles, navigation, dashboards, and Power Query output. Audit mode is read-only. Governs presentation and organization, not arithmetic or ETL.",
   "author": {
     "name": "norandom",
     "url": "https://github.com/norandom"

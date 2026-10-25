@@ -1,20 +1,12 @@
 ---
 name: cobesy
-version: 1.3.0
+version: 1.3.1
 description: >
-  COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge
-  (docs, repos, architecture, decks) into work people actually adopt. It checks
-  the culture first (Schein assumptions, Edmondson safety, Scientist Mode), then
-  compresses the message (Minto, Dirksen, Knowles), then plans how adoption moves
-  through the network (Centola, Jackson, Berger REDUCE, cascades). The same
-  cognitive engine also structures written and projected artifacts: blog posts
-  (technical and financial), a thesis, journal article, or slides, with a
-  skeleton grid, headlines, bullets, emphasis, writing advice, style guidance,
-  and keywords before prose (Belcher, Cron, Kolin, Graff & Birkenstein,
-  Klinkenborg, Williams & Bizup). Use it for
-  rollouts, buy-in, change management, briefings, resistance, onboarding, or to
-  structure a piece of writing where the knowledge is there but the structure
-  keeps getting lost. Skip it for factual lookup or single-fact Q&A.
+  Turn knowledge into adoption plans, briefings, and structured writing with
+  COBESY's culture, cognitive, and network lenses. Use for rollouts, buy-in,
+  resistance, onboarding, or organizing a blog post, thesis, article, or slides
+  before drafting. Produces framing, content structure, and an adoption path.
+  Skip factual lookup and single-fact questions.
 ---
 
 # COBESY: Cognitive Behavioral Systemic
@@ -233,10 +225,10 @@ COBESY sequences the adoption. A premortem surfaces a barrier →
 COBESY routes around it; a negotiation secures an anchor → COBESY seeds from it;
 intana-viz renders the cultural map → COBESY frames against it.
 
-Use the shared context packet. The sibling skills pass a common packet with
-stable IDs (`A1 buyer`, `S2 recession case`, …) so artifacts cross-reference;
-see `game-theory-negotiation/references/drawio-concepts.md`. COBESY reads and
-writes the same fields rather than inventing parallel names:
+Use the shared context packet defined in `references/shared-context-packet.md`.
+It keeps stable IDs (`A1 buyer`, `S2 recession case`, …) across artifacts and
+works without installing a sibling skill. COBESY reads and writes the same
+fields rather than inventing parallel names:
 
 | Packet field | COBESY role |
 |---|---|

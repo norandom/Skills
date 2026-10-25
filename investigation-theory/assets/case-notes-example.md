@@ -13,7 +13,7 @@ Initial Observation: `IDS rule MAIL-DOCM-NEWDOMAIN fired 2026-05-13 09:14:21 UTC
 ## Entry 2026-05-13 09:32 UTC
 
 **Investigation statement**
-> Reviewed mail headers for the triggering message (export `mail-7421-hdr.eml`). Pulled them because the IDS rule keys on novel sender domains and macro-enabled attachments; I needed to know whether SPF / DKIM / DMARC would have caught this. Found: SPF softfail (`accounts-billing.co` does not list the originating IP `185.x.x.x` in its SPF record), no DKIM signature, no DMARC record published by the sender. First `Received` header IP does not match the `From` domain's published MX.
+> Reviewed mail headers for the triggering message (export `mail-7421-hdr.eml`). Pulled them because the IDS rule keys on novel sender domains and macro-enabled attachments; I needed to know whether SPF / DKIM / DMARC would have caught this. Found: SPF softfail (`accounts-billing.co` does not list the originating IP `185.x.x.x` in its SPF record), no DKIM signature, no DMARC record published by the sender. First `Received` header IP does not match the published MX of the `From` domain.
 
 **Action statement**
 > Did not close the alert. Created a Hive case (HIVE-7421), opened the Phishing playbook PHISH-001, and moved to Tier 2 because the novelty cue (first-time sender domain) combined with failed authenticity checks means I cannot falsify the alert in a single loop. Next step: confirm whether Jane opened the message and whether the attachment executed.
