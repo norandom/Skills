@@ -4,9 +4,9 @@
 Generate marketplace plugin packages and catalogs on Windows.
 
 .EXAMPLE
-.\build-marketplace.ps1 -Ref marketplace-pilot
+.\build-marketplace.ps1 -Ref v2.0.0
 .\build-marketplace.ps1 -ManifestsOnly
-.\build-marketplace.ps1 -Release v1.12.0
+.\build-marketplace.ps1 -Release v2.0.0
 #>
 [CmdletBinding(DefaultParameterSetName = 'Build')]
 param(

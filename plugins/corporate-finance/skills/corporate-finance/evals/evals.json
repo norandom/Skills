@@ -1,0 +1,35 @@
+{
+  "skill_name": "corporate-finance",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "We're a small manufacturer with three years of actuals. I need a full financial model in Excel that projects the next five years and ties the income statement, balance sheet and cash flow together. Where do we start and what should the workbook look like?",
+      "expected_output": "Classifies this as a MODEL/BUILD intent and stays in the build workflow until the workbook and checks are complete. Reaches for the three-statement model (references/three-statement-model.md + assets/three-statement-model.md). Builds schedules FIRST, then statements: Revenue -> COGS & Gross Profit -> Headcount & Salaries -> Overhead -> CAPEX & Depreciation -> Financing -> Working Capital -> Tax -> Income Statement -> Cash Flow (indirect) -> Balance Sheet. Wires the THREE integration links: Balance-Sheet Cash = Cash Flow ending cash; Equity = opening equity + Net Income - Dividends; other current assets/liabilities projected as a share/turnover ratio. Applies the cell colour convention (blue = starting/baseline amounts, yellow = assumptions, no-fill = formulas never edited) and puts Instructions + Assumptions on their own sheets up front. Adds Evidence & Audit Trail and Validation sheets. Every material output shows source, formula, input cells, substitution, result, units, and check. Targets Claude for Excel / XLSX output. Does NOT hardcode numbers into formula cells and does NOT state unexplained calculated results.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Here are our latest financials. EBITDA margin actually improved year over year, but net margin slipped and our return on assets fell. Cash also feels tighter than last year. What's going on?",
+      "expected_output": "Classifies this as an ANALYZE/DIAGNOSE intent and uses the ratio + common-size workflow (references/ratios-and-analysis.md). Does not invent missing numbers; requests or labels source data gaps. Reads the EBITDA-margin-up-but-net-margin-down signal as a problem BELOW the operating line: rising interest expense (financing policy) and/or higher effective tax (CIT/tax policy), not operations. Flags ROA falling year over year as assets growing faster than net income - a red flag unless the company is in an early-growth/investment phase. Connects 'cash feels tighter' to the cash conversion cycle (CCC = DSO + DIO - DPO) and working capital tied up in receivables/inventory, noting cash is not profit. Follows the 6-step ratio workflow (gather BS+P&L, understand, apply formula, interpret, compare vs last period/budget/competitors, risk assessment & action plan) and shows formula, substitution, result, units, and comparison basis for any computed ratio.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm valuing a pre-revenue startup for a funding round. Should I just build a DCF like we do for the mature businesses?",
+      "expected_output": "Classifies this as an ADVISE/CONSULT intent and uses the valuation method-selection guidance (references/valuation-dcf-wacc.md). Advises that a DCF (income approach) fits companies with PROJECTABLE cash flows and is a poor fit for a pre-revenue startup with no reliable cash-flow history. Recommends market-based methods - Comparable Companies (EV/EBITDA and similar multiples) where public peers exist - and startup-specific methods such as Venture Capital or Berkus, and/or cost-based Net Book Value / Replacement Cost when there are no comparables and cash flows are unpredictable. If a DCF is built anyway, warns it will be dominated by terminal value and extremely sensitive to assumptions. Frames the choice by data availability and company stage rather than defaulting to DCF.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Can you sanity-check this DCF before I send it? Five-year forecast, terminal growth of 6%, and the terminal value is about 95% of enterprise value. WACC is 9%.",
+      "expected_output": "Classifies this as a REFLECT intent and runs the valuation reflection gates (references/valuation-dcf-wacc.md, assets/dcf-wacc.md, references/auditability-and-math-rigor.md). Flags the 6% terminal growth as too high: g must not exceed long-run nominal GDP, the risk-free rate, or the company's sustainable historical growth - 6% likely breaches all three unless clear evidence is provided. Flags terminal value at ~95% of EV as over-reliance on the terminal value (near the ~99% red-flag), meaning almost no value comes from the explicit forecast. Calls for a WACC x g sensitivity grid because a ~2% move in WACC can roughly halve the value, and applies Damodaran's 3-dimension consistency check (high growth must come with reinvestment and appropriate risk; high growth + low reinvestment + low risk is an inconsistent story). Requires the DCF to show source, formula, substitution, result, units, and check for FCFF, WACC, terminal value, enterprise value, and equity value. Recommends lowering g toward GDP, extending/strengthening the explicit forecast, and presenting a sensitivity range rather than a single point value or false precision.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "The model says enterprise value is 85.497362 billion. Can we just use that number in the memo? I don't have the formula trail handy.",
+      "expected_output": "Classifies this as a REFLECT intent focused on auditability. Refuses to present the number as a concluded fact without the formula trail. Requires source, formula, inputs/cells, substitution, result, units, and validation check before the number is used. Warns against false precision in valuation and recommends presenting a rounded range supported by WACC x growth sensitivity instead of a last-cent point value. Labels 85.497362 billion as an unverified model output or assumption until the evidence trail is available.",
+      "files": []
+    }
+  ]
+}

@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-marketplace-main
+  cancel-in-progress: false
+
 jobs:
   # Security gate: SkillSpector must pass before anything is built or published.
   gate:
@@ -21,15 +25,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Test scanner failure handling
+        run: python3 .dagger/tests/test_scan_gate.py
+
       - name: SkillSpector security gate
         uses: dagger/dagger-for-github@v8.4.1
         with:
           version: "0.21.3"
           verb: call
-          args: scan --openai-api-key=env:OPENAI_API_KEY
+          args: scan --anthropic-api-key=env:ANTHROPIC_API_KEY
         env:
           # Empty when the secret is unset -> the gate falls back to --no-llm.
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
   # Malware gate: ClamAV must pass before anything is built or published.
   clamav:
@@ -92,13 +99,99 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Synchronize main before catalog generation
+        shell: bash
+        run: git pull --rebase origin main
+
+      - name: Prevent marketplace catalog downgrade
+        id: catalog-version
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          export LC_ALL=C
+          semver_re='^v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
+          if [[ ! "$RELEASE_TAG" =~ $semver_re ]]; then
+            echo "Release tag is not semantic version syntax: $RELEASE_TAG" >&2
+            exit 1
+          fi
+
+          semver_gt() {
+            local left="${1#v}" right="${2#v}"
+            local left_without_build="${left%%+*}" right_without_build="${right%%+*}"
+            local left_core="${left_without_build%%-*}" right_core="${right_without_build%%-*}"
+            local left_pre='' right_pre='' index left_id right_id
+            local -a left_core_parts right_core_parts left_pre_parts right_pre_parts
+            [[ "$left_without_build" == *-* ]] && left_pre="${left_without_build#*-}"
+            [[ "$right_without_build" == *-* ]] && right_pre="${right_without_build#*-}"
+            IFS=. read -r -a left_core_parts <<< "$left_core"
+            IFS=. read -r -a right_core_parts <<< "$right_core"
+            for index in 0 1 2; do
+              if (( 10#${left_core_parts[$index]} > 10#${right_core_parts[$index]} )); then return 0; fi
+              if (( 10#${left_core_parts[$index]} < 10#${right_core_parts[$index]} )); then return 1; fi
+            done
+            [[ -z "$left_pre" && -n "$right_pre" ]] && return 0
+            [[ -n "$left_pre" && -z "$right_pre" ]] && return 1
+            [[ -z "$left_pre" ]] && return 1
+            IFS=. read -r -a left_pre_parts <<< "$left_pre"
+            IFS=. read -r -a right_pre_parts <<< "$right_pre"
+            for (( index=0; index<${#left_pre_parts[@]} || index<${#right_pre_parts[@]}; index++ )); do
+              [[ $index -ge ${#left_pre_parts[@]} ]] && return 1
+              [[ $index -ge ${#right_pre_parts[@]} ]] && return 0
+              left_id="${left_pre_parts[$index]}"
+              right_id="${right_pre_parts[$index]}"
+              [[ "$left_id" == "$right_id" ]] && continue
+              if [[ "$left_id" =~ ^[0-9]+$ && "$right_id" =~ ^[0-9]+$ ]]; then
+                (( 10#$left_id > 10#$right_id )) && return 0 || return 1
+              fi
+              [[ "$left_id" =~ ^[0-9]+$ ]] && return 1
+              [[ "$right_id" =~ ^[0-9]+$ ]] && return 0
+              [[ "$left_id" > "$right_id" ]] && return 0 || return 1
+            done
+            return 1
+          }
+
+          catalog_refs=''
+          for catalog in \
+            .agents/plugins/marketplace.json \
+            .claude-plugin/marketplace.json \
+            .gemini-plugin/marketplace.json; do
+            refs="$(
+              jq -er '
+                if type != "object" or (.plugins | type) != "array" or (.plugins | length) == 0 then
+                  error("invalid marketplace catalog structure")
+                elif any(.plugins[]; (.source | type) != "object" or (.source.ref | type) != "string" or (.source.ref | length) == 0) then
+                  error("marketplace catalog plugin is missing a source ref")
+                else
+                  .plugins[].source.ref
+                end
+              ' "$catalog"
+            )" || {
+              echo "Unable to parse and validate marketplace catalog $catalog; refusing to update refs" >&2
+              exit 1
+            }
+            catalog_refs="${catalog_refs}${catalog_refs:+$'\n'}${refs}"
+          done
+
+          while IFS= read -r current_ref; do
+            [[ "$current_ref" =~ $semver_re ]] || continue
+            if semver_gt "$current_ref" "$RELEASE_TAG"; then
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              echo "Marketplace catalogs already reference newer release $current_ref; skipping downgrade to $RELEASE_TAG"
+              exit 0
+            fi
+          done < <(printf '%s\n' "$catalog_refs" | sort -u)
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
       - name: Point marketplace catalogs at this release
+        if: steps.catalog-version.outputs.skip != 'true'
         shell: bash
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: ./build.sh marketplace-release "$RELEASE_TAG"
 
       - name: Commit generated catalog refs
+        if: steps.catalog-version.outputs.skip != 'true'
         shell: bash
         env:
           RELEASE_TAG: ${{ github.ref_name }}
@@ -111,5 +204,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "chore(marketplace): point plugins to $RELEASE_TAG"
-          git pull --rebase origin main
           git push origin HEAD:main

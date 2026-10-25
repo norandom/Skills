@@ -11,17 +11,49 @@ Skills I use primarily with Codex, [opencode](https://opencode.ai), and Claude C
 
 Stress-tests a real decision by assuming it has already failed and reasoning backward to expose the hidden assumption you didn't think to question.
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add premortem@norandom-skills
+claude plugin install premortem@norandom-skills
+agy plugin install ./plugins/premortem
+```
+
 ### reflect `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/reflect.skill)
 
 Turns a rough request into a clear prompt using Gartner's ReFLECT framework: Role, Format, Language, Example, Context, and Task. It asks only for missing pieces that matter, confirms the resolved prompt, and then does the work. Includes an optional scored review pass for high-stakes output.
+
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add reflect@norandom-skills
+claude plugin install reflect@norandom-skills
+agy plugin install ./plugins/reflect
+```
 
 ### drawio `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/drawio.skill)
 
 General draw.io diagram creation through the MCP tools. Covers the three tool types (Mermaid, XML, CSV), URL presentation rules for the Hermes WebUI, Mermaid syntax shortcuts, and executive/boardroom palettes. The base for the domain-specific viz skills below; use it for any draw.io task that doesn't fit one of them.
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add drawio@norandom-skills
+claude plugin install drawio@norandom-skills
+agy plugin install ./plugins/drawio
+```
+
 ### intana-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/intana-viz.skill)
 
 Intelligence-analysis visualizations rendered through the draw.io MCP. Maps 80+ structured analytic techniques (ACH, Pre-Mortem, CoA comparison, Cultural Web, McKinsey 7S, Six Thinking Hats, …) to specific diagram templates with consistent intel-grade styling.
+
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add intana-viz@norandom-skills
+claude plugin install intana-viz@norandom-skills
+agy plugin install ./plugins/intana-viz
+```
 
 ### strategic-foresight-viz `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/strategic-foresight-viz.skill)
 
@@ -29,15 +61,39 @@ Strategic-foresight and futures-analysis visualizations rendered through the dra
 
 📖 Background: [Hermes: the moment of business AI](https://osroadwarrior.info/hermes-the-moment-of-business-ai/).
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add strategic-foresight-viz@norandom-skills
+claude plugin install strategic-foresight-viz@norandom-skills
+agy plugin install ./plugins/strategic-foresight-viz
+```
+
 ### investigation-theory `v1.0.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/investigation-theory.skill)
 
 SOC / DFIR workflow from the Investigation Theory curriculum: the Diagnostic Inquiry loop, the question taxonomy (preceding / context / succeeding / proximate / capability-matching / utility), GAPSS data manipulation, three-tier escalation, modified CJCSM 6510 dispositions, the *Once Upon a Time* compromise report, Security M&M peer review, and five locked draw.io diagram types. Fires on alert triage, log analysis, phishing, lateral movement, C2/beaconing, exfil, malware, and insider-threat cases.
 
 📖 Background: [because-security.com](https://www.because-security.com/).
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add investigation-theory@norandom-skills
+claude plugin install investigation-theory@norandom-skills
+agy plugin install ./plugins/investigation-theory
+```
+
 ### game-theory-negotiation `v1.1.1` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/game-theory-negotiation.skill)
 
 Negotiation playbook for bargaining, auctions, procurement, and incentive design. It leads a new negotiator from messy intake to a ready-room brief: numbers, truth checks, scenarios, offer plan, guardrails, first script, and a draw.io map of players, incentives, information gaps, moves, or payoffs. It also covers concession planning, counter-offers, reversible no, nibble defense, higher-authority delegation, virtual price lists, holdup protection, fairness criteria, negotiauctions, Vickrey mechanisms, and profit-share sizing.
+
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add game-theory-negotiation@norandom-skills
+claude plugin install game-theory-negotiation@norandom-skills
+agy plugin install ./plugins/game-theory-negotiation
+```
 
 ### cobesy `v1.3.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/cobesy.skill)
 
@@ -49,6 +105,14 @@ Use it for rollouts, buy-in, change management, briefings, resistance, or onboar
 
 📖 Background: [COBESY or SNAFU?](https://hanse-hedge.fund/cobesy-or-snafu/).
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add cobesy@norandom-skills
+claude plugin install cobesy@norandom-skills
+agy plugin install ./plugins/cobesy
+```
+
 ### corporate-finance `v1.3.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/corporate-finance.skill)
 
 corporate-finance starts with what the user is trying to do: build, analyze, advise, or reflect. From there it pulls the right explanation and the right spreadsheet structure. MODEL/BUILD covers three-statement models, budgets, 13-week cash flows, DCF/WACC, ratio dashboards, and EBITDA bridges as XLSX or Claude for Excel workbooks. ANALYZE/DIAGNOSE covers common-size, ratio, and trend analysis. ADVISE/CONSULT handles valuation-method and budgeting-method choices, EBITDA levers, and cash levers. REFLECT checks terminal value, sensitivity, and Non-GAAP / manipulation risks. The workflow stays on the selected intent until the output and checks are done.
@@ -57,11 +121,27 @@ It ships ten references (EBITDA, ratios and analysis, the three-statement model,
 
 📖 Background: [Autopilot lies. AI analysis crashed. Fix here.](https://hanse-hedge.fund/autopilot-lies-ai-analysis-crashed-fix-here/).
 
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add corporate-finance@norandom-skills
+claude plugin install corporate-finance@norandom-skills
+agy plugin install ./plugins/corporate-finance
+```
+
 ### financial-modeling-sheet `v1.1.0` · [⬇ .skill](https://github.com/norandom/Skills/releases/latest/download/financial-modeling-sheet.skill)
 
 House style for quantitative Excel workbooks. It governs how a workbook looks and is organized, not what it calculates — the goal being a file where a reader can tell, without clicking a single cell, which numbers were typed, which were chosen, which were calculated, which were imported, and which one is the answer. It is applied inside Excel through an assistant add-in (Claude for Excel, ChatGPT for Excel) driving the live workbook. Four modes: CREATE, EXTEND, AUDIT (never writes), and RESTYLE (gated behind approval, a backup, and a change log).
 
 It ships two deliberately non-mixable palette profiles — the semantic House Style default (blue source data, yellow assumptions, unfilled formulas) and the classic Audit Standard (orange inputs, gray calculations), which read the same fills in contradictory ways — plus nine semantic cell classes, a named style registry with legacy aliases, tab colors as a purpose code, a layout skeleton every sheet shares (rows 1–2 blank, title on row 3, columns A and B empty, content at column C), a menu generated last from the actual tab order and actual tab colors, number formats with a leading-minus negative convention, chart selection rules, formula-integrity rules, and a definition of done that doubles as the audit deliverable. Power Query output gets its own treatment: moved to `Data <n> <short id>` sheets at the end, the built-in table style stripped and replaced by the house header and body styles, a `PQ: <headline>` caption above the header row, types set in the query, formatting verified to survive a refresh, and the data referenced rather than copied. It prescribes roles, not sheet names: only Menu, Documentation, and Dashboard are named; task sheets follow the actual work.
+
+**Plugin install** (after the [one-time marketplace setup](#marketplace-build)):
+
+```bash
+codex plugin add financial-modeling-sheet@norandom-skills
+claude plugin install financial-modeling-sheet@norandom-skills
+agy plugin install ./plugins/financial-modeling-sheet
+```
 
 ## MCP servers
 
@@ -85,12 +165,12 @@ It zips each skill folder into `<skill>/<skill>.skill` (top-level `<skill>/` pre
 
 ### Marketplace build
 
-The marketplace pilot currently publishes `premortem` as an independently installable Claude Code, Codex, and Google / Gemini (Antigravity CLI) plugin. The canonical content remains under `premortem/`; the build generates the standard plugin package under `plugins/premortem/` from shared templates in `.marketplace/templates/`:
+The marketplace catalog packages every top-level skill for independent installation in Claude Code, Codex, and Google / Gemini (Antigravity CLI). Each top-level skill directory remains canonical; the build generates standard packages under `plugins/<skill>/` from shared templates in `.marketplace/templates/`:
 
 ```bash
-./build.sh marketplace marketplace-pilot     # package + all three catalogs
+./build.sh marketplace v2.0.0                # package + all three catalogs
 ./build.sh marketplace-manifests             # package only, before tagging
-./build.sh marketplace-release v1.12.0       # catalog refs only, after release
+./build.sh marketplace-release v2.0.0        # catalog refs only, after release
 ```
 
 The Bash marketplace build requires `jq`; this is a maintainer/CI dependency only and is not needed to install or run a marketplace skill.
@@ -98,24 +178,34 @@ The Bash marketplace build requires `jq`; this is a maintainer/CI dependency onl
 Windows maintainers can run the matching PowerShell entry point:
 
 ```powershell
-.\build-marketplace.ps1 -Ref marketplace-pilot
+.\build-marketplace.ps1 -Ref v2.0.0
 .\build-marketplace.ps1 -ManifestsOnly
-.\build-marketplace.ps1 -Release v1.12.0
+.\build-marketplace.ps1 -Release v2.0.0
 ```
 
 `.marketplace/skills.json` is the marketplace allowlist and display metadata. `SKILL.md` remains authoritative for plugin name, version, description, and packaged content. Do not edit generated files under `plugins/` or the root marketplace catalogs by hand.
 
-After pushing the generated files to the `marketplace-pilot` branch, test the repository-backed install in clean sessions:
+Installability does not remove a skill's runtime prerequisites:
+
+| Skill package | External prerequisite | Required for |
+| --- | --- | --- |
+| `cobesy` | None | No external runtime dependency |
+| `drawio`, `intana-viz` | draw.io MCP server | Diagram generation and editing |
+| `strategic-foresight-viz` | draw.io MCP server | Opening and editing native draw.io diagrams |
+| `game-theory-negotiation` | draw.io MCP server for diagram outputs | Negotiation diagrams; non-diagram workflows remain available without it |
+| `investigation-theory` | Optional draw.io MCP server | Native draw.io output; Mermaid is the fallback |
+| `corporate-finance` | External local Python toolchain or remote Python endpoint | Python-backed calculations and verification; the plugin does not configure or provide the runtime |
+| `financial-modeling-sheet` | Excel add-in | Live Excel workbook manipulation |
+| `premortem`, `reflect` | None | Clean marketplace smoke tests |
+
+Add the repository marketplace once for Codex and Claude Code. The catalogs on `main` are updated automatically after each release and pin plugin sources to that release tag:
 
 ```bash
-codex plugin marketplace add norandom/Skills --ref marketplace-pilot
-codex plugin add premortem@norandom-skills
-
-claude plugin marketplace add https://github.com/norandom/Skills.git#marketplace-pilot
-claude plugin install premortem@norandom-skills
-
-agy plugin install plugins/premortem
+codex plugin marketplace add norandom/Skills
+claude plugin marketplace add https://github.com/norandom/Skills.git
 ```
+
+Then use the per-skill commands above. Antigravity CLI does not need that marketplace setup: its documented command installs a plugin directory, so run each `agy plugin install ./plugins/<skill>` command from a checkout of this repository.
 
 ## Install
 
@@ -281,7 +371,7 @@ Two free, self-hosted scanners run before anything ships, both as Dagger functio
 
 ```bash
 dagger call scan                                      # SkillSpector, static-only
-dagger call scan --openai-api-key=env:OPENAI_API_KEY  # SkillSpector + LLM validation
+dagger call scan --anthropic-api-key=env:ANTHROPIC_API_KEY  # SkillSpector + Haiku validation
 dagger call malware                                   # ClamAV
 ```
 
@@ -290,6 +380,6 @@ They run as **parallel, blocking gates**:
 - **`skillspector.yml`** and **`clamav.yml`** each run on every pull request and push to `main` (one badge above per scanner, linking to its results).
 - **`release.yml`** runs both as jobs `release` depends on — if either fails, nothing is published.
 
-**SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate fails if any skill scores above 50 (HIGH/CRITICAL). Skills scan in parallel (one container each, shared install layer), so wall-clock is the slowest single skill. With an LLM key the scan runs SkillSpector's second-stage validation (provider `openai`) to cut false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`OPENAI_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
+**SkillSpector (skill vulnerabilities).** [NVIDIA SkillSpector](https://github.com/NVIDIA/skillspector) checks each `SKILL.md` against 64 vulnerability patterns — prompt injection, data exfiltration, excessive agency, supply-chain risks, MCP issues, and more — and assigns a risk score. The gate fails if any skill scores above 50 (HIGH/CRITICAL). Skills scan in parallel (one container each, shared install layer), so wall-clock is the slowest single skill. With an LLM key the scan runs SkillSpector's second-stage validation using provider `anthropic`, model `claude-haiku-5-5`, and Anthropic's compatibility endpoint `https://api.anthropic.com/v1/`. Haiku 5.5 uses [medium effort by default](https://platform.claude.com/docs/en/models/haiku-5-5/overview); the compatibility endpoint ignores `reasoning_effort`, so no ineffective effort override is sent. Token limits are recorded in `.dagger/skillspector-models.yaml` because the pinned scanner predates this model. LLM validation cuts false positives — without it, benign content like draw.io XML comments can trip the static "hidden instructions" heuristic. Without a key it falls back to static-only (`--no-llm`). To enable the LLM pass in CI, add a repository secret named **`ANTHROPIC_API_KEY`**. If a validation call drops mid-scan the gate retries the skill and fails closed rather than trusting the degraded static result. The scanner is pinned to a commit in `.dagger/src/skills/main.py` (`_SKILLSPECTOR_REF`) for reproducibility; bump it to re-pin.
 
 **ClamAV (malware).** [ClamAV](https://www.clamav.net) recursively scans the repo with its signature database, unpacking archives so the built `.skill` / `.mcpb` / `.app` bundles are covered too. The gate fails if any signature matches. It needs no key or account; the pinned `clamav/clamav:1.4` image ships a baked database that `freshclam` refreshes when the mirror is reachable.

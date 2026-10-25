@@ -1,0 +1,6 @@
+# Metadata missing from the pinned SkillSpector registry.
+# https://platform.claude.com/docs/en/models/haiku-5-5/overview
+models:
+  claude-haiku-5-5:
+    context_length: 1000000
+    max_output_tokens: 128000

@@ -1,0 +1,11 @@
+{
+  "name": "intana-viz",
+  "version": "1.0.0",
+  "description": "Create intelligence analysis visualizations using draw.io diagrams. Covers 80+ structured analytic techniques including: ACH, Argument Mapping, String of Pearls, Critical Path, CoA Analysis, Pre-Mortem, Red Teaming, Four Ways of Seeing, Devil's Advocacy, Prioritisation Maps, If/Then matrices, Bias catalogs, Opportunity matrices, McKinsey 7S, Cultural Web, Leavitt's Diamond, Fishbone, Futures Wheel, Six Thinking Hats, Key Assumptions Check, Blindspot Analysis, Framestorming, War Gaming, and more. Use this skill whenever the user asks for any intelligence analysis chart, diagram, matrix, framework visualization, structured analytic technique visualization, or analytical model rendering — even if they don't name a specific technique. Also trigger for risk assessments, decision matrices, stakeholder analysis, assumption mapping, scenario planning, wargaming, root cause analysis, or any structured thinking framework.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/intana-viz",
+  "repository": "https://github.com/norandom/Skills"
+}

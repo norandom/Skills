@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cobesy",
+  "version": "1.3.0",
+  "description": "COBESY (Cognitive Behavioral Systemic) helps an agent turn static knowledge (docs, repos, architecture, decks) into work people actually adopt. It checks the culture first (Schein assumptions, Edmondson safety, Scientist Mode), then compresses the message (Minto, Dirksen, Knowles), then plans how adoption moves through the network (Centola, Jackson, Berger REDUCE, cascades). The same cognitive engine also structures written and projected artifacts: blog posts (technical and financial), a thesis, journal article, or slides, with a skeleton grid, headlines, bullets, emphasis, writing advice, style guidance, and keywords before prose (Belcher, Cron, Kolin, Graff & Birkenstein, Klinkenborg, Williams & Bizup). Use it for rollouts, buy-in, change management, briefings, resistance, onboarding, or to structure a piece of writing where the knowledge is there but the structure keeps getting lost. Skip it for factual lookup or single-fact Q&A.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/cobesy",
+  "repository": "https://github.com/norandom/Skills",
+  "keywords": ["change-management","communication","adoption"]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "strategic-foresight-viz",
+  "version": "1.0.0",
+  "description": "Strategic foresight and futures-analysis visualizations rendered through the draw.io MCP. Catalog of 24 techniques in seven categories: environmental scanning (PESTLE, Macro/Meso/Micro), trend analysis (Stage, Impact, Trend-on-Trend, Countertrends), weak signals (See/Hear/Think/Feel, What/So What/Now What), basic scenarios (Three Futures, Futures Cone, Dator's Archetypes), advanced scenarios (Intuitive Logics, Lum's Four Steps, Layered Timeline), assessment (VUCA, CATUR, Consequence Analysis), and comparative (Analogical Reasoning, Stakeholder Analysis Lum). Triggers on any foresight diagram, scenario-planning chart, environmental scan, trend matrix, weak-signals map, or horizon-scanning artifact — even when the user does not name the technique. Also fires on PESTLE, VUCA/CATUR, futures cone, stakeholder mapping, and analogical reasoning. Skip intelligence-analysis techniques outside the catalog (ACH, Pre-Mortem, Red Teaming, Cultural Web, Futures Wheel) — route to intana-viz.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/strategic-foresight-viz",
+  "repository": "https://github.com/norandom/Skills",
+  "keywords": ["strategic-foresight","scenario-planning","drawio"]
+}

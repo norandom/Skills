@@ -38,14 +38,14 @@ while [ "$attempt" -le "${MAX_ATTEMPTS:-3}" ]; do
     --output "/tmp/${name}.md" >"/tmp/${name}.log" 2>&1
   rc=$?
   set -e
-  if [ "$rc" -eq 0 ]; then
-    status="pass"; break
-  fi
   if [ "${USE_LLM:-0}" = "1" ] && grep -q "LLM call failed" "/tmp/${name}.log"; then
     echo ">> $name: LLM degraded (attempt ${attempt}/${MAX_ATTEMPTS:-3}); retrying..." >&2
     attempt=$((attempt + 1))
     sleep 5
     continue
+  fi
+  if [ "$rc" -eq 0 ]; then
+    status="pass"; break
   fi
   # rc != 0 with a clean LLM verdict -> a genuine HIGH/CRITICAL finding.
   status="fail"; break
@@ -104,9 +104,9 @@ class Skills:
     async def scan(
         self,
         source: Annotated[dagger.Directory, DefaultPath(".")],
-        openai_api_key: Annotated[
+        anthropic_api_key: Annotated[
             dagger.Secret | None,
-            "OpenAI API key; enables the LLM validation pass",
+            "Anthropic API key; enables the LLM validation pass",
         ] = None,
     ) -> str:
         """Security-gate every skill with NVIDIA SkillSpector.
@@ -117,11 +117,11 @@ class Skills:
         risk > 50 (HIGH/CRITICAL). In CI this gates the release so a flagged
         skill is never published.
 
-        With a key the scan runs the OpenAI LLM validation pass; without one it
+        With a key the scan runs the Anthropic Haiku LLM validation pass; without one it
         falls back to static-only (--no-llm).
 
         Static only:  dagger call scan
-        With LLM:     dagger call scan --openai-api-key=env:OPENAI_API_KEY
+        With LLM:     dagger call scan --anthropic-api-key=env:ANTHROPIC_API_KEY
         """
         # Discover top-level skill dirs (those holding a SKILL.md).
         skills = []
@@ -137,7 +137,9 @@ class Skills:
         if not skills:
             return "no skills found"
 
-        use_llm = openai_api_key is not None
+        use_llm = anthropic_api_key is not None and bool(
+            (await anthropic_api_key.plaintext()).strip()
+        )
         # Shared base: the scanner install is one cached layer reused by every
         # per-skill container, so it is built once even though scans run parallel.
         base = (
@@ -160,15 +162,20 @@ class Skills:
                     f"skillspector @ git+https://github.com/NVIDIA/skillspector.git@{_SKILLSPECTOR_REF}",
                 ]
             )
-            .with_env_variable("SKILLSPECTOR_PROVIDER", "openai")
+            # The pinned Anthropic provider uses https://api.anthropic.com/v1/.
+            # Haiku 5.5 defaults to medium effort. The compatibility API ignores
+            # reasoning_effort, so do not pretend an env flag can override it.
+            .with_env_variable("SKILLSPECTOR_PROVIDER", "anthropic")
+            .with_env_variable("SKILLSPECTOR_MODEL", "claude-haiku-5-5")
+            .with_env_variable("SKILLSPECTOR_MODEL_REGISTRY", "/src/.dagger/skillspector-models.yaml")
             .with_env_variable("USE_LLM", "1" if use_llm else "0")
             .with_env_variable("LLM_FLAG", "" if use_llm else "--no-llm")
             .with_env_variable("MAX_ATTEMPTS", "3")
             .with_mounted_directory("/src", source)
             .with_workdir("/src")
         )
-        if openai_api_key is not None:
-            base = base.with_secret_variable("OPENAI_API_KEY", openai_api_key)
+        if use_llm:
+            base = base.with_secret_variable("ANTHROPIC_API_KEY", anthropic_api_key)
 
         async def run_one(name: str):
             ctr = base.with_env_variable(
@@ -184,7 +191,8 @@ class Skills:
         results = await asyncio.gather(*(run_one(n) for n in skills))
 
         mode = (
-            "LLM validation (provider=openai)" if use_llm else "static-only (--no-llm)"
+            "LLM validation (provider=anthropic, model=claude-haiku-5-5, effort=medium default)"
+            if use_llm else "static-only (--no-llm)"
         )
         report = [f"SkillSpector gate: {mode}; {len(skills)} skills in parallel", ""]
         failed = []

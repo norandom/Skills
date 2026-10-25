@@ -10,5 +10,5 @@
   "homepage": "https://github.com/norandom/Skills/tree/main/{{SOURCE_PATH}}",
   "repository": "https://github.com/norandom/Skills",
   "keywords": {{KEYWORDS_JSON}},
-  "skills": "./skills/"
+  "skills": ["./skills/"]
 }

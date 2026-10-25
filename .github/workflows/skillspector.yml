@@ -19,12 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Test scanner failure handling
+        run: python3 .dagger/tests/test_scan_gate.py
+
       - name: SkillSpector security gate
         uses: dagger/dagger-for-github@v8.4.1
         with:
           version: "0.21.3"
           verb: call
-          args: scan --openai-api-key=env:OPENAI_API_KEY
+          args: scan --anthropic-api-key=env:ANTHROPIC_API_KEY
         env:
           # Empty when the secret is unset -> the gate falls back to --no-llm.
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

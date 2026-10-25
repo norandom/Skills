@@ -137,88 +137,156 @@ lib__render_template() {
   printf '%s\n' "$text" > "$output"
 }
 
-lib__marketplace_plugins() {
+lib__validate_marketplace_config() {
   [ -f "$LIB_MARKETPLACE_CONFIG" ] || { echo "missing marketplace config: $LIB_MARKETPLACE_CONFIG" >&2; return 1; }
+  jq -e '
+    type == "object" and
+    (.plugins | type == "array" and length > 0) and
+    all(.plugins[];
+      type == "object" and
+      (.name | type == "string" and test("\\S") and length <= 64 and test("^(?!.*(?:--|\\.\\.))[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$")) and
+      (.displayName | type == "string" and test("\\S")) and
+      (.shortDescription | type == "string" and test("\\S")) and
+      (.category | type == "string" and test("\\S")) and
+      (.defaultPrompt | type == "string" and test("\\S")) and
+      (.keywords | type == "array" and length > 0 and all(.[]; type == "string" and test("\\S")))
+    )
+  ' "$LIB_MARKETPLACE_CONFIG" >/dev/null || {
+    echo "marketplace config must contain a non-empty plugins array with valid names and typed, non-empty displayName, shortDescription, category, keywords, and defaultPrompt metadata" >&2
+    return 1
+  }
+  jq -e '[.plugins[].name] | length == (unique | length)' "$LIB_MARKETPLACE_CONFIG" >/dev/null || {
+    echo "marketplace config contains duplicate plugin names" >&2
+    return 1
+  }
+
+  local configured_names skill_names d
+  configured_names="$(jq -r '.plugins[].name' "$LIB_MARKETPLACE_CONFIG" | LC_ALL=C sort)"
+  skill_names="$({
+    for d in "$LIB_ROOT"/*/; do
+      [ -f "${d}SKILL.md" ] || continue
+      basename "$d"
+    done
+  } | LC_ALL=C sort)"
+  if [ "$configured_names" != "$skill_names" ]; then
+    echo "marketplace config names must exactly match top-level directories containing SKILL.md" >&2
+    diff -u <(printf '%s\n' "$skill_names") <(printf '%s\n' "$configured_names") >&2 || true
+    return 1
+  fi
+}
+
+lib__marketplace_plugins() {
   jq -c '.plugins[]' "$LIB_MARKETPLACE_CONFIG"
 }
+
+lib__generate_plugin_package() (
+  set -euo pipefail
+  local plugin="$1" name display short category prompt keywords src skill_file version description manifest_name
+  local plugins_root plugin_root stage_root backup_root skill_dst old_moved=0
+
+  name="$(jq -r '.name' <<<"$plugin")"
+  display="$(jq -r '.displayName' <<<"$plugin")"
+  short="$(jq -r '.shortDescription' <<<"$plugin")"
+  category="$(jq -r '.category' <<<"$plugin")"
+  prompt="$(jq -r '.defaultPrompt' <<<"$plugin")"
+  keywords="$(jq -c '.keywords' <<<"$plugin")"
+  src="$LIB_ROOT/$name"
+  skill_file="$src/SKILL.md"
+  manifest_name="$(lib_skill_field "$skill_file" name)"
+  version="$(lib_skill_field "$skill_file" version)"
+  description="$(lib_skill_field "$skill_file" description)"
+  [ "$manifest_name" = "$name" ] || { echo "$name folder/frontmatter name mismatch: $manifest_name" >&2; return 1; }
+  printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$' || {
+    echo "$name has invalid semver: $version" >&2; return 1;
+  }
+
+  plugins_root="$LIB_ROOT/plugins"
+  mkdir -p "$plugins_root"
+  plugin_root="$plugins_root/$name"
+  stage_root="$plugins_root/.$name.stage.$$.$RANDOM"
+  backup_root="$plugins_root/.$name.backup.$$.$RANDOM"
+  case "$plugin_root" in "$plugins_root/$name") ;; *) echo "unsafe plugin path: $plugin_root" >&2; return 1 ;; esac
+  case "$stage_root" in "$plugins_root/.$name.stage."*) ;; *) echo "unsafe plugin stage path: $stage_root" >&2; return 1 ;; esac
+  case "$backup_root" in "$plugins_root/.$name.backup."*) ;; *) echo "unsafe plugin backup path: $backup_root" >&2; return 1 ;; esac
+
+  cleanup_plugin_stage() {
+    local status=$?
+    trap - EXIT
+    [ ! -e "$stage_root" ] || rm -rf -- "$stage_root" || status=1
+    if [ "$status" -ne 0 ] && [ "$old_moved" -eq 1 ] && [ -e "$backup_root" ]; then
+      [ ! -e "$plugin_root" ] || rm -rf -- "$plugin_root" || status=1
+      mv -- "$backup_root" "$plugin_root" || status=1
+    fi
+    exit "$status"
+  }
+  trap cleanup_plugin_stage EXIT
+
+  skill_dst="$stage_root/skills/$name"
+  mkdir -p "$(dirname "$skill_dst")"
+  cp -R "$src" "$skill_dst"
+  rm -f "$skill_dst/$name.skill" "$skill_dst/.norandom-skills-managed.json"
+  find "$skill_dst" -name .DS_Store -type f -delete
+
+  lib__render_template "$LIB_MARKETPLACE_TEMPLATES/portable-plugin.json.tpl" \
+    "$stage_root/plugin.json" \
+    NAME_JSON "$(lib__json_string "$name")" \
+    VERSION_JSON "$(lib__json_string "$version")" \
+    DESCRIPTION_JSON "$(lib__json_string "$description")" \
+    KEYWORDS_JSON "$keywords" \
+    SOURCE_PATH "$name"
+
+  lib__render_template "$LIB_MARKETPLACE_TEMPLATES/codex-plugin.json.tpl" \
+    "$stage_root/.codex-plugin/plugin.json" \
+    NAME_JSON "$(lib__json_string "$name")" \
+    VERSION_JSON "$(lib__json_string "$version")" \
+    DESCRIPTION_JSON "$(lib__json_string "$description")" \
+    DISPLAY_NAME_JSON "$(lib__json_string "$display")" \
+    SHORT_DESCRIPTION_JSON "$(lib__json_string "$short")" \
+    CATEGORY_JSON "$(lib__json_string "$category")" \
+    KEYWORDS_JSON "$keywords" \
+    DEFAULT_PROMPT_JSON "$(lib__json_string "$prompt")" \
+    SOURCE_PATH "$name"
+
+  lib__render_template "$LIB_MARKETPLACE_TEMPLATES/claude-plugin.json.tpl" \
+    "$stage_root/.claude-plugin/plugin.json" \
+    NAME_JSON "$(lib__json_string "$name")" \
+    VERSION_JSON "$(lib__json_string "$version")" \
+    DESCRIPTION_JSON "$(lib__json_string "$description")" \
+    SOURCE_PATH "$name"
+
+  lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-plugin.json.tpl" \
+    "$stage_root/.gemini-plugin/plugin.json" \
+    NAME_JSON "$(lib__json_string "$name")" \
+    VERSION_JSON "$(lib__json_string "$version")" \
+    DESCRIPTION_JSON "$(lib__json_string "$description")" \
+    KEYWORDS_JSON "$keywords" \
+    SOURCE_PATH "$name"
+
+  jq empty "$stage_root/plugin.json"
+  jq empty "$stage_root/.codex-plugin/plugin.json"
+  jq empty "$stage_root/.claude-plugin/plugin.json"
+  jq empty "$stage_root/.gemini-plugin/plugin.json"
+
+  if [ -e "$plugin_root" ]; then
+    mv -- "$plugin_root" "$backup_root"
+    old_moved=1
+  fi
+  mv -- "$stage_root" "$plugin_root"
+  if [ "$old_moved" -eq 1 ]; then rm -rf -- "$backup_root"; fi
+  trap - EXIT
+  printf '  plugin %-24s -> plugins/%s\n' "$name" "$name"
+)
 
 # Generate installable plugin packages from the canonical top-level skill
 # directories. Generated packages are committed so release tags contain the
 # exact subdirectories referenced by both marketplaces.
 lib_generate_plugin_packages() {
   lib_require jq
-  local plugin name display short category prompt keywords src skill_file version description manifest_name
-  local plugin_root skill_dst
+  lib__validate_marketplace_config
+  local plugin
   while IFS= read -r plugin; do
     [ -n "$plugin" ] || continue
-    name="$(jq -r '.name' <<<"$plugin")"
-    display="$(jq -r '.displayName' <<<"$plugin")"
-    short="$(jq -r '.shortDescription' <<<"$plugin")"
-    category="$(jq -r '.category' <<<"$plugin")"
-    prompt="$(jq -r '.defaultPrompt' <<<"$plugin")"
-    keywords="$(jq -c '.keywords // []' <<<"$plugin")"
-    case "$name" in *[!A-Za-z0-9_-]*|'') echo "invalid marketplace plugin name: $name" >&2; return 1 ;; esac
-
-    src="$LIB_ROOT/$name"
-    skill_file="$src/SKILL.md"
-    [ -f "$skill_file" ] || { echo "marketplace skill missing: $skill_file" >&2; return 1; }
-    manifest_name="$(lib_skill_field "$skill_file" name)"
-    version="$(lib_skill_field "$skill_file" version)"
-    description="$(lib_skill_field "$skill_file" description)"
-    [ "$manifest_name" = "$name" ] || { echo "$name folder/frontmatter name mismatch: $manifest_name" >&2; return 1; }
-    printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$' || {
-      echo "$name has invalid semver: $version" >&2; return 1;
-    }
-
-    plugin_root="$LIB_ROOT/plugins/$name"
-    skill_dst="$plugin_root/skills/$name"
-    rm -rf "$plugin_root"
-    mkdir -p "$(dirname "$skill_dst")"
-    cp -R "$src" "$skill_dst"
-    rm -f "$skill_dst/$name.skill" "$skill_dst/.norandom-skills-managed.json"
-    find "$skill_dst" -name .DS_Store -type f -delete
-
-    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/codex-plugin.json.tpl" \
-      "$plugin_root/.codex-plugin/plugin.json" \
-      NAME_JSON "$(lib__json_string "$name")" \
-      VERSION_JSON "$(lib__json_string "$version")" \
-      DESCRIPTION_JSON "$(lib__json_string "$description")" \
-      DISPLAY_NAME_JSON "$(lib__json_string "$display")" \
-      SHORT_DESCRIPTION_JSON "$(lib__json_string "$short")" \
-      CATEGORY_JSON "$(lib__json_string "$category")" \
-      KEYWORDS_JSON "$keywords" \
-      DEFAULT_PROMPT_JSON "$(lib__json_string "$prompt")" \
-      SOURCE_PATH "$name"
-
-    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/claude-plugin.json.tpl" \
-      "$plugin_root/.claude-plugin/plugin.json" \
-      NAME_JSON "$(lib__json_string "$name")" \
-      VERSION_JSON "$(lib__json_string "$version")" \
-      DESCRIPTION_JSON "$(lib__json_string "$description")" \
-      SOURCE_PATH "$name"
-
-    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-plugin.json.tpl" \
-      "$plugin_root/plugin.json" \
-      NAME_JSON "$(lib__json_string "$name")" \
-      VERSION_JSON "$(lib__json_string "$version")" \
-      DESCRIPTION_JSON "$(lib__json_string "$description")" \
-      KEYWORDS_JSON "$keywords" \
-      SOURCE_PATH "$name"
-
-    lib__render_template "$LIB_MARKETPLACE_TEMPLATES/gemini-plugin.json.tpl" \
-      "$plugin_root/.gemini-plugin/plugin.json" \
-      NAME_JSON "$(lib__json_string "$name")" \
-      VERSION_JSON "$(lib__json_string "$version")" \
-      DESCRIPTION_JSON "$(lib__json_string "$description")" \
-      KEYWORDS_JSON "$keywords" \
-      SOURCE_PATH "$name"
-
-    jq empty "$plugin_root/.codex-plugin/plugin.json"
-    jq empty "$plugin_root/.claude-plugin/plugin.json"
-    jq empty "$plugin_root/plugin.json"
-    jq empty "$plugin_root/.gemini-plugin/plugin.json"
-
-    printf '  plugin %-24s -> plugins/%s\n' "$name" "$name"
+    lib__generate_plugin_package "$plugin" || return 1
   done < <(lib__marketplace_plugins)
 }
 
@@ -230,7 +298,8 @@ lib__validate_marketplace_ref() {
 # Generate the three catalogs from the same plugin allowlist and release ref.
 lib_generate_marketplace_catalogs() {
   lib_require jq
-  local ref="$1" plugin name category keywords entry codex_entries='' claude_entries='' gemini_entries='' sep=''
+  lib__validate_marketplace_config
+  local ref="$1" plugin name display short category keywords entry codex_entries='' claude_entries='' gemini_entries='' sep=''
   local tmp_dir codex_entry_file claude_entry_file gemini_entry_file
   lib__validate_marketplace_ref "$ref"
   tmp_dir="$(mktemp -d)"
@@ -241,6 +310,8 @@ lib_generate_marketplace_catalogs() {
   while IFS= read -r plugin; do
     [ -n "$plugin" ] || continue
     name="$(jq -r '.name' <<<"$plugin")"
+    display="$(jq -r '.displayName' <<<"$plugin")"
+    short="$(jq -r '.shortDescription' <<<"$plugin")"
     category="$(jq -r '.category' <<<"$plugin")"
     keywords="$(jq -c '.keywords // []' <<<"$plugin")"
 
@@ -256,6 +327,8 @@ lib_generate_marketplace_catalogs() {
     lib__render_template "$LIB_MARKETPLACE_TEMPLATES/claude-marketplace-entry.json.tpl" \
       "$claude_entry_file" \
       NAME_JSON "$(lib__json_string "$name")" \
+      DISPLAY_NAME_JSON "$(lib__json_string "$display")" \
+      SHORT_DESCRIPTION_JSON "$(lib__json_string "$short")" \
       CATEGORY_JSON "$(lib__json_string "$category")" \
       KEYWORDS_JSON "$keywords" \
       REF_JSON "$(lib__json_string "$ref")" \
@@ -298,6 +371,7 @@ lib_generate_marketplace() {
 lib_update_marketplace_release() {
   local ref="$1" plugin name
   lib_require jq
+  lib__validate_marketplace_config
   lib__validate_marketplace_ref "$ref"
   git -C "$LIB_ROOT" rev-parse --verify --quiet "$ref^{commit}" >/dev/null || {
     echo "unknown release ref: $ref" >&2; return 1;

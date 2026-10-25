@@ -1,5 +1,7 @@
 {
   "name": {{NAME_JSON}},
+  "displayName": {{DISPLAY_NAME_JSON}},
+  "description": {{SHORT_DESCRIPTION_JSON}},
   "source": {
     "source": "git-subdir",
     "url": "https://github.com/norandom/Skills.git",

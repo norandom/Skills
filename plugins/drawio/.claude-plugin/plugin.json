@@ -1,0 +1,11 @@
+{
+  "name": "drawio",
+  "version": "1.0.0",
+  "description": "General draw.io diagram creation via MCP tools. Covers the three tool types (Mermaid, XML, CSV), URL presentation rules for the Hermes WebUI, Mermaid syntax reference shortcuts, domain-specific palettes (executive/boardroom Gartner-style), and when to prefer each tool type. Use for any draw.io task that doesn't fit a domain-specific skill (intana-viz, architecture-diagram, etc.). Load this skill when the user asks for a draw.io diagram, a Mermaid diagram for draw.io, or any visualization using the draw.io MCP tools.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/drawio",
+  "repository": "https://github.com/norandom/Skills"
+}

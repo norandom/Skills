@@ -1,0 +1,23 @@
+{
+  "skill_name": "intana-viz",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I've been working on an assessment of a new counterterrorism policy proposal. I ran a Devil's Advocacy review using the 5Cs (Coherence, Completeness, Compliance, Consistency, Correctness) and CATUR (Complexity, Ambiguity, Tension, Uncertainty, Risk) frameworks. Here are the scores:\n\n5Cs: Coherence 8/10, Completeness 6/10, Compliance 9/10, Consistency 7/10, Correctness 8/10\nCATUR: Complexity 9/10, Ambiguity 7/10, Tension 8/10, Uncertainty 6/10, Risk 9/10\n\nCan you create a visualization of this evaluation?",
+      "expected_output": "An interactive radar chart overlaying 5Cs and CATUR scores with tooltips showing each dimension's score. Professional intel styling.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "We're planning a cross-border intelligence sharing operation with 3 partner agencies. I need to do a Pre-Mortem analysis. Assume the operation has failed spectacularly. The main failure modes I've identified are:\n- Sources were compromised due to inadequate OPSEC\n- Partner agency leaked classified material\n- Legal framework gaps between jurisdictions\n- Communications intercept was detected by target\n- Political support withdrawn mid-operation\n- Technological failure in encrypted comms platform\n- Cultural misunderstandings led to operational delay\n- Insufficient funding caused premature operation termination\n\nVisualize this Pre-Mortem.",
+      "expected_output": "A hub-and-spoke failure causation diagram with central 'Operation Failed' node and 8 radiating failure mode spokes, color-coded by severity. Click to expand each failure mode for detail.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to compare three courses of action for responding to a cyber intrusion attributed to a state actor. Here's the data:\n\nCoA 1 - Diplomatic Response: Cost=Low, Speed=Slow, Escalation Risk=Low, Attribution Confidence Required=Medium, Deterrence Effect=Medium, Legal Complexity=Low\nCoA 2 - Offensive Cyber Response: Cost=Medium, Speed=Fast, Escalation Risk=High, Attribution Confidence Required=High, Deterrence Effect=High, Legal Complexity=High\nCoA 3 - Indictment + Sanctions: Cost=Medium, Speed=Slow, Escalation Risk=Medium, Attribution Confidence Required=Very High, Deterrence Effect=Medium, Legal Complexity=Medium\n\nVisualize a CoA comparison.",
+      "expected_output": "A multi-criteria comparison visualization — radar chart or parallel coordinates — showing all three CoAs across 6 criteria with interactive toggles.",
+      "files": []
+    }
+  ]
+}

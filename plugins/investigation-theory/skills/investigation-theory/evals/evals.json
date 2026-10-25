@@ -1,0 +1,23 @@
+{
+  "skill_name": "investigation-theory",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "I have a phishing alert from our IDS: inbound mail to jane.doe@corp from a domain 'accounts-billing.co' we've never seen before. Attachment is Invoice_42.docm. SPF softfails, no DKIM signature, sender publishes no DMARC. Sysmon shows winword.exe -> cmd.exe -> powershell.exe on JANE-LAPTOP about 8 minutes after delivery. Proxy logs show one outbound HTTPS to cdn.accounts-billing.co:8443, 412 KB pulled as 'update.bin'. No other hosts touched yet. Walk me through this.",
+      "expected_output": "Drives the Diagnostic Inquiry loop through (at minimum) three cycles: falsify the alert (headers + auth checks), establish first-order impact (Sysmon execution chain), establish second-order impact (C2 contact + payload pull). Escalates to Tier 2 on the novelty cue. Produces case notes in investigation-statement + action-statement form. Builds an attack timeline crossing Internet -> DMZ -> Endpoint -> Internet. Concludes Disposition 4 (Malicious Logic), Response Category Elevated. Tracks gaps (lateral movement, payload analysis, credential exposure) as open questions. Offers a Diagnostic Inquiry Loop diagram and an Attack Timeline diagram via mcp__drawio__open_drawio_xml, or Mermaid fallback if the MCP is unavailable.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Windows Security log shows user svc_backup successfully authenticating with logon type 3 to FS-HR-01 at 02:14 UTC. svc_backup has only ever shown logon type 5 (service) in the last 90 days. Within 6 minutes, Sysmon EID 1 on FS-HR-01 records a psexec.exe execution and four outbound SMB sessions to other internal file servers. EDR was disabled on FS-HR-01 yesterday during scheduled maintenance. Help me investigate.",
+      "expected_output": "Recognises this as lateral movement against the baseline (logon type 3 vs 5, off-hours, PsExec, fan-out across file servers). Forms the credential-compromise-of-service-account hypothesis. Asks preceding questions (where did svc_backup last authenticate normally, who has the credential, was there a TGT request from an unfamiliar host) and succeeding questions (which file servers were touched, what was read/written, exfil indicators in NetFlow). Tier 2 -> Tier 3 escalation fires on admin/service credential compromise + lateral signals. Produces an Attack Timeline with functional boundaries, opens the Phishing/Credential-Compromise playbook if available, and prepares the Tier 3 artifacts (compromise report skeleton, Security M&M agenda, Key Assumptions Check on 'is this really svc_backup'). Likely disposition 1 or 2 pending evidence, Response Category Critical.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Our DLP fired on Marcus from Finance uploading 380 MB to a personal cloud account over the last 72 hours. He's on a PIP and HR mentioned 'cultural issues'. His manager wants him walked out today as an insider threat. Before I sign off on that, what should I check?",
+      "expected_output": "Applies the Base Rate Fallacy control explicitly: true malicious insider is statistically rare; credential compromise (infostealer / phished password / session token replay) is the higher-prior hypothesis and must be falsified first. Asks for impossible-travel auth checks, fresh-token / new-UA / new-IP signals on Marcus's account, infostealer indicators on his endpoint (Sysmon, EDR, browser-credential-store access). Also asks whether the 'cloud account' is genuinely personal (verify the destination) or potentially adversary-controlled. Refuses to support immediate HR action without falsifying the credential-compromise hypothesis. Frames the case as Tier 2 with Key Assumptions Check mandatory. Disposition stays 8 (Investigating) until evidence resolves the prior. Produces the Playbook Question Flow diagram to make the order of questions explicit for the manager.",
+      "files": []
+    }
+  ]
+}

@@ -1,6 +1,90 @@
 {
   "plugins": [
     {
+      "name": "cobesy",
+      "displayName": "COBESY",
+      "shortDescription": "Turn knowledge into communication and adoption people act on.",
+      "category": "Business",
+      "keywords": [
+        "change-management",
+        "communication",
+        "adoption"
+      ],
+      "defaultPrompt": "Structure this idea so people understand it, adopt it, and act on it."
+    },
+    {
+      "name": "corporate-finance",
+      "displayName": "Corporate Finance",
+      "shortDescription": "Build and review auditable finance models and analysis.",
+      "category": "Finance",
+      "keywords": [
+        "financial-modeling",
+        "valuation",
+        "cash-flow"
+      ],
+      "defaultPrompt": "Build an auditable financial analysis with sourced assumptions and verified calculations."
+    },
+    {
+      "name": "drawio",
+      "displayName": "draw.io",
+      "shortDescription": "Create clear draw.io diagrams from structured requirements.",
+      "category": "Design",
+      "keywords": [
+        "drawio",
+        "diagrams",
+        "visualization"
+      ],
+      "defaultPrompt": "Turn this information into a clear draw.io diagram."
+    },
+    {
+      "name": "financial-modeling-sheet",
+      "displayName": "Financial Modeling Sheet",
+      "shortDescription": "Apply an auditable house style to quantitative workbooks.",
+      "category": "Finance",
+      "keywords": [
+        "excel",
+        "financial-modeling",
+        "workbook-design"
+      ],
+      "defaultPrompt": "Apply the financial-modeling house style and audit this workbook's presentation."
+    },
+    {
+      "name": "game-theory-negotiation",
+      "displayName": "Game Theory Negotiation",
+      "shortDescription": "Prepare negotiations with explicit incentives, moves, and limits.",
+      "category": "Business",
+      "keywords": [
+        "negotiation",
+        "game-theory",
+        "procurement"
+      ],
+      "defaultPrompt": "Prepare this negotiation, including BATNA, reservation point, offers, and concessions."
+    },
+    {
+      "name": "intana-viz",
+      "displayName": "Intelligence Analysis Visualizations",
+      "shortDescription": "Visualize structured analysis techniques in draw.io.",
+      "category": "Data & Analytics",
+      "keywords": [
+        "intelligence-analysis",
+        "structured-analysis",
+        "drawio"
+      ],
+      "defaultPrompt": "Choose and build the best structured-analysis visualization for this problem."
+    },
+    {
+      "name": "investigation-theory",
+      "displayName": "Investigation Theory",
+      "shortDescription": "Run disciplined SOC and DFIR investigations from evidence to disposition.",
+      "category": "Security",
+      "keywords": [
+        "dfir",
+        "soc",
+        "incident-response"
+      ],
+      "defaultPrompt": "Investigate this security alert using a question-led evidence workflow."
+    },
+    {
       "name": "premortem",
       "displayName": "Premortem",
       "shortDescription": "Stress-test a plan by reasoning backward from failure.",
@@ -11,6 +95,30 @@
         "strategy"
       ],
       "defaultPrompt": "Premortem this plan and identify the most actionable failure risks."
+    },
+    {
+      "name": "reflect",
+      "displayName": "ReFLECT Prompt Builder",
+      "shortDescription": "Turn rough requests into precise, usable prompts.",
+      "category": "Productivity",
+      "keywords": [
+        "prompt-engineering",
+        "clarification",
+        "writing"
+      ],
+      "defaultPrompt": "Apply ReFLECT and turn this rough request into a clear prompt."
+    },
+    {
+      "name": "strategic-foresight-viz",
+      "displayName": "Strategic Foresight Visualizations",
+      "shortDescription": "Create foresight, scenario, trend, and weak-signal diagrams.",
+      "category": "Business",
+      "keywords": [
+        "strategic-foresight",
+        "scenario-planning",
+        "drawio"
+      ],
+      "defaultPrompt": "Visualize this foresight question with the most suitable scenario or trend method."
     }
   ]
 }

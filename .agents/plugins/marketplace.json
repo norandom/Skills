@@ -5,18 +5,144 @@
   },
   "plugins": [
     {
+      "name": "cobesy",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/cobesy",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    },
+    {
+      "name": "corporate-finance",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/corporate-finance",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Finance"
+    },
+    {
+      "name": "drawio",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/drawio",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "financial-modeling-sheet",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/financial-modeling-sheet",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Finance"
+    },
+    {
+      "name": "game-theory-negotiation",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/game-theory-negotiation",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    },
+    {
+      "name": "intana-viz",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/intana-viz",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data & Analytics"
+    },
+    {
+      "name": "investigation-theory",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/investigation-theory",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Security"
+    },
+    {
       "name": "premortem",
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/norandom/Skills.git",
         "path": "./plugins/premortem",
-        "ref": "marketplace-pilot"
+        "ref": "v2.0.0"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "reflect",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/reflect",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "strategic-foresight-viz",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/norandom/Skills.git",
+        "path": "./plugins/strategic-foresight-viz",
+        "ref": "v2.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
     }
   ]
 }

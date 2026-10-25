@@ -239,7 +239,7 @@ When cells contain ratings:
 ```
 graph TD
     ROOT["<b>Root Node Title</b>"]
-    
+
     ROOT --> CHILD1["Child 1 Label"]
     ROOT --> CHILD2["Child 2 Label"]
     CHILD1 --> LEAF1["Leaf 1"]

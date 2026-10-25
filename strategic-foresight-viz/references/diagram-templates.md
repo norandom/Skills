@@ -164,12 +164,12 @@ Data Cells:
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="PESTLE Analysis" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="10" width="1140" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Column Headers: P, E, S, T, L, E -->
     <mxCell id="h_political" value="Political" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;verticalAlign=middle;shadow=1;fontColor=#FFFFFF;align=center;fillColor=#2563EB;strokeColor=#1e40af;" vertex="1" parent="1">
       <mxGeometry x="30" y="50" width="175" height="40" as="geometry" />
@@ -189,12 +189,12 @@ Data Cells:
     <mxCell id="h_environ" value="Environmental" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;verticalAlign=middle;shadow=1;fontColor=#FFFFFF;align=center;fillColor=#2563EB;strokeColor=#1e40af;" vertex="1" parent="1">
       <mxGeometry x="955" y="50" width="175" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- Row Header: Trends -->
     <mxCell id="rh_trends" value="Trends" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;verticalAlign=middle;shadow=1;fontColor=#334155;align=center;fillColor=#F1F5F9;strokeColor=#CBD5E1;" vertex="1" parent="1">
       <mxGeometry x="10" y="95" width="15" height="75" as="geometry" />
     </mxCell>
-    
+
     <!-- Data Cells Row 1 (Trends) -->
     <mxCell id="c1_1" value="Government policy shifts" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=4;" vertex="1" parent="1">
       <mxGeometry x="30" y="95" width="175" height="75" as="geometry" />
@@ -214,12 +214,12 @@ Data Cells:
     <mxCell id="c1_6" value="Climate policy acceleration" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=4;" vertex="1" parent="1">
       <mxGeometry x="955" y="95" width="175" height="75" as="geometry" />
     </mxCell>
-    
+
     <!-- Row Header: Events -->
     <mxCell id="rh_events" value="Events" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;verticalAlign=middle;shadow=1;fontColor=#334155;align=center;fillColor=#F1F5F9;strokeColor=#CBD5E1;" vertex="1" parent="1">
       <mxGeometry x="10" y="175" width="15" height="75" as="geometry" />
     </mxCell>
-    
+
     <!-- Data Cells Row 2 (Events) -->
     <mxCell id="c2_1" value="Election cycles, policy announcements" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=4;" vertex="1" parent="1">
       <mxGeometry x="30" y="175" width="175" height="75" as="geometry" />
@@ -239,7 +239,7 @@ Data Cells:
     <mxCell id="c2_6" value="Extreme weather, COP summits, net-zero commitments" style="rounded=0;whiteSpace=wrap;html=1;fontSize=9;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=4;" vertex="1" parent="1">
       <mxGeometry x="955" y="175" width="175" height="75" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -287,12 +287,12 @@ Data Cells:
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Trend Stage Analysis: Impact × Lifecycle" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="50" y="10" width="900" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Y-axis labels -->
     <mxCell id="ylab_high" value="High Impact" style="text;html=1;align=right;fontSize=10;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="20" y="120" width="50" height="20" as="geometry" />
@@ -303,7 +303,7 @@ Data Cells:
     <mxCell id="ylab_low" value="Low Impact" style="text;html=1;align=right;fontSize=10;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="20" y="520" width="50" height="20" as="geometry" />
     </mxCell>
-    
+
     <!-- X-axis labels -->
     <mxCell id="xlab_latent" value="Latent" style="text;html=1;align=center;fontSize=10;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="140" y="620" width="40" height="20" as="geometry" />
@@ -317,7 +317,7 @@ Data Cells:
     <mxCell id="xlab_established" value="Established" style="text;html=1;align=center;fontSize=10;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="740" y="620" width="40" height="20" as="geometry" />
     </mxCell>
-    
+
     <!-- Grid cells with dashed borders -->
     <!-- High-Impact row -->
     <mxCell id="grid_h_latent" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
@@ -332,7 +332,7 @@ Data Cells:
     <mxCell id="grid_h_established" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
       <mxGeometry x="700" y="100" width="180" height="180" as="geometry" />
     </mxCell>
-    
+
     <!-- Medium-Impact row -->
     <mxCell id="grid_m_latent" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
       <mxGeometry x="100" y="300" width="180" height="180" as="geometry" />
@@ -346,7 +346,7 @@ Data Cells:
     <mxCell id="grid_m_established" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
       <mxGeometry x="700" y="300" width="180" height="180" as="geometry" />
     </mxCell>
-    
+
     <!-- Low-Impact row -->
     <mxCell id="grid_l_latent" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
       <mxGeometry x="100" y="500" width="180" height="180" as="geometry" />
@@ -360,18 +360,18 @@ Data Cells:
     <mxCell id="grid_l_established" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CBD5E1;strokeWidth=1;dashed=1;" vertex="1" parent="1">
       <mxGeometry x="700" y="500" width="180" height="180" as="geometry" />
     </mxCell>
-    
+
     <!-- Trend items -->
     <!-- Trend 1: Latent + High Impact -->
     <mxCell id="trend_1" value="Quantum computing" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;shadow=1;align=center;verticalAlign=middle;fillColor=#8B5CF6;fontColor=#FFFFFF;strokeColor=#6D28D9;" vertex="1" parent="1">
       <mxGeometry x="130" y="160" width="140" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- Trend 2: Current + Medium Impact -->
     <mxCell id="trend_2" value="Remote work adoption" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;shadow=1;align=center;verticalAlign=middle;fillColor=#2563EB;fontColor=#FFFFFF;strokeColor=#1e40af;" vertex="1" parent="1">
       <mxGeometry x="530" y="360" width="140" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- Legend -->
     <mxCell id="legend_title" value="Lifecycle Stages:" style="text;html=1;align=left;fontSize=10;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="50" y="670" width="150" height="20" as="geometry" />
@@ -400,7 +400,7 @@ Data Cells:
     <mxCell id="legend_estab_label" value="Established" style="text;html=1;align=left;fontSize=9;fontColor=#334155;" vertex="1" parent="1">
       <mxGeometry x="446" y="670" width="60" height="16" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -463,12 +463,12 @@ padding: 6
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Trend Impact Comparison" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="10" width="1040" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Header Row -->
     <mxCell id="h_trend" value="Trend" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#334155;fontColor=#FFFFFF;strokeColor=#1f2937;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="45" width="220" height="35" as="geometry" />
@@ -485,7 +485,7 @@ padding: 6
     <mxCell id="h_policy" value="Policy Impact" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#334155;fontColor=#FFFFFF;strokeColor=#1f2937;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="920" y="45" width="150" height="35" as="geometry" />
     </mxCell>
-    
+
     <!-- Data Row 1 -->
     <mxCell id="d1_trend" value="AI Automation" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=6;" vertex="1" parent="1">
       <mxGeometry x="30" y="85" width="220" height="75" as="geometry" />
@@ -502,7 +502,7 @@ padding: 6
     <mxCell id="d1_policy" value="Regulation pressure on AI; labor law reform; liability frameworks uncertain" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=6;" vertex="1" parent="1">
       <mxGeometry x="920" y="85" width="150" height="75" as="geometry" />
     </mxCell>
-    
+
     <!-- Data Row 2 -->
     <mxCell id="d2_trend" value="Climate Adaptation" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=6;" vertex="1" parent="1">
       <mxGeometry x="30" y="165" width="220" height="75" as="geometry" />
@@ -519,7 +519,7 @@ padding: 6
     <mxCell id="d2_policy" value="Carbon pricing; emissions regulations; net-zero mandates; international climate agreements" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=6;" vertex="1" parent="1">
       <mxGeometry x="920" y="165" width="150" height="75" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -587,12 +587,12 @@ text: "—" or strikethrough
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Cross-Impact Matrix: Driver Interactions" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="10" width="840" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Column Headers -->
     <mxCell id="col_h1" value="Driver A" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#2563EB;fontColor=#FFFFFF;strokeColor=#1e40af;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="170" y="50" width="140" height="35" as="geometry" />
@@ -609,7 +609,7 @@ text: "—" or strikethrough
     <mxCell id="col_h5" value="Driver E" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor#2563EB;fontColor=#FFFFFF;strokeColor=#1e40af;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="730" y="50" width="140" height="35" as="geometry" />
     </mxCell>
-    
+
     <!-- Row Headers -->
     <mxCell id="row_h1" value="Driver A" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F1F5F9;fontColor=#334155;strokeColor=#CBD5E1;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="90" width="135" height="80" as="geometry" />
@@ -626,7 +626,7 @@ text: "—" or strikethrough
     <mxCell id="row_h5" value="Driver E" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F1F5F9;fontColor=#334155;strokeColor=#CBD5E1;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="410" width="135" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Data Cells (row 1: Driver A on) -->
     <!-- Diagonal: A-A -->
     <mxCell id="d_AA" value="—" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F1F5F9;fontColor=#94A3B8;strokeColor=#CBD5E1;" vertex="1" parent="1">
@@ -648,7 +648,7 @@ text: "—" or strikethrough
     <mxCell id="d_AE" value="Strong" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#DC2626;fontColor=#FFFFFF;strokeColor=#991b1b;" vertex="1" parent="1">
       <mxGeometry x="730" y="90" width="140" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Row 2: Driver B on -->
     <!-- B-A -->
     <mxCell id="d_BA" value="Moderate" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F59E0B;fontColor=#FFFFFF;strokeColor=#d97706;" vertex="1" parent="1">
@@ -670,7 +670,7 @@ text: "—" or strikethrough
     <mxCell id="d_BE" value="Moderate" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F59E0B;fontColor=#FFFFFF;strokeColor=#d97706;" vertex="1" parent="1">
       <mxGeometry x="730" y="170" width="140" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Additional rows (Row 3, 4, 5) with diagonal cells and sample interactions -->
     <!-- Row 3: Driver C -->
     <mxCell id="d_CA" value="Weak" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#D1FAE5;fontColor=#334155;strokeColor=#6EE7B7;" vertex="1" parent="1">
@@ -688,7 +688,7 @@ text: "—" or strikethrough
     <mxCell id="d_CE" value="Weak" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#D1FAE5;fontColor=#334155;strokeColor=#6EE7B7;" vertex="1" parent="1">
       <mxGeometry x="730" y="250" width="140" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Row 4: Driver D -->
     <mxCell id="d_DA" value="Moderate" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F59E0B;fontColor=#FFFFFF;strokeColor=#d97706;" vertex="1" parent="1">
       <mxGeometry x="170" y="330" width="140" height="80" as="geometry" />
@@ -705,7 +705,7 @@ text: "—" or strikethrough
     <mxCell id="d_DE" value="Strong" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#DC2626;fontColor=#FFFFFF;strokeColor=#991b1b;" vertex="1" parent="1">
       <mxGeometry x="730" y="330" width="140" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Row 5: Driver E -->
     <mxCell id="d_EA" value="Strong" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#DC2626;fontColor=#FFFFFF;strokeColor=#991b1b;" vertex="1" parent="1">
       <mxGeometry x="170" y="410" width="140" height="80" as="geometry" />
@@ -722,7 +722,7 @@ text: "—" or strikethrough
     <mxCell id="d_EE" value="—" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=center;verticalAlign=middle;fillColor=#F1F5F9;fontColor=#94A3B8;strokeColor=#CBD5E1;" vertex="1" parent="1">
       <mxGeometry x="730" y="410" width="140" height="80" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -774,22 +774,22 @@ text: "—" or strikethrough
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Perception Analysis: What do stakeholders SEE, HEAR, THINK, FEEL?" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="50" y="10" width="900" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Central Hub -->
     <mxCell id="hub" value="Climate&#10;Transition" style="ellipse;whiteSpace=wrap;html=1;fontSize=13;align=center;verticalAlign=middle;fillColor=#2563EB;fontColor=#FFFFFF;strokeColor=#1e40af;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="440" y="340" width="120" height="120" as="geometry" />
     </mxCell>
-    
+
     <!-- SEE (Top) Spoke -->
     <mxCell id="see_node" value="SEE" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#059669;fontColor=#FFFFFF;strokeColor=#047857;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="420" y="60" width="160" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- SEE sub-observations -->
     <mxCell id="see_1" value="Rising temperatures" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#D1FAE5;fontColor=#334155;strokeColor=#6EE7B7;" vertex="1" parent="1">
       <mxGeometry x="250" y="120" width="140" height="30" as="geometry" />
@@ -797,19 +797,19 @@ text: "—" or strikethrough
     <mxCell id="see_1_edge" edge="1" parent="1" source="see_node" target="see_1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <mxCell id="see_2" value="Extreme weather events" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#D1FAE5;fontColor=#334155;strokeColor=#6EE7B7;" vertex="1" parent="1">
       <mxGeometry x="610" y="120" width="140" height="30" as="geometry" />
     </mxCell>
     <mxCell id="see_2_edge" edge="1" parent="1" source="see_node" target="see_2">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <!-- HEAR (Right) Spoke -->
     <mxCell id="hear_node" value="HEAR" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#F59E0B;fontColor=#FFFFFF;strokeColor=#d97706;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="800" y="380" width="160" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- HEAR sub-observations -->
     <mxCell id="hear_1" value="Media coverage of climate" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#FFFBEB;fontColor=#334155;strokeColor=#FCD34D;" vertex="1" parent="1">
       <mxGeometry x="800" y="240" width="140" height="30" as="geometry" />
@@ -817,19 +817,19 @@ text: "—" or strikethrough
     <mxCell id="hear_1_edge" edge="1" parent="1" source="hear_node" target="hear_1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <mxCell id="hear_2" value="Policy announcements" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#FFFBEB;fontColor=#334155;strokeColor=#FCD34D;" vertex="1" parent="1">
       <mxGeometry x="800" y="520" width="140" height="30" as="geometry" />
     </mxCell>
     <mxCell id="hear_2_edge" edge="1" parent="1" source="hear_node" target="hear_2">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <!-- THINK (Bottom) Spoke -->
     <mxCell id="think_node" value="THINK" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#8B5CF6;fontColor=#FFFFFF;strokeColor=#7C3AED;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="420" y="720" width="160" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- THINK sub-observations -->
     <mxCell id="think_1" value="Complexity of solutions" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#EDE9FE;fontColor=#334155;strokeColor=#D8B4FE;" vertex="1" parent="1">
       <mxGeometry x="250" y="680" width="140" height="30" as="geometry" />
@@ -837,19 +837,19 @@ text: "—" or strikethrough
     <mxCell id="think_1_edge" edge="1" parent="1" source="think_node" target="think_1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <mxCell id="think_2" value="Economic trade-offs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#EDE9FE;fontColor=#334155;strokeColor=#D8B4FE;" vertex="1" parent="1">
       <mxGeometry x="610" y="680" width="140" height="30" as="geometry" />
     </mxCell>
     <mxCell id="think_2_edge" edge="1" parent="1" source="think_node" target="think_2">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <!-- FEEL (Left) Spoke -->
     <mxCell id="feel_node" value="FEEL" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;align=center;verticalAlign=middle;fillColor=#DC2626;fontColor=#FFFFFF;strokeColor=#991b1b;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="40" y="380" width="160" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- FEEL sub-observations -->
     <mxCell id="feel_1" value="Anxiety about the future" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#FEE2E2;fontColor=#334155;strokeColor=#FECACA;" vertex="1" parent="1">
       <mxGeometry x="40" y="240" width="140" height="30" as="geometry" />
@@ -857,14 +857,14 @@ text: "—" or strikethrough
     <mxCell id="feel_1_edge" edge="1" parent="1" source="feel_node" target="feel_1">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <mxCell id="feel_2" value="Sense of urgency &amp; duty" style="rounded=1;whiteSpace=wrap;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=#FEE2E2;fontColor=#334155;strokeColor=#FECACA;" vertex="1" parent="1">
       <mxGeometry x="40" y="520" width="140" height="30" as="geometry" />
     </mxCell>
     <mxCell id="feel_2_edge" edge="1" parent="1" source="feel_node" target="feel_2">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
     <!-- Connectors (hub to spokes) -->
     <mxCell id="edge_see" edge="1" parent="1" source="hub" target="see_node">
       <mxGeometry relative="1" as="geometry" />
@@ -878,7 +878,7 @@ text: "—" or strikethrough
     <mxCell id="edge_feel" edge="1" parent="1" source="hub" target="feel_node">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -932,42 +932,42 @@ padding: 12
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Three Futures: Best, Likely, Worst Case Scenarios" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="10" width="1140" height="40" as="geometry" />
     </mxCell>
-    
+
     <!-- Best Case Header -->
     <mxCell id="header_best" value="Best Case" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;align=center;verticalAlign=middle;fillColor=#059669;fontColor=#FFFFFF;strokeColor=#047857;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="30" y="55" width="360" height="50" as="geometry" />
     </mxCell>
-    
+
     <!-- Best Case Content -->
     <mxCell id="content_best" value="Scenario narrative: Rapid renewable energy adoption, policy acceleration, technological breakthroughs enable net-zero by 2045. Global cooperation strengthens. Green jobs create new prosperity. Citizens embrace sustainable lifestyles." style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=12;" vertex="1" parent="1">
       <mxGeometry x="30" y="110" width="360" height="600" as="geometry" />
     </mxCell>
-    
+
     <!-- Likely Case Header -->
     <mxCell id="header_likely" value="Likely Case" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;align=center;verticalAlign=middle;fillColor=#F59E0B;fontColor=#FFFFFF;strokeColor=#d97706;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="420" y="55" width="360" height="50" as="geometry" />
     </mxCell>
-    
+
     <!-- Likely Case Content -->
     <mxCell id="content_likely" value="Scenario narrative: Gradual transition with political resistance. Energy mixed portfolio (fossil + renewable). Technological solutions develop but are costly. Adaptation pressures mount. Regional conflicts over resources. Uneven prosperity." style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=12;" vertex="1" parent="1">
       <mxGeometry x="420" y="110" width="360" height="600" as="geometry" />
     </mxCell>
-    
+
     <!-- Worst Case Header -->
     <mxCell id="header_worst" value="Worst Case" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;align=center;verticalAlign=middle;fillColor=#DC2626;fontColor=#FFFFFF;strokeColor=#991b1b;fontStyle=1;shadow=1;" vertex="1" parent="1">
       <mxGeometry x="810" y="55" width="360" height="50" as="geometry" />
     </mxCell>
-    
+
     <!-- Worst Case Content -->
     <mxCell id="content_worst" value="Scenario narrative: Climate inaction dominates. Fossil fuel dependence continues. Tipping points triggered (Amazon collapse, ice sheet melt). Mass migration crises. Economic collapse in vulnerable regions. Climate wars. Societal fragmentation." style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;align=left;verticalAlign=top;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=1;padding=12;" vertex="1" parent="1">
       <mxGeometry x="810" y="110" width="360" height="600" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -1011,12 +1011,12 @@ position: top center of each quadrant
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Dator's Four Archetypes" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="60" y="10" width="880" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Quadrant: Top-Left (Transformation) -->
     <mxCell id="quad_tl" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#94A3B8;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry x="60" y="100" width="420" height="300" as="geometry" />
@@ -1027,7 +1027,7 @@ position: top center of each quadrant
     <mxCell id="desc_tl" value="Radical societal restructuring. New values, systems, and power structures emerge. Discontinuous change." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#334155;" vertex="1" parent="1">
       <mxGeometry x="80" y="200" width="380" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Quadrant: Top-Right (Continuation) -->
     <mxCell id="quad_tr" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#94A3B8;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry x="520" y="100" width="420" height="300" as="geometry" />
@@ -1038,7 +1038,7 @@ position: top center of each quadrant
     <mxCell id="desc_tr" value="Current systems largely persist. Incremental change and optimization. Status quo dominates." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#334155;" vertex="1" parent="1">
       <mxGeometry x="540" y="200" width="380" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Quadrant: Bottom-Left (Discipline) -->
     <mxCell id="quad_bl" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#94A3B8;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry x="60" y="430" width="420" height="300" as="geometry" />
@@ -1049,7 +1049,7 @@ position: top center of each quadrant
     <mxCell id="desc_bl" value="Increased control &amp; regimentation. Tighter rules, surveillance, centralization. Order enforced." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#334155;" vertex="1" parent="1">
       <mxGeometry x="80" y="530" width="380" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Quadrant: Bottom-Right (Collapse) -->
     <mxCell id="quad_br" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FEE2E2;strokeColor=#94A3B8;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry x="520" y="430" width="420" height="300" as="geometry" />
@@ -1060,7 +1060,7 @@ position: top center of each quadrant
     <mxCell id="desc_br" value="Societal breakdown. Economic, political, or ecological crisis. Fragmentation and uncertainty." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontColor=#334155;" vertex="1" parent="1">
       <mxGeometry x="540" y="530" width="380" height="80" as="geometry" />
     </mxCell>
-    
+
     <!-- Axis Lines -->
     <mxCell id="axis_v" edge="1" style="endArrow=none;dashed=0;strokeColor=#94A3B8;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry relative="1" as="geometry">
@@ -1074,7 +1074,7 @@ position: top center of each quadrant
         <mxPoint x="940" y="430" />
       </mxGeometry>
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -1152,28 +1152,28 @@ graph LR
         P1["Root causes"]
         P2["Historical patterns"]
     end
-    
+
     subgraph Present["<b>Present</b><br/>Where are we now?"]
         PR1["Current state"]
         PR2["Key actors"]
         PR3["Power dynamics"]
     end
-    
+
     subgraph Future["<b>Future</b><br/>Where might we go?"]
         F1["Opportunities"]
         F2["Challenges"]
         F3["Tipping points"]
     end
-    
+
     subgraph Aspiration["<b>Aspiration</b><br/>Where do we want to go?"]
         A1["Desired outcomes"]
         A2["Values"]
     end
-    
+
     Past --> Present
     Present --> Future
     Future --> Aspiration
-    
+
     style Past fill:#64748B,stroke:#334155,color:#fff
     style Present fill:#2563EB,stroke:#1e40af,color:#fff
     style Future fill:#F59E0B,stroke:#d97706,color:#fff
@@ -1227,32 +1227,32 @@ graph LR
   <root>
     <mxCell id="0" />
     <mxCell id="1" parent="0" />
-    
+
     <!-- Title -->
     <mxCell id="title" value="Futures Cone: Diverging Possibilities Over Time" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="100" y="10" width="1000" height="30" as="geometry" />
     </mxCell>
-    
+
     <!-- Present Point -->
     <mxCell id="present_point" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#334155;strokeColor=#334155;fontSize=1;" vertex="1" parent="1">
       <mxGeometry x="95" y="395" width="10" height="10" as="geometry" />
     </mxCell>
-    
+
     <!-- Possible Band (outer, red light, low opacity) -->
     <mxCell id="band_possible" value="" style="shape=path;html=1;rounded=1;fillColor=#FEE2E2;strokeColor=none;opacity=20;" vertex="1" parent="1">
       <mxGeometry x="100" y="50" width="1000" height="700" as="geometry" />
     </mxCell>
-    
+
     <!-- Plausible Band (middle, amber light) -->
     <mxCell id="band_plausible" value="" style="shape=path;html=1;rounded=1;fillColor=#FFFBEB;strokeColor=none;opacity=30;" vertex="1" parent="1">
       <mxGeometry x="120" y="120" width="980" height="560" as="geometry" />
     </mxCell>
-    
+
     <!-- Probable Band (inner, green light) -->
     <mxCell id="band_probable" value="" style="shape=path;html=1;rounded=1;fillColor=#D1FAE5;strokeColor=none;opacity=40;" vertex="1" parent="1">
       <mxGeometry x="150" y="200" width="950" height="400" as="geometry" />
     </mxCell>
-    
+
     <!-- Preferable boundary (dashed, overlaid) -->
     <mxCell id="preferable" edge="1" style="endArrow=none;dashed=1;strokeColor=#2563EB;strokeWidth=2;" vertex="1" parent="1">
       <mxGeometry relative="1" as="geometry">
@@ -1260,7 +1260,7 @@ graph LR
         <mxPoint x="1100" y="350" />
       </mxGeometry>
     </mxCell>
-    
+
     <!-- Wildcards: small diamonds -->
     <mxCell id="wildcard_1" value="" style="shape=diamond;whiteSpace=wrap;html=1;fillColor=#8B5CF6;strokeColor=none;fontSize=1;" vertex="1" parent="1">
       <mxGeometry x="920" y="45" width="20" height="20" as="geometry" />
@@ -1271,7 +1271,7 @@ graph LR
     <mxCell id="wildcard_3" value="" style="shape=diamond;whiteSpace=wrap;html=1;fillColor=#8B5CF6;strokeColor=none;fontSize=1;" vertex="1" parent="1">
       <mxGeometry x="980" y="740" width="20" height="20" as="geometry" />
     </mxCell>
-    
+
     <!-- Time Axis -->
     <mxCell id="time_axis" edge="1" style="endArrow=none;dashed=1;strokeColor=#94A3B8;strokeWidth=1;" vertex="1" parent="1">
       <mxGeometry relative="1" as="geometry">
@@ -1279,7 +1279,7 @@ graph LR
         <mxPoint x="1100" y="420" />
       </mxGeometry>
     </mxCell>
-    
+
     <!-- Axis Labels -->
     <mxCell id="label_present" value="Present" style="text;html=1;align=center;fontSize=11;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="60" y="410" width="50" height="20" as="geometry" />
@@ -1287,7 +1287,7 @@ graph LR
     <mxCell id="label_future" value="Future" style="text;html=1;align=center;fontSize=11;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
       <mxGeometry x="1070" y="410" width="50" height="20" as="geometry" />
     </mxCell>
-    
+
     <!-- Band Labels -->
     <mxCell id="label_possible" value="Possible" style="text;html=1;align=left;fontSize=10;fontColor=#DC2626;" vertex="1" parent="1">
       <mxGeometry x="1050" y="80" width="60" height="20" as="geometry" />
@@ -1304,7 +1304,7 @@ graph LR
     <mxCell id="label_wildcard" value="Wildcards" style="text;html=1;align=left;fontSize=10;fontColor=#8B5CF6;" vertex="1" parent="1">
       <mxGeometry x="1050" y="50" width="60" height="20" as="geometry" />
     </mxCell>
-    
+
   </root>
 </mxGraphModel>
 ```
@@ -1447,26 +1447,26 @@ graph LR
         W2["Observation 2"]
         W3["Observation 3"]
     end
-    
+
     subgraph SoWhat["<b>SO WHAT?</b><br/>Implications & Patterns"]
         S1["Pattern A"]
         S2["Pattern B"]
         S3["Impact"]
     end
-    
+
     subgraph NowWhat["<b>NOW WHAT?</b><br/>Actions & Strategy"]
         N1["Decision 1"]
         N2["Decision 2"]
         N3["Action Plan"]
     end
-    
+
     W1 --> S1
     W2 --> S2
     W3 --> S3
     S1 --> N1
     S2 --> N2
     S3 --> N3
-    
+
     style What fill:#2563EB,stroke:#1e40af,color:#fff
     style SoWhat fill:#F59E0B,stroke:#d97706,color:#fff
     style NowWhat fill:#059669,stroke:#047857,color:#fff

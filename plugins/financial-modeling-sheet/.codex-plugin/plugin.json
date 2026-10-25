@@ -1,0 +1,23 @@
+{
+  "name": "financial-modeling-sheet",
+  "version": "1.1.0",
+  "description": "House style for quantitative Excel workbooks: sheet architecture, tab colors, navigation, semantic cell classes, named styles, number formats, the negative-value convention, dashboards, charts, and a definition-of-done audit. Four modes — CREATE a workbook, EXTEND one, AUDIT conformance (never writes), RESTYLE legacy formatting. Two non-mixable palette profiles: House Style (default, blue/yellow convention — blue source data, yellow assumptions, no-fill calculations, light-gray outputs, navy key results) and Audit Standard (orange inputs, gray calculations, green font for mixed cells). Triggers on \"standardize this workbook\", \"format my Excel model\", \"style this spreadsheet\", \"workbook house style\", \"tab colors\", \"build a menu sheet\", \"color-code inputs vs formulas\", a Power Query load, or a formatting review. Governs presentation only — it does not verify arithmetic.",
+  "author": {
+    "name": "norandom",
+    "url": "https://github.com/norandom"
+  },
+  "homepage": "https://github.com/norandom/Skills/tree/main/financial-modeling-sheet",
+  "repository": "https://github.com/norandom/Skills",
+  "keywords": ["excel","financial-modeling","workbook-design"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Financial Modeling Sheet",
+    "shortDescription": "Apply an auditable house style to quantitative workbooks.",
+    "longDescription": "House style for quantitative Excel workbooks: sheet architecture, tab colors, navigation, semantic cell classes, named styles, number formats, the negative-value convention, dashboards, charts, and a definition-of-done audit. Four modes — CREATE a workbook, EXTEND one, AUDIT conformance (never writes), RESTYLE legacy formatting. Two non-mixable palette profiles: House Style (default, blue/yellow convention — blue source data, yellow assumptions, no-fill calculations, light-gray outputs, navy key results) and Audit Standard (orange inputs, gray calculations, green font for mixed cells). Triggers on \"standardize this workbook\", \"format my Excel model\", \"style this spreadsheet\", \"workbook house style\", \"tab colors\", \"build a menu sheet\", \"color-code inputs vs formulas\", a Power Query load, or a formatting review. Governs presentation only — it does not verify arithmetic.",
+    "developerName": "norandom",
+    "category": "Finance",
+    "capabilities": [],
+    "websiteURL": "https://github.com/norandom/Skills/tree/main/financial-modeling-sheet",
+    "defaultPrompt": "Apply the financial-modeling house style and audit this workbook's presentation."
+  }
+}
